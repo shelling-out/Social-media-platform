@@ -1,0 +1,68 @@
+// basic packages
+require('dotenv').config();
+require('express-async-errors');
+const path=require('path');
+const express=require('express');
+const app=express();
+const {dbConnection}=require(path.join(__dirname,'config','dbConfig.js'));
+const corsOptions=require(path.join(__dirname,'config','corsOptions'));
+
+
+// built-in middlewares 
+const errorHandlerMiddleware = require(path.join(__dirname,'middlewares','error-handler'));
+const {logger}=require(path.join(__dirname,'middlewares','logEvents'));
+const notFound=require(path.join(__dirname,'middlewares','notFound.js'));
+const credentials=require(path.join(__dirname,'middlewares','credentials.js'));
+
+
+// security packages 
+const helmet = require('helmet');
+const cors = require('cors');
+const xss = require('xss-clean');
+const rateLimiter = require('express-rate-limit');
+
+
+
+
+
+// using middlewares and actual routes
+app.set('trust proxy', 1);
+app.use(
+    rateLimiter(
+    {
+        windowMs: 15 * 60 * 1000, // 15 minutes
+        max: 100, // limit each IP to 100 requests per windowMs
+    })
+);
+app.use(express.json()); 
+app.use(helmet());
+app.use(cors(corsOptions));
+app.use(xss());
+   
+app.use(logger);
+app.use(credentials);
+
+app.get('/',(req,res)=>
+{
+    res.send('<h1>server is up</h1>');
+})
+
+
+
+
+
+app.use(notFound);
+app.use(errorHandlerMiddleware);
+
+
+// setting up the server and connecting to the database
+const PORT=process.env.SERVER_PORT||3500;
+
+dbConnection.sequelize.sync().then(()=>{
+    console.log('Connnected to the dataBase');
+    app.listen(PORT,()=>console.log(`Server is running on port ${PORT} ... `));
+
+}).catch((error)=>{
+    console.log(error);
+});
+
