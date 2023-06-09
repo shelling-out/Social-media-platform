@@ -60,9 +60,11 @@ const PORT=process.env.SERVER_PORT||3500;
 
 dbConnection.sequelize.sync().then(()=>{
     console.log('Connnected to the dataBase');
+    
     app.listen(PORT,()=>console.log(`Server is running on port ${PORT} ... `));
 
 }).catch((error)=>{
     console.log(error);
+    exit(0) ;
 });
 
