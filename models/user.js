@@ -1,4 +1,7 @@
-const { Model } = require('sequelize');
+'use strict';
+const {
+  Model
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -12,40 +15,62 @@ module.exports = (sequelize, DataTypes) => {
   }
   User.init({
     name: {
-      type:DataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull:false
     },
-    email:{ 
-      type:DataTypes.STRING,
-      unique:true,
+    email: {
+      type: DataTypes.STRING,
       allowNull:false,
       validate:{
-        isEmail:true,
+        isEmail:true
       }
     },
     password: {
-        type:DataTypes.STRING,
-        allowNull:false,
-        validate:{
-          min:8
-        }
-    },
-    picturePath: DataTypes.STRING,
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING ,
-    gender: {
-      type:DataTypes.STRING,
+      type: DataTypes.STRING,
+      allowNull:false,
       validate:{
-        isIn:[['male' , 'female']]
+        min:8
       }
     },
-    birthday:DataTypes.DATE ,
-    country:DataTypes.STRING,
-    registerationTime:{
-      type:DataTypes.STRING,
-      defaultValue:DataTypes.NOW
+    firstName: {
+      type: DataTypes.STRING
     },
-    socket_io_id:DataTypes.STRING
+    lastName: {
+      type: DataTypes.STRING
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull:false
+    },
+    picturePath: {
+      type: DataTypes.STRING
+    },
+    gender: {
+      type: DataTypes.STRING,
+      validate:{
+        isIn:[ ['male' , 'female']]
+      }
+    },
+    birthday: {
+      type: DataTypes.DATE
+    },
+    country: {
+      type: DataTypes.STRING
+    },
+    socket_io_id: {
+      type: DataTypes.STRING
+    },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      defaultValue:DataTypes.NOW 
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      defaultValue:DataTypes.NOW
+    }
+  
   }, {
     sequelize,
     modelName: 'User',
