@@ -1,3 +1,5 @@
+const fs = require('fs').promises;
+const path=require('path');
 const configOptions=
 {
   development:{
@@ -29,5 +31,15 @@ const configOptions=
   },
 };
 
+const saveConfig=async()=>
+{
+  try {
+    const json=JSON.stringify(configOptions);    
+    await fs.writeFile(path.join(__dirname,'config.json'),json);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
+saveConfig();
 module.exports=configOptions;
