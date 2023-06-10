@@ -4,9 +4,8 @@ require('express-async-errors');
 const path=require('path');
 const express=require('express');
 const app=express();
-const {dbConnection}=require(path.join(__dirname,'config','dbConfig.js'));
 const corsOptions=require(path.join(__dirname,'config','corsOptions'));
-
+const db=require(path.join(__dirname,'models','index.js'));
 
 // built-in middlewares 
 const errorHandlerMiddleware = require(path.join(__dirname,'middlewares','error-handler'));
@@ -54,17 +53,14 @@ app.get('/',(req,res)=>
 app.use(notFound);
 app.use(errorHandlerMiddleware);
 
-
 // setting up the server and connecting to the database
 const PORT=process.env.SERVER_PORT||3500;
 
-dbConnection.sequelize.sync().then(()=>{
+db.sequelize.sync().then(()=>{
     console.log('Connnected to the dataBase');
-    
     app.listen(PORT,()=>console.log(`Server is running on port ${PORT} ... `));
 
 }).catch((error)=>{
     console.log(error);
-    exit(0) ;
 });
 
