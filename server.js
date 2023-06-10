@@ -21,7 +21,8 @@ const xss = require('xss-clean');
 const rateLimiter = require('express-rate-limit');
 
 
-
+// import mainRouter
+const mainRouter=require(path.join(__dirname,'routes'));
 
 
 // using middlewares and actual routes
@@ -41,13 +42,8 @@ app.use(xss());
 app.use(logger);
 app.use(credentials);
 
-app.get('/',(req,res)=>
-{
-    res.send('<h1>server is up</h1>');
-})
 
-
-
+app.use('/',mainRouter);
 
 
 app.use(notFound);
