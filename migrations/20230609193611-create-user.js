@@ -33,10 +33,6 @@ module.exports = {
       lastName: {
         type: Sequelize.STRING
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull:false
-      },
       picturePath: {
         type: Sequelize.STRING
       },

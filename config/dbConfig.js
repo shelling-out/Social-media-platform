@@ -1,25 +1,33 @@
-const {Sequelize} = require('sequelize');
+const configOptions=
+{
+  development:{
+    username: process.env.DATABASE_USERNAME,
+    password: process.env.DATABASE_PASSWORD,
+    port: process.env.DATABASE_PORT,
+    database: process.env.DATABASE_NAME,
+    host: process.env.DATABASE_HOST,
+    dialect: process.env.DATABASE_DIALECT,
+    logging:false,
+  },
+  test:{
+    username: process.env.DATABASE_USERNAME,
+    password: process.env.DATABASE_PASSWORD,
+    port: process.env.DATABASE_PORT,
+    database: process.env.DATABASE_NAME,
+    host: process.env.DATABASE_HOST,
+    dialect: process.env.DATABASE_DIALECT,
+    logging:false,
+  },
+  production: {
+    username: process.env.DATABASE_USERNAME,
+    password: process.env.DATABASE_PASSWORD,
+    port: process.env.DATABASE_PORT,
+    database: process.env.DATABASE_NAME,
+    host: process.env.DATABASE_HOST,
+    dialect: process.env.DATABASE_DIALECT,
+    logging:false,
+  },
+};
 
 
-const sequelize = new Sequelize({
-    database:process.env.DATABASE_NAME,
-    username:process.env.DATABASE_USERNAME,
-    password:process.env.DATABASE_PASSWORD,
-    port:process.env.DATABASE_PORT,
-    host:process.env.DATABASE_HOST,
-    dialect:process.env.DATABASE_DIALECT,
-    pool:
-    {
-        max:+process.env.DATABASE_POOL_MAX,
-        min:+process.env.DATABASE_POOL_MIN,
-        acquire:+process.env.DATABASE_POOL_AQUIRE,
-        idle:+process.env.DATABASE_POOL_IDLE,
-    }
-});
-
-
-const dbConnection={};
-dbConnection.Sequelize = Sequelize;
-dbConnection.sequelize = sequelize;
-
-module.exports = {dbConnection};
+module.exports=configOptions;
