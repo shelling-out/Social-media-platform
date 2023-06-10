@@ -11,11 +11,25 @@ module.exports = {
       },
       username: {
         type: Sequelize.STRING,
-        allowNull:false
+        allowNull:false,
+        validate: {
+          notNull: {
+            msg: 'Please enter your username'
+          },
+          customValidator(username) {
+            if (username === "") {
+              throw new Error("name can't be empty Please enter your username");
+            }
+          },
+        }
       },
       email: {
         type: Sequelize.STRING,
         allowNull:false,
+        unique: {
+          args: true,
+          msg: 'Email address already in use!'
+        },
         validate:{
           isEmail:true
         }
@@ -23,9 +37,6 @@ module.exports = {
       password: {
         type: Sequelize.STRING,
         allowNull:false,
-        validate:{
-          min:8
-        }
       },
       firstName: {
         type: Sequelize.STRING
