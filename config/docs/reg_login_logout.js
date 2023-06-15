@@ -45,9 +45,19 @@ const register={
                     schema:{
                         type:"Object",
                         example:{
-                            "msg1": "Error:  name can't be empty Please enter your username",
-                            "msg2": "SequelizeUniqueConstraintError: Email address already in use!",
-                            "msg3":"Error: password must have 8 chars at least and 20 chars at most"
+                            "username": [
+                                "The username field is required."
+                              ],
+                              "email": [
+                                "The email field is required.",
+                                "Email is already in use !", 
+                                "The email format is invalid."
+                              ],
+                              "password": [
+                                "The password field is required.",
+                                "The password must be at least 8 characters.",
+                                "The password may not be greater than 20 characters."
+                            ]
                         }
                     }
                 }
@@ -99,6 +109,25 @@ const login={
                 }
             }
         },
+        400:{
+            description:"bad request",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                              "email": [
+                                "The email field is required.",
+                                "The email format is invalid."
+                              ],
+                              "password": [
+                                "The password field is required.",
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         401:{
             description:"Unauthorized",
             content:{
@@ -106,7 +135,12 @@ const login={
                     schema:{
                         type:"Object",
                         example:{
-                            "msg": "Invalid Credentials"
+                            "email": [
+                                "Invalid Credentials no such email"
+                            ],
+                            "password": [
+                                "Invalid Credentials Wrong Password"
+                            ]
                         }
                     }
                 }
