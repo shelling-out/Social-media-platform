@@ -2,6 +2,7 @@ const path=require('path');
 const { StatusCodes } = require('http-status-codes')
 const jwt = require('jsonwebtoken');
 const {User}=require(path.join(__dirname,'..','models'));
+const bcrypt = require('bcryptjs');
 
 const register=async (req,res)=>
 {
