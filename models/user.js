@@ -67,6 +67,9 @@ module.exports = (sequelize, DataTypes) => {
     socket_io_id: {
       type: DataTypes.STRING
     },
+    refreshToken: {
+      type: DataTypes.STRING
+    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE,

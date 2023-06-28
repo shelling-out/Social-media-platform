@@ -62,6 +62,9 @@ module.exports = {
       socket_io_id: {
         type: Sequelize.STRING
       },
+      refreshToken: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

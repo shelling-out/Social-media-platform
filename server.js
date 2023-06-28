@@ -7,6 +7,7 @@ const app=express();
 const corsOptions=require(path.join(__dirname,'config','corsOptions'));
 const db=require(path.join(__dirname,'models','index.js'));
 
+
 // built-in middlewares 
 const errorHandlerMiddleware = require(path.join(__dirname,'middlewares','error-handler'));
 const {logger}=require(path.join(__dirname,'middlewares','logEvents'));
