@@ -159,19 +159,22 @@ const logout={
         bearerAuth: []
     }],
     responses:{
-        200:{
-            description:"OK",
+        204:{
+            description:"No content",
+        },
+        401:{
+            description:"Unauthorized",
             content:{
                 "application/json":{
                     schema:{
                         type:"Object",
                         example:{
-                            "msg": "logout sucessfully !"
+                            "msg": "Authentication invalid"
                         }
                     }
                 }
             }
-        },
+        }
     }
 }
 

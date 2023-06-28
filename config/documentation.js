@@ -1,5 +1,9 @@
 const path=require('path');
 const reg_login_logout=require(path.join(__dirname,'docs','reg_login_logout'));
+const user=require(path.join(__dirname,'docs','user'));
+
+
+  
 
 const swaggerDocument=
 {
@@ -21,7 +25,13 @@ const swaggerDocument=
         },
         "/api/auth/login":{
             post:reg_login_logout.login
-        },        
+        },
+        "/api/auth/logout":{
+            get:reg_login_logout.logout
+        },
+        "/api/user/profile/{id}":{
+            get:user.getOneUserProfile
+        }    
     }
 }
 

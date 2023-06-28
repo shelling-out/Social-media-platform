@@ -1,8 +1,8 @@
 const path=require('path');
-const { StatusCodes } = require('http-status-codes')
 const jwt = require('jsonwebtoken');
-const {User}=require(path.join(__dirname,'..','models'));
 const bcrypt = require('bcryptjs');
+const { StatusCodes } = require('http-status-codes')
+const {User}=require(path.join(__dirname,'..','models'));
 
 const register=async (req,res)=>
 {
@@ -17,17 +17,30 @@ const login=async (req,res)=>
 {
     const {email} = req.body;
     const user=await User.findOne({where:{email:email}});
-    const token=jwt.sign(
+    const accessToken=jwt.sign(
         { id: user.id, username: user.username },
-        process.env.JWT_SECRET,
+        process.env.ACCESS_TOKEN_SECRET,
         {
-          expiresIn: process.env.JWT_LIFETIME,
+          expiresIn: process.env.ACCESS_TOKEN_JWT_LIFETIME,
         }
     );
-    res.status(StatusCodes.OK).json({ user: {id:user.id ,username: user.username } , token });
+    let refreshToken=jwt.sign(
+        {id:user.id,username:user.username},
+        process.env.REFRESH_TOKEN_SECRET,
+        { 
+            expiresIn:process.env.REFRESH_TOKEN_JWT_LIFETIME,
+        }
+    );
+    refreshToken=accessToken;
+    const result=await User.update({refreshToken:refreshToken},{where:{id:user.id}});
+    res.status(StatusCodes.OK).json({ user: {id:user.id ,username: user.username } , token:accessToken });
 }
 
+const logout=async(req,res)=>
+{
+    const result=await User.update({refreshToken:null},{where:{id:req.user.id}});
+    res.sendStatus(StatusCodes.NO_CONTENT);
+}
 
-
-const authController={register,login};
+const authController={register,login,logout};
 module.exports=authController;

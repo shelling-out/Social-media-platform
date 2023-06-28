@@ -31,7 +31,7 @@ const register=async (req,res,next)=>
     }
     return res.status(StatusCodes.BAD_REQUEST).json(validation.errors.errors);
 }
-const login = async (req , res , next )=>{
+const login = async (req,res,next )=>{
     const validationRule = {
         "email":"required|email",
         "password":"required",
