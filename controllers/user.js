@@ -10,10 +10,20 @@ const getUser=async(req,res)=>
     res.status(StatusCodes.OK).json(user);
 };
 
+const updateUser=async(req,res)=>
+{
+    res.sendStatus(200);
+};
 
+const deleteUser=async(req,res)=>
+{
+    res.sendStatus(200);
+};
 
 
 const userController={
     getUser,
+    updateUser,
+    deleteUser,
 };
 module.exports=userController;
