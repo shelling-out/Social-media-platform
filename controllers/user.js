@@ -32,7 +32,20 @@ const updateUser=async(req,res)=>
 
 const deleteUser=async(req,res)=>
 {
-    res.sendStatus(200);
+    let userId=req.params.id;
+    // delete posts 
+    
+    // delete comments
+    
+    // delete reactions 
+
+    // delete groups posts inside comments reactions 
+
+    // delete friends and messages
+
+    // delete profile
+    const result=await User.destroy({ where: { id: userId }});
+    res.status(StatusCodes.OK).json({msg:"account has been deleted"});
 };
 
 

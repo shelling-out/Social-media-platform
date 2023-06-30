@@ -207,11 +207,90 @@ const updateProfileById={
         }
     }
 }
-
+const deleteUserById={
+    tags:["Users"],
+    description:`delete the user</br >
+    you must be authorized </br>
+    <h3> Note : send token in bearer </h3>
+    `,
+    security: [{
+        bearerAuth: []
+    }],
+    parameters:[
+        {
+          "name": "id",
+          "in": "query",
+          "type": "integer",
+          "required": true
+        }
+    ],
+    responses:{
+        200:{
+            description:"OK",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "account has been deleted",
+                            "user":[
+                                "User not found"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        401:{
+            description:"Unauthorized",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "Authentication invalid"
+                        }
+                    }
+                }
+            }
+        },
+        403:{
+            description:"Forbidden",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "You can only modify your account"
+                        }
+                    }
+                }
+            }
+        },
+        400:{
+            description:"bad request",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:[
+                            {
+                                "id": [
+                                    "The id must be a number."
+                                ]
+                            }, 
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}
 
 const user={
     getOneUserProfile,
-    updateProfileById
+    updateProfileById,
+    deleteUserById
 }
 
 
