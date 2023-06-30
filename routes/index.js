@@ -23,9 +23,10 @@ const options = {
         ]
     }
 };
+
+
 const authRouter=require(path.join(__dirname,'authentication.js'));
 const userRouter=require(path.join(__dirname,'user.js'));
-
 
 const authenticated=require(path.join(__dirname,'..','middlewares','authentication.js'));
 

@@ -12,7 +12,22 @@ const getUser=async(req,res)=>
 
 const updateUser=async(req,res)=>
 {
-    res.sendStatus(200);
+    let patchUpdate={};
+    if(req.body.data)
+    {
+        const { id,email,picturePath,createdAt,updatedAt,refreshToken,socket_io_id, ...data } = JSON.parse(req.body.data);
+        patchUpdate=data;
+    }
+    if(req.file){
+        patchUpdate.picturePath=req.file.filename;
+    }
+    if(patchUpdate.password){
+        const salt = await bcrypt.genSalt(10);
+        patchUpdate.password = await bcrypt.hash(patchUpdate.password, salt);
+        patchUpdate.refreshToken="reloginRequired";
+    }
+    const result = await User.update(patchUpdate, {where: {id:req.params.id}});
+    res.status(StatusCodes.OK).json({msg:"updated successfully"});
 };
 
 const deleteUser=async(req,res)=>

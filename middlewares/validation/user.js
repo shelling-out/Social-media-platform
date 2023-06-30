@@ -34,7 +34,32 @@ const checkIdUserExestence=async (req,res,next)=>
     }
     return res.status(statusCode).json(validation.errors.errors);
 }
+const updateProfileOfUser=async(req,res,next)=>
+{
+    let patchUpdate={};
+    if(req.body.data)
+    {
+        const { id,email,picturePath,createdAt,updatedAt,refreshToken,socket_io_id, ...data } = JSON.parse(req.body.data);
+        patchUpdate=data;
+    }
+    const expectedValues=["male","female"];
+    const validationRule={
+        username:'string',
+        firstName:'string',
+        lastName:'string',
+        country:'string',
+        password: "string|min:8|max:20",
+        gender:`string|in:${expectedValues.join(',')}`,
+        birthday:'date',
+    };
+    let validation=new Validator(patchUpdate,validationRule);
+    if(validation.passes()){
+        return next();
+    }
+    return res.status(StatusCodes.BAD_REQUEST).json(validation.errors.errors);
+}
 const userValidation={
     checkIdUserExestence,
+    updateProfileOfUser
 }
 module.exports = userValidation;
