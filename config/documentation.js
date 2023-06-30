@@ -30,8 +30,9 @@ const swaggerDocument=
             get:reg_login_logout.logout
         },
         "/api/user/profile/{id}":{
-            get:user.getOneUserProfile
-        }    
+            get:user.getOneUserProfile,
+            patch:user.updateProfileById
+        },
     }
 }
 
