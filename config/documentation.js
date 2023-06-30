@@ -31,7 +31,8 @@ const swaggerDocument=
         },
         "/api/user/profile/{id}":{
             get:user.getOneUserProfile,
-            patch:user.updateProfileById
+            patch:user.updateProfileById,
+            delete:user.deleteUserById
         },
     }
 }
