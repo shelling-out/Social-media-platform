@@ -27,6 +27,9 @@ const options = {
 
 const authRouter=require(path.join(__dirname,'authentication.js'));
 const userRouter=require(path.join(__dirname,'user.js'));
+const postRouter=require(path.join(__dirname,'post.js'));
+
+
 
 const authenticated=require(path.join(__dirname,'..','middlewares','authentication.js'));
 
@@ -38,6 +41,7 @@ router.get('/', (req, res) =>{
 router.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument,options));
 router.use('/api/auth',authRouter);
 router.use('/api/user',authenticated,userRouter);
+router.use('/api/post',postRouter);
 
 
 module.exports=router;
