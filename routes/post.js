@@ -9,5 +9,5 @@ const uploadImage=require(path.join(__dirname,'..','middlewares','uploadImage'))
 
 router.post('/create',uploadImage,postController.createPost);
 router.patch('/edit/:id',postValidation.checkIdPostExestence,postOwnerShip,uploadImage,postController.editPost);
-
+router.delete('/delete/:id',postValidation.checkIdPostExestence,postOwnerShip,postController.deletePost);
 module.exports = router;

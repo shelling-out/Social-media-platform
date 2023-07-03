@@ -39,8 +39,22 @@ const editPost=async(req,res)=>
     const data=await Post.findOne({ where: { id: req.params.id },attributes:{exclude:['UserId']}});
     res.status(StatusCodes.OK).json(data.dataValues);
 };
+
+const deletePost=async(req,res)=>
+{
+    let postId=req.params.id;
+    // delete comments
+    
+    // delete reactions 
+
+    // delete post
+    const result=await Post.destroy({ where: { id: postId }});
+    res.status(StatusCodes.OK).json({msg:"post has been deleted"});
+}
+
 const postController={
     createPost,
-    editPost
+    editPost,
+    deletePost
 };
 module.exports=postController;

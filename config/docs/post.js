@@ -140,8 +140,88 @@ const editPost={
                             "updatedAt": "2023-07-03T09:32:57.000Z",
                             "userId": 1,
 
-                            "user":[
-                                "User not found"
+                            "post": [
+                                "post not found"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        401:{
+            description:"Unauthorized",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "Authentication invalid"
+                        }
+                    }
+                }
+            }
+        },
+        403:{
+            description:"Forbidden",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "You can only modify your posts"
+                        }
+                    }
+                }
+            }
+        },
+        400:{
+            description:"bad request",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:[
+                            {
+                                "id": [
+                                    "The id must be a number."
+                                ]
+                            }, 
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}
+
+const deletePost={
+    tags:["Posts"],
+    description:`delete the post by id</br >
+    you must be authorized </br>
+    <h3> Note : send token in bearer </h3>
+    `,
+    security: [{
+        bearerAuth: []
+    }],
+    parameters:[
+        {
+          "name": "id",
+          "in": "query",
+          "type": "integer",
+          "required": true
+        }
+    ],
+    responses:{
+        200:{
+            description:"OK",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "post has been deleted",
+                            "post":[
+                                "post not found"
                             ]
                         }
                     }
@@ -195,10 +275,10 @@ const editPost={
 }
 
 
-
 const post={
     createPost,
-    editPost
+    editPost,
+    deletePost
 }
 
 
