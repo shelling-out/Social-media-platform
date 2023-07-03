@@ -1,7 +1,7 @@
 const path=require('path');
 const reg_login_logout=require(path.join(__dirname,'docs','reg_login_logout'));
 const user=require(path.join(__dirname,'docs','user'));
-
+const post=require(path.join(__dirname,'docs','post'));
 
   
 
@@ -33,6 +33,9 @@ const swaggerDocument=
             get:user.getOneUserProfile,
             patch:user.updateProfileById,
             delete:user.deleteUserById
+        },
+        "/api/post/create":{
+            post:post.createPost
         },
     }
 }
