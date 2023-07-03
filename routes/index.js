@@ -41,7 +41,7 @@ router.get('/', (req, res) =>{
 router.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument,options));
 router.use('/api/auth',authRouter);
 router.use('/api/user',authenticated,userRouter);
-router.use('/api/post',postRouter);
+router.use('/api/post',authenticated,postRouter);
 
 
 module.exports=router;

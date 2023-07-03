@@ -8,7 +8,7 @@ const accountOwnerShip=async(req,res,next)=>
     let requestedId=req.params.id;
     if(Number(authenticatedId)!==Number(requestedId))
         throw new unauthorized('You can only modify your account');
-    next();
+    return next();
 };
 
 module.exports=accountOwnerShip;
