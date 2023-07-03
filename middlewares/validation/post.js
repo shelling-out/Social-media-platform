@@ -26,8 +26,8 @@ const checkIdPostExestence=async (req,res,next)=>
     {
         if(validation.errors.errors.id===undefined)
         {
-            validation.errors.errors.user=[];
-            validation.errors.errors.user.push("post not found");
+            validation.errors.errors.post=[];
+            validation.errors.errors.post.push("post not found");
             statusCode=StatusCodes.OK;
         }
     }

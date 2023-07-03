@@ -40,6 +40,9 @@ const swaggerDocument=
         "/api/post/edit/{id}":{
             patch:post.editPost,
         },
+        "/api/post/delete/{id}":{
+            delete:post.deletePost
+        }
     }
 }
 
