@@ -37,6 +37,9 @@ const swaggerDocument=
         "/api/post/create":{
             post:post.createPost
         },
+        "/api/post/edit/{id}":{
+            patch:post.editPost,
+        },
     }
 }
 

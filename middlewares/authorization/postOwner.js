@@ -6,9 +6,10 @@ const postOwnerShip=async(req,res,next)=>
 {
     let authenticatedId=req.user.id;
     let postId=req.params.id;
-    let postOwnerId=req.params.id;
-    if(Number(authenticatedId)!==Number(postId))
-        throw new unauthorized('You can only modify your post');
+    let postOwnerId=await Post.findOne({where:{id:postId}});
+    postOwnerId=postOwnerId.dataValues.userId;
+    if(Number(authenticatedId)!==Number(postOwnerId))
+        throw new unauthorized('You can only modify your posts');
     return next();
 };
 

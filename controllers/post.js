@@ -24,8 +24,23 @@ const createPost=async(req,res)=>
     res.status(StatusCodes.CREATED).json(post.dataValues);
 };
 
-
+const editPost=async(req,res)=>
+{
+    let patchUpdate={};
+    if(req.body.data)
+    {
+        const {text}= JSON.parse(req.body.data);
+        patchUpdate.text=text;
+    }
+    if(req.file){
+        patchUpdate.picture=req.file.filename;
+    }
+    await Post.update(patchUpdate, {where: {id:req.params.id}});
+    const data=await Post.findOne({ where: { id: req.params.id },attributes:{exclude:['UserId']}});
+    res.status(StatusCodes.OK).json(data.dataValues);
+};
 const postController={
     createPost,
+    editPost
 };
 module.exports=postController;
