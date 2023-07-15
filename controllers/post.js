@@ -1,6 +1,6 @@
 const path=require('path');
 const { StatusCodes } = require('http-status-codes')
-const {Post}=require(path.join(__dirname,'..','models'));
+const {User,Post}=require(path.join(__dirname,'..','models'));
 
 
 const createPost=async(req,res)=>
@@ -50,11 +50,47 @@ const deletePost=async(req,res)=>
     // delete post
     const result=await Post.destroy({ where: { id: postId }});
     res.status(StatusCodes.OK).json({msg:"post has been deleted"});
-}
+};
+
+const getPostById=async(req,res)=>
+{
+    const post=await Post.findOne({
+        include:{
+            model: User,
+            attributes: ['username', 'picturePath']
+        },
+        where:{
+            id:req.params.id
+        },
+        attributes:{
+            exclude:['UserId']
+        }
+    });
+    res.status(StatusCodes.OK).json(post);
+};
+
+const getAllPosts=async(req,res)=>
+{
+    const posts=await Post.findAll({
+        include:{
+            model: User,
+            attributes: ['username', 'picturePath']
+        },
+        where:{
+            userId:req.params.id
+        },
+        attributes:{
+            exclude:['UserId']
+        }
+    });
+    res.status(StatusCodes.OK).json(posts);
+};
 
 const postController={
     createPost,
     editPost,
-    deletePost
+    deletePost,
+    getPostById,
+    getAllPosts
 };
 module.exports=postController;

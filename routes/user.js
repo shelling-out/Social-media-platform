@@ -6,6 +6,8 @@ const {userValidation}=require(path.join(__dirname,'..','middlewares','validatio
 const accountOwnerShip=require(path.join(__dirname,'..','middlewares','authorization','accountOwner'));
 const uploadImage=require(path.join(__dirname,'..','middlewares','uploadImage'));
 
+
+
 router.get('/profile/:id',userValidation.checkIdUserExestence,userController.getUser);
 router.patch('/profile/:id',userValidation.checkIdUserExestence,accountOwnerShip,uploadImage,userValidation.updateProfileOfUser,userController.updateUser);
 router.delete('/profile/:id',userValidation.checkIdUserExestence,accountOwnerShip,userController.deleteUser);

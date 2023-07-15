@@ -274,11 +274,220 @@ const deletePost={
     }
 }
 
+const getPostById={
+    tags:["Posts"],
+    description:`get One post By Id of the post</br >
+    you must be authorized </br>
+    <h3> Note : send token in bearer </h3>
+    `,
+    security: [{
+        bearerAuth: []
+    }],
+    parameters:[
+        {
+          "name": "id",
+          "in": "query",
+          "type": "integer",
+          "required": true
+        }
+    ],
+    responses:{
+        200:{
+            description:"OK",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "id": 3,
+                            "text": "text for post",
+                            "picture": "image-1689450513699.PNG",
+                            "createdAt": "2023-07-15T19:48:33.000Z",
+                            "updatedAt": "2023-07-15T19:48:33.000Z",
+                            "userId": 2,
+                            "User": {
+                                "username": "potatoUser",
+                                "picturePath": "image-1689451274989.PNG"
+                            },
+                            "post":[
+                                "post not found"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        401:{
+            description:"Unauthorized",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "Authentication invalid"
+                        }
+                    }
+                }
+            }
+        },
+        403:{
+            description:"Forbidden",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "You can only see your posts or your friends posts or your groups posts"
+                        }
+                    }
+                }
+            }
+        },
+        400:{
+            description:"bad request",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:[
+                            {
+                                "id": [
+                                    "The id must be a number."
+                                ]
+                            }, 
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+const getAllPostsById={
+    tags:["Posts"],
+    description:`get all posts for a user with the id of user</br >
+    you must be authorized </br>
+    <h3> Note : send token in bearer </h3>
+    `,
+    security: [{
+        bearerAuth: []
+    }],
+    parameters:[
+        {
+          "name": "id",
+          "in": "query",
+          "type": "integer",
+          "required": true
+        }
+    ],
+    responses:{
+        200:{
+            description:"OK",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "posts":[
+                                {
+                                  "id": 5,
+                                  "text": "text for post",
+                                  "picture": "image-1689451671393.PNG",
+                                  "createdAt": "2023-07-15T20:07:51.000Z",
+                                  "updatedAt": "2023-07-15T20:07:51.000Z",
+                                  "userId": 2,
+                                  "User": {
+                                    "username": "potatUser",
+                                    "picturePath": "image-1689452246808.PNG"
+                                  }
+                                },
+                                {
+                                  "id": 6,
+                                  "text": "text for post",
+                                  "picture": "image-1689451673321.PNG",
+                                  "createdAt": "2023-07-15T20:07:53.000Z",
+                                  "updatedAt": "2023-07-15T20:07:53.000Z",
+                                  "userId": 2,
+                                  "User": {
+                                    "username": "potatUser",
+                                    "picturePath": "image-1689452246808.PNG"
+                                  }
+                                },
+                                {
+                                  "id": 7,
+                                  "text": "updated text for post",
+                                  "picture": "image-1689451740576.PNG",
+                                  "createdAt": "2023-07-15T20:08:25.000Z",
+                                  "updatedAt": "2023-07-15T20:09:00.000Z",
+                                  "userId": 2,
+                                  "User": {
+                                    "username": "potatUser",
+                                    "picturePath": "image-1689452246808.PNG"
+                                  }
+                                }
+                            ],
+                            "post":[
+                                "post not found"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        401:{
+            description:"Unauthorized",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "Authentication invalid"
+                        }
+                    }
+                }
+            }
+        },
+        403:{
+            description:"Forbidden",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "You can only see your posts or your friends posts or your groups posts"
+                        }
+                    }
+                }
+            }
+        },
+        400:{
+            description:"bad request",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:[
+                            {
+                                "id": [
+                                    "The id must be a number."
+                                ]
+                            }, 
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}
 
 const post={
     createPost,
     editPost,
-    deletePost
+    deletePost,
+    getPostById,
+    getAllPostsById,
 }
 
 

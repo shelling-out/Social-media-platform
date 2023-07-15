@@ -42,6 +42,12 @@ const swaggerDocument=
         },
         "/api/post/delete/{id}":{
             delete:post.deletePost
+        },
+        "/api/post/{id}":{
+            get:post.getPostById
+        },
+        "/api/post/all/{id}":{
+            get:post.getAllPostsById
         }
     }
 }
