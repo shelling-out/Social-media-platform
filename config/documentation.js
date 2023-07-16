@@ -2,7 +2,7 @@ const path=require('path');
 const reg_login_logout=require(path.join(__dirname,'docs','reg_login_logout'));
 const user=require(path.join(__dirname,'docs','user'));
 const post=require(path.join(__dirname,'docs','post'));
-
+const comment=require(path.join(__dirname,'docs','comment'));
   
 
 const swaggerDocument=
@@ -48,6 +48,15 @@ const swaggerDocument=
         },
         "/api/post/all/{id}":{
             get:post.getAllPostsById
+        },
+        "/api/comment/add/{id}":{
+            post:comment.createComment
+        },
+        "/api/comment/edit/{id}":{
+            patch:comment.editComment
+        },
+        "/api/comment/delete/{id}":{
+            delete:comment.deleteComment
         }
     }
 }
