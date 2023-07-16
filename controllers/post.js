@@ -54,6 +54,7 @@ const deletePost=async(req,res)=>
 
 const getPostById=async(req,res)=>
 {
+    // get comments with the post
     const post=await Post.findOne({
         include:{
             model: User,
@@ -71,6 +72,7 @@ const getPostById=async(req,res)=>
 
 const getAllPosts=async(req,res)=>
 {
+    // get comments with the post
     const posts=await Post.findAll({
         include:{
             model: User,
