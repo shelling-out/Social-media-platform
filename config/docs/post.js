@@ -299,15 +299,43 @@ const getPostById={
                     schema:{
                         type:"Object",
                         example:{
-                            "id": 3,
-                            "text": "text for post",
-                            "picture": "image-1689450513699.PNG",
-                            "createdAt": "2023-07-15T19:48:33.000Z",
-                            "updatedAt": "2023-07-15T19:48:33.000Z",
-                            "userId": 2,
-                            "User": {
-                                "username": "potatoUser",
-                                "picturePath": "image-1689451274989.PNG"
+                            "onePost":{
+                                "id": 9,
+                                "text": "text for post",
+                                "picture": "image-1689503185885.PNG",
+                                "createdAt": "2023-07-16T10:26:25.000Z",
+                                "updatedAt": "2023-07-16T10:26:25.000Z",
+                                "userId": 1,
+                                "User": {
+                                  "username": "potatoCodeforces",
+                                  "picturePath": null
+                                },
+                                "Comments": [
+                                  {
+                                    "id": 7,
+                                    "text": null,
+                                    "createdAt": "2023-07-16T10:52:24.000Z",
+                                    "updatedAt": "2023-07-16T10:52:24.000Z",
+                                    "userId": 4,
+                                    "postId": 9,
+                                    "User": {
+                                      "username": "potatoCodeforces",
+                                      "picturePath": null
+                                    }
+                                  },
+                                  {
+                                    "id": 16,
+                                    "text": "comment text",
+                                    "createdAt": "2023-07-18T08:24:37.000Z",
+                                    "updatedAt": "2023-07-18T08:24:37.000Z",
+                                    "userId": 5,
+                                    "postId": 9,
+                                    "User": {
+                                      "username": "secondUser",
+                                      "picturePath": null
+                                    }
+                                  },
+                                ]
                             },
                             "post":[
                                 "post not found"
@@ -390,46 +418,74 @@ const getAllPostsById={
                     schema:{
                         type:"Object",
                         example:{
-                            "posts":[
+                            "list of posts":[
                                 {
-                                  "id": 5,
+                                  "id": 9,
                                   "text": "text for post",
-                                  "picture": "image-1689451671393.PNG",
-                                  "createdAt": "2023-07-15T20:07:51.000Z",
-                                  "updatedAt": "2023-07-15T20:07:51.000Z",
-                                  "userId": 2,
+                                  "picture": "image-1689503185885.PNG",
+                                  "createdAt": "2023-07-16T10:26:25.000Z",
+                                  "updatedAt": "2023-07-16T10:26:25.000Z",
+                                  "userId": 1,
                                   "User": {
-                                    "username": "potatUser",
-                                    "picturePath": "image-1689452246808.PNG"
-                                  }
+                                    "username": "potatoCodeforces",
+                                    "picturePath": null
+                                  },
+                                  "Comments": [
+                                    {
+                                      "id": 7,
+                                      "text": null,
+                                      "createdAt": "2023-07-16T10:52:24.000Z",
+                                      "updatedAt": "2023-07-16T10:52:24.000Z",
+                                      "userId": 4,
+                                      "postId": 9,
+                                      "User": {
+                                        "username": "potatoCodeforces",
+                                        "picturePath": null
+                                      }
+                                    },
+                                    {
+                                      "id": 16,
+                                      "text": "comment text",
+                                      "createdAt": "2023-07-18T08:24:37.000Z",
+                                      "updatedAt": "2023-07-18T08:24:37.000Z",
+                                      "userId": 5,
+                                      "postId": 9,
+                                      "User": {
+                                        "username": "secondUser",
+                                        "picturePath": null
+                                      }
+                                    },
+                                  ]
                                 },
                                 {
-                                  "id": 6,
+                                  "id": 10,
                                   "text": "text for post",
-                                  "picture": "image-1689451673321.PNG",
-                                  "createdAt": "2023-07-15T20:07:53.000Z",
-                                  "updatedAt": "2023-07-15T20:07:53.000Z",
-                                  "userId": 2,
+                                  "picture": "image-1689668506519.PNG",
+                                  "createdAt": "2023-07-18T08:21:46.000Z",
+                                  "updatedAt": "2023-07-18T08:21:46.000Z",
+                                  "userId": 1,
                                   "User": {
-                                    "username": "potatUser",
-                                    "picturePath": "image-1689452246808.PNG"
-                                  }
-                                },
-                                {
-                                  "id": 7,
-                                  "text": "updated text for post",
-                                  "picture": "image-1689451740576.PNG",
-                                  "createdAt": "2023-07-15T20:08:25.000Z",
-                                  "updatedAt": "2023-07-15T20:09:00.000Z",
-                                  "userId": 2,
-                                  "User": {
-                                    "username": "potatUser",
-                                    "picturePath": "image-1689452246808.PNG"
-                                  }
+                                    "username": "potatoCodeforces",
+                                    "picturePath": null
+                                  },
+                                  "Comments": [
+                                    {
+                                      "id": 15,
+                                      "text": "comment text",
+                                      "createdAt": "2023-07-18T08:21:56.000Z",
+                                      "updatedAt": "2023-07-18T08:21:56.000Z",
+                                      "userId": 1,
+                                      "postId": 10,
+                                      "User": {
+                                        "username": "potatoCodeforces",
+                                        "picturePath": null
+                                      }
+                                    }
+                                  ]
                                 }
                             ],
-                            "post":[
-                                "post not found"
+                            "user": [
+                                "User not found"
                             ]
                         }
                     }

@@ -57,6 +57,12 @@ const swaggerDocument=
         },
         "/api/comment/delete/{id}":{
             delete:comment.deleteComment
+        },
+        "/api/comment/{id}":{
+            get:comment.getCommentById
+        },
+        "/api/comment/all/{id}":{
+            get:comment.getAllCommentsById
         }
     }
 }
