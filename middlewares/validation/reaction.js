@@ -59,13 +59,11 @@ const reactOnceOnly=async(req,res,next)=>
     });
     if(!found)
         return next();
-    let data={};
-    const validationRule={};
-    let validation=new Validator(data,validationRule);
+    let validation={};
     let statusCode=StatusCodes.CONFLICT;
-    validation.attributeFormatter.errors.errors.reaction=[];
-    validation.errors.errors.reaction.push("you have already reacted to this post");
-    return res.status(statusCode).json(validation.errors.errors);
+    validation.reaction=[];
+    validation.reaction.push("you have already reacted to this post");
+    return res.status(statusCode).json(validation);
 }
 
 const userValidation={
