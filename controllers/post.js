@@ -1,6 +1,6 @@
 const path=require('path');
 const { StatusCodes } = require('http-status-codes')
-const {User,Post}=require(path.join(__dirname,'..','models'));
+const {User,Post,Comment}=require(path.join(__dirname,'..','models'));
 
 
 const createPost=async(req,res)=>
@@ -54,12 +54,24 @@ const deletePost=async(req,res)=>
 
 const getPostById=async(req,res)=>
 {
-    // get comments with the post
+    // get reactions with the post
     const post=await Post.findOne({
-        include:{
-            model: User,
-            attributes: ['username', 'picturePath']
-        },
+        include:[
+            {
+                model: User,
+                attributes: ['username', 'picturePath']    
+            },
+            {
+                model: Comment,
+                attributes:{
+                    exclude:['UserId','PostId']
+                },
+                include:{
+                    model: User,
+                    attributes:['username','picturePath']
+                }
+            }
+        ],
         where:{
             id:req.params.id
         },
@@ -72,12 +84,24 @@ const getPostById=async(req,res)=>
 
 const getAllPosts=async(req,res)=>
 {
-    // get comments with the post
+    // get reactions with the post
     const posts=await Post.findAll({
-        include:{
-            model: User,
-            attributes: ['username', 'picturePath']
-        },
+        include:[
+            {
+                model: User,
+                attributes: ['username', 'picturePath']    
+            },
+            {
+                model: Comment,
+                attributes:{
+                    exclude:['UserId','PostId']
+                },
+                include:{
+                    model: User,
+                    attributes:['username','picturePath']
+                }
+            }
+        ],
         where:{
             userId:req.params.id
         },

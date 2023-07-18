@@ -32,10 +32,46 @@ const deleteComment=async(req,res)=>
     res.status(StatusCodes.OK).json({msg:"comment has been deleted"});
 };
 
+const getCommentById=async(req,res)=>
+{
+    const comment=await Comment.findOne({
+        include:{
+            model: User,
+            attributes: ['username', 'picturePath']
+        },
+        where:{
+            id:req.params.id
+        },
+        attributes:{
+            exclude:['UserId','PostId']
+        }
+    });
+    res.status(StatusCodes.OK).json(comment);
+};
+
+const getAllComments=async(req,res)=>
+{
+    const comments=await Comment.findAll({
+        include:{
+            model: User,
+            attributes: ['username', 'picturePath']
+        },
+        where:{
+            userId:req.params.id
+        },
+        attributes:{
+            exclude:['UserId','PostId']
+        }
+    });
+    res.status(StatusCodes.OK).json(comments);
+};
+
 const commentController={
     createComment,
     editComment,
-    deleteComment
+    deleteComment,
+    getCommentById,
+    getAllComments
 };
 
 module.exports=commentController;

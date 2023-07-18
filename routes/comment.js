@@ -10,4 +10,8 @@ router.post('/add/:id',postValidation.checkIdPostExestence,commentController.cre
 router.patch('/edit/:id',commentValidation.checkIdCommentExestence,commentOwnerShip,commentController.editComment);
 router.delete('/delete/:id',commentValidation.checkIdCommentExestence,commentOwnerShip,commentController.deleteComment);
 
+// add authorization to get your comments or your friends comments
+router.get('/:id',commentValidation.checkIdCommentExestence,commentController.getCommentById);
+router.get('/all/:id',userValidation.checkIdUserExestence,commentController.getAllComments);
+
 module.exports=router;
