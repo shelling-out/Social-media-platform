@@ -3,7 +3,7 @@ const Validator=require('validatorjs');
 const { StatusCodes } = require('http-status-codes');
 const bcrypt = require('bcryptjs');
 const { BadRequestError, UnauthenticatedError } = require(path.join(__dirname,'..','..','errors'));
-const {Reaction}=require(path.join(__dirname,'..','..','models'));
+const {Post,Reaction}=require(path.join(__dirname,'..','..','models'));
 
 
 
@@ -34,6 +34,7 @@ const checkIdReactionExestence=async (req,res,next)=>
     }
     return res.status(statusCode).json(validation.errors.errors);
 }
+
 const reactionData=async(req,res,next)=>
 {
     let data=req.body;
@@ -47,8 +48,29 @@ const reactionData=async(req,res,next)=>
     }
     return res.status(StatusCodes.BAD_REQUEST).json(validation.errors.errors);
 }
+
+const reactOnceOnly=async(req,res,next)=>
+{
+    const found=await Reaction.findOne({
+        where:{
+            userId:req.user.id,
+            postId:req.params.id
+        }
+    });
+    if(!found)
+        return next();
+    let data={};
+    const validationRule={};
+    let validation=new Validator(data,validationRule);
+    let statusCode=StatusCodes.CONFLICT;
+    validation.attributeFormatter.errors.errors.reaction=[];
+    validation.errors.errors.reaction.push("you have already reacted to this post");
+    return res.status(statusCode).json(validation.errors.errors);
+}
+
 const userValidation={
     checkIdReactionExestence,
-    reactionData
+    reactionData,
+    reactOnceOnly
 }
 module.exports = userValidation;
