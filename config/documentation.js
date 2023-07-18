@@ -3,7 +3,7 @@ const reg_login_logout=require(path.join(__dirname,'docs','reg_login_logout'));
 const user=require(path.join(__dirname,'docs','user'));
 const post=require(path.join(__dirname,'docs','post'));
 const comment=require(path.join(__dirname,'docs','comment'));
-  
+const reaction=require(path.join(__dirname,'docs','reaction'));
 
 const swaggerDocument=
 {
@@ -63,6 +63,9 @@ const swaggerDocument=
         },
         "/api/comment/all/{id}":{
             get:comment.getAllCommentsById
+        },
+        "/api/reaction/add/{id}":{
+            post:reaction.createReaction
         }
     }
 }
