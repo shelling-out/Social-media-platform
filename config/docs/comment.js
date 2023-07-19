@@ -1,40 +1,49 @@
-const createPost={
-    tags:["Posts"],
-    description:`create post</br >
+const createComment={
+    tags:["Comments"],
+    description:`create comment for a post giving the post id</br >
     you must be authorized </br>
     <h3> Note 1: send token in bearer </h3>
-    <h3> Note 2: Don't send data as raw json you have to send it as form-data 
-    key value give the picture field name 'image' and the rest of the data 'data' it's optional to send (single image ,json data ,both single image and json data) </h3>
-    `,
+    <h3> Note 2: you can send data as raw json in body request </h3>`,
     security: [{
         bearerAuth: []
     }],
+    requestBody:{  
+        required:true,
+        content:{
+            "application/json":{
+                schema:{
+                    type:"Object",
+                    example:{
+                        "text":"comment text"
+                    }
+                }
+            }
+        },
+    },
     parameters:[
         {
-            in: 'formData',
-            name: 'data',
-            type: 'application/json',
-            description: 'JSON data to update make sure to give it the field name (data)',
+          "name": "id",
+          "in": "query",
+          "type": "integer",
+          "required": true
+        }
+    ],
+    responses:{
+        200:{
+            description:"OK",
             content:{
                 "application/json":{
                     schema:{
                         type:"Object",
                         example:{
-                            "text":"text for creating post"      
+                            "post": [
+                              "post not found"
+                            ]
                         }
                     }
                 }
             }
         },
-        {
-            in: 'formData',
-            name: 'image',
-            type: 'file',
-            description: 'Image to upload make sure to give it the field name (image)',
-            example: '{"image": "the picture you will upload"}',
-        },
-    ],
-    responses:{
         201:{
             description:"CREATED",
             content:{
@@ -42,107 +51,109 @@ const createPost={
                     schema:{
                         type:"Object",
                         example:{
-                            "createdAt": "2023-07-03T07:58:13.907Z",
-                            "updatedAt": "2023-07-03T07:58:13.925Z",
-                            "id": 8,
-                            "userId": 3,
-                            "text": "text for post",
-                            "picture": "image-1688371093888.PNG"
-                        }
-                    }
-                }
-            }
-        },
-        401:{
-            description:"Unauthorized",
-            content:{
-                "application/json":{
-                    schema:{
-                        type:"Object",
-                        example:{
-                            "msg": "Authentication invalid"
-                        }
-                    }
-                }
-            }
-        },
-        500:{
-            description:"Internal Server Error if you don't send data in form",
-            content:{
-                "application/json":{
-                    schema:{
-                        type:"Object",
-                        example:{
-                            "error": "Unexpected end of form"
-                        }
-                    }
-                }
-            }
-        },
-        
-    }
-}
-
-const editPost={
-    tags:["Posts"],
-    description:`update post</br >
-    you must be authorized </br>
-    <h3> Note 1: send token in bearer </h3>
-    <h3> Note 2: Don't send data as raw json you have to send it as form-data 
-    key value give the picture field name 'image' and the rest of the data 'data' it's optional to send (single image ,json data ,both single image and json data) </h3>
-    `,
-    security: [{
-        bearerAuth: []
-    }],
-    parameters:[
-        {
-          "name": "id",
-          "in": "query",
-          "type": "integer",
-          "required": true
-        },
-        {
-            in: 'formData',
-            name: 'data',
-            type: 'application/json',
-            description: 'JSON data to update make sure to give it the field name (data)',
-            content:{
-                "application/json":{
-                    schema:{
-                        type:"Object",
-                        example:{
-                            "text": "updated text for post"       
-                        }
-                    }
-                }
-            }
-        },
-        {
-            in: 'formData',
-            name: 'image',
-            type: 'file',
-            description: 'Image to update make sure to give it the field name (image)',
-            example: '{"image": "the picture you will upload"}',
-        },
-    ],
-    responses:{
-        200:{
-            description:"OK",
-            content:{
-                "application/json":{
-                    schema:{
-                        type:"Object",
-                        example:{
-                            "id": 1,
-                            "text": "updated text for post",
-                            "picture": "image-1688375694473.PNG",
-                            "createdAt": "2023-07-03T09:09:38.000Z",
-                            "updatedAt": "2023-07-03T09:32:57.000Z",
+                            "createdAt": "2023-07-16T11:22:38.912Z",
+                            "updatedAt": "2023-07-16T11:22:38.913Z",
+                            "id": 12,
                             "userId": 1,
+                            "postId": "9",
+                            "text": "comment text",
+                        }
+                    }
+                }
+            }
+        },
+        400:{
+            description:"bad request",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:[
+                            {
+                                "id": [
+                                    "The id must be a number."
+                                ]
+                            }, 
+                        ]
+                    }
+                }
+            }
+        },
+        401:{
+            description:"Unauthorized",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "Authentication invalid"
+                        }
+                    }
+                }
+            }
+        },
+        403:{
+            description:"Forbidden",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "You can only comment on your posts or your friends posts"
+                        }
+                    }
+                }
+            }
+        },
+    }
+}
 
-                            "post": [
-                                "post not found"
-                            ]
+const editComment={
+    tags:["Comments"],
+    description:`update comment by id</br >
+    you must be authorized </br>
+    <h3> Note 1: send token in bearer </h3>`,
+    security: [{
+        bearerAuth: []
+    }],
+    requestBody:{  
+        required:true,
+        content:{
+            "application/json":{
+                schema:{
+                    type:"Object",
+                    example:{
+                        "text":"updated text for a comment"
+                    }
+                }
+            }
+        },
+    },
+    parameters:[
+        {
+          "name": "id",
+          "in": "query",
+          "type": "integer",
+          "required": true
+        },
+    ],
+    responses:{
+        200:{
+            description:"OK",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "id": 14,
+                            "text": "updated text for a comment",
+                            "createdAt": "2023-07-16T11:34:44.000Z",
+                            "updatedAt": "2023-07-16T11:34:51.000Z",
+                            "userId": 1,
+                            "postId": 9,
+                            "comment": [
+                                "comment not found"
+                            ] 
                         }
                     }
                 }
@@ -168,7 +179,7 @@ const editPost={
                     schema:{
                         type:"Object",
                         example:{
-                            "msg": "You can only modify your posts"
+                            "msg": "You can only modify your comments"
                         }
                     }
                 }
@@ -194,12 +205,11 @@ const editPost={
     }
 }
 
-const deletePost={
-    tags:["Posts"],
-    description:`delete the post by id</br >
+const deleteComment={
+    tags:["Comments"],
+    description:`delete comment by id</br >
     you must be authorized </br>
-    <h3> Note : send token in bearer </h3>
-    `,
+    <h3> Note 1: send token in bearer </h3>`,
     security: [{
         bearerAuth: []
     }],
@@ -209,7 +219,7 @@ const deletePost={
           "in": "query",
           "type": "integer",
           "required": true
-        }
+        },
     ],
     responses:{
         200:{
@@ -219,10 +229,10 @@ const deletePost={
                     schema:{
                         type:"Object",
                         example:{
-                            "msg": "post has been deleted",
-                            "post":[
-                                "post not found"
-                            ]
+                            "msg": "comment has been deleted",
+                            "comment": [
+                                "comment not found"
+                            ] 
                         }
                     }
                 }
@@ -248,7 +258,7 @@ const deletePost={
                     schema:{
                         type:"Object",
                         example:{
-                            "msg": "You can only modify your posts"
+                            "msg": "You can only modify your comments"
                         }
                     }
                 }
@@ -274,9 +284,9 @@ const deletePost={
     }
 }
 
-const getPostById={
-    tags:["Posts"],
-    description:`get One post By Id of the post</br >
+const getCommentById={
+    tags:["Comments"],
+    description:`get One comment By Id of the comment</br >
     you must be authorized </br>
     <h3> Note : send token in bearer </h3>
     `,
@@ -299,46 +309,20 @@ const getPostById={
                     schema:{
                         type:"Object",
                         example:{
-                            "onePost":{
-                                "id": 9,
-                                "text": "text for post",
-                                "picture": "image-1689503185885.PNG",
-                                "createdAt": "2023-07-16T10:26:25.000Z",
-                                "updatedAt": "2023-07-16T10:26:25.000Z",
-                                "userId": 1,
+                            "oneComment":{
+                                "id": 7,
+                                "text": null,
+                                "createdAt": "2023-07-16T10:52:24.000Z",
+                                "updatedAt": "2023-07-16T10:52:24.000Z",
+                                "userId": 4,
+                                "postId": 9,
                                 "User": {
                                   "username": "potatoCodeforces",
                                   "picturePath": null
-                                },
-                                "Comments": [
-                                  {
-                                    "id": 7,
-                                    "text": null,
-                                    "createdAt": "2023-07-16T10:52:24.000Z",
-                                    "updatedAt": "2023-07-16T10:52:24.000Z",
-                                    "userId": 4,
-                                    "postId": 9,
-                                    "User": {
-                                      "username": "potatoCodeforces",
-                                      "picturePath": null
-                                    }
-                                  },
-                                  {
-                                    "id": 16,
-                                    "text": "comment text",
-                                    "createdAt": "2023-07-18T08:24:37.000Z",
-                                    "updatedAt": "2023-07-18T08:24:37.000Z",
-                                    "userId": 5,
-                                    "postId": 9,
-                                    "User": {
-                                      "username": "secondUser",
-                                      "picturePath": null
-                                    }
-                                  },
-                                ]
+                                }
                             },
-                            "post":[
-                                "post not found"
+                            "comment": [
+                                "comment not found"
                             ]
                         }
                     }
@@ -365,7 +349,7 @@ const getPostById={
                     schema:{
                         type:"Object",
                         example:{
-                            "msg": "You can only see your posts or your friends posts or your groups posts"
+                            "msg": "You can only see your comments or your friends comments or your groups comments"
                         }
                     }
                 }
@@ -391,11 +375,9 @@ const getPostById={
     }
 }
 
-
-
-const getAllPostsById={
-    tags:["Posts"],
-    description:`get all posts for a user with the id of user</br >
+const getAllCommentsById={
+    tags:["Comments"],
+    description:`get all comments of user By user id</br >
     you must be authorized </br>
     <h3> Note : send token in bearer </h3>
     `,
@@ -418,70 +400,78 @@ const getAllPostsById={
                     schema:{
                         type:"Object",
                         example:{
-                            "list of posts":[
+                            "ListOfComments":[
                                 {
-                                  "id": 9,
-                                  "text": "text for post",
-                                  "picture": "image-1689503185885.PNG",
-                                  "createdAt": "2023-07-16T10:26:25.000Z",
-                                  "updatedAt": "2023-07-16T10:26:25.000Z",
+                                  "id": 8,
+                                  "text": "updated text for a comment",
+                                  "createdAt": "2023-07-16T10:54:39.000Z",
+                                  "updatedAt": "2023-07-16T11:01:20.000Z",
                                   "userId": 1,
+                                  "postId": 9,
                                   "User": {
                                     "username": "potatoCodeforces",
                                     "picturePath": null
-                                  },
-                                  "Comments": [
-                                    {
-                                      "id": 7,
-                                      "text": null,
-                                      "createdAt": "2023-07-16T10:52:24.000Z",
-                                      "updatedAt": "2023-07-16T10:52:24.000Z",
-                                      "userId": 4,
-                                      "postId": 9,
-                                      "User": {
-                                        "username": "potatoCodeforces",
-                                        "picturePath": null
-                                      }
-                                    },
-                                    {
-                                      "id": 16,
-                                      "text": "comment text",
-                                      "createdAt": "2023-07-18T08:24:37.000Z",
-                                      "updatedAt": "2023-07-18T08:24:37.000Z",
-                                      "userId": 5,
-                                      "postId": 9,
-                                      "User": {
-                                        "username": "secondUser",
-                                        "picturePath": null
-                                      }
-                                    },
-                                  ]
+                                  }
                                 },
                                 {
                                   "id": 10,
-                                  "text": "text for post",
-                                  "picture": "image-1689668506519.PNG",
-                                  "createdAt": "2023-07-18T08:21:46.000Z",
-                                  "updatedAt": "2023-07-18T08:21:46.000Z",
+                                  "text": "comment",
+                                  "createdAt": "2023-07-16T11:22:11.000Z",
+                                  "updatedAt": "2023-07-16T11:22:11.000Z",
                                   "userId": 1,
+                                  "postId": 9,
                                   "User": {
                                     "username": "potatoCodeforces",
                                     "picturePath": null
-                                  },
-                                  "Comments": [
-                                    {
-                                      "id": 15,
-                                      "text": "comment text",
-                                      "createdAt": "2023-07-18T08:21:56.000Z",
-                                      "updatedAt": "2023-07-18T08:21:56.000Z",
-                                      "userId": 1,
-                                      "postId": 10,
-                                      "User": {
-                                        "username": "potatoCodeforces",
-                                        "picturePath": null
-                                      }
-                                    }
-                                  ]
+                                  }
+                                },
+                                {
+                                  "id": 11,
+                                  "text": "updated text for a comment",
+                                  "createdAt": "2023-07-16T11:22:19.000Z",
+                                  "updatedAt": "2023-07-16T11:36:10.000Z",
+                                  "userId": 1,
+                                  "postId": 9,
+                                  "User": {
+                                    "username": "potatoCodeforces",
+                                    "picturePath": null
+                                  }
+                                },
+                                {
+                                  "id": 12,
+                                  "text": "comment text",
+                                  "createdAt": "2023-07-16T11:22:38.000Z",
+                                  "updatedAt": "2023-07-16T11:22:38.000Z",
+                                  "userId": 1,
+                                  "postId": 9,
+                                  "User": {
+                                    "username": "potatoCodeforces",
+                                    "picturePath": null
+                                  }
+                                },
+                                {
+                                  "id": 13,
+                                  "text": "updated text for a comment",
+                                  "createdAt": "2023-07-16T11:24:31.000Z",
+                                  "updatedAt": "2023-07-16T11:36:06.000Z",
+                                  "userId": 1,
+                                  "postId": 9,
+                                  "User": {
+                                    "username": "potatoCodeforces",
+                                    "picturePath": null
+                                  }
+                                },
+                                {
+                                  "id": 15,
+                                  "text": "comment text",
+                                  "createdAt": "2023-07-18T08:21:56.000Z",
+                                  "updatedAt": "2023-07-18T08:21:56.000Z",
+                                  "userId": 1,
+                                  "postId": 10,
+                                  "User": {
+                                    "username": "potatoCodeforces",
+                                    "picturePath": null
+                                  }
                                 }
                             ],
                             "user": [
@@ -512,7 +502,7 @@ const getAllPostsById={
                     schema:{
                         type:"Object",
                         example:{
-                            "msg": "You can only see your posts or your friends posts or your groups posts"
+                            "msg": "You can only see your comments or your friends comments or your groups comments"
                         }
                     }
                 }
@@ -538,13 +528,13 @@ const getAllPostsById={
     }
 }
 
-const post={
-    createPost,
-    editPost,
-    deletePost,
-    getPostById,
-    getAllPostsById,
+const comment={
+    createComment,
+    editComment,
+    deleteComment,
+    getCommentById,
+    getAllCommentsById
 }
 
 
-module.exports=post;
+module.exports=comment;
