@@ -66,6 +66,9 @@ const swaggerDocument=
         },
         "/api/reaction/add/{id}":{
             post:reaction.createReaction
+        },
+        "/api/reaction/edit/{id}":{
+            patch:reaction.editReaction
         }
     }
 }

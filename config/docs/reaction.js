@@ -135,6 +135,118 @@ const createReaction={
 
 
 
+const editReaction={
+    tags:["Reactions"],
+    description:`edit reaction  giving the reaction id</br >
+    you must be authorized </br>
+    <h3> Note 1: send token in bearer </h3>`,
+    security: [{
+        bearerAuth: []
+    }],
+    requestBody:{  
+        required:true,
+        content:{
+            "application/json":{
+                schema:{
+                    type:"Object",
+                    example:[
+                        {
+                            "state": "dislike"
+                        },
+                        {
+                            "state":"like"
+                        }
+                    ]
+                }
+            }
+        },
+    },
+    parameters:[
+        {
+          "name": "id",
+          "in": "query",
+          "type": "integer",
+          "required": true
+        }
+    ],
+    responses:{
+        200:{
+            description:"OK",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:[
+                            {
+                                "id": 5,
+                                "state": "like",
+                                "createdAt": "2023-07-18T11:18:30.000Z",
+                                "updatedAt": "2023-07-20T10:42:59.000Z",
+                                "userId": 1,
+                                "postId": 10
+                            },
+                            {
+                                "reaction": [
+                                    "Reaction not found"
+                                ]    
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        400:{
+            description:"bad request",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:[
+                            {
+                                "id": [
+                                    "The id must be a number."
+                                ]
+                            },
+                            {
+                                "state": [
+                                  "The selected state is invalid.",
+                                  "The state field is required."
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        401:{
+            description:"Unauthorized",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "Authentication invalid"
+                        }
+                    }
+                }
+            }
+        },
+        403:{
+            description:"Forbidden",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "You can only modify your reactions",
+                        }
+                    }
+                }
+            }
+        },
+    }
+}
+
 
 
 
@@ -147,7 +259,7 @@ const createReaction={
 
 const reaction={
     createReaction,
-    // editReaction,
+    editReaction,
     // deleteReaction,
     // getReactionById,
     // getAllReactionsById
