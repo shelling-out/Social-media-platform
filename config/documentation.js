@@ -69,6 +69,9 @@ const swaggerDocument=
         },
         "/api/reaction/edit/{id}":{
             patch:reaction.editReaction
+        },
+        "/api/reaction/delete/{id}":{
+            delete:reaction.deleteReaction
         }
     }
 }

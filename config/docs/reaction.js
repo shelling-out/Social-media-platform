@@ -248,6 +248,88 @@ const editReaction={
 }
 
 
+const deleteReaction={
+    tags:["Reactions"],
+    description:`delete reaction  giving the reaction id</br >
+    you must be authorized </br>
+    <h3> Note 1: send token in bearer </h3>`,
+    security: [{
+        bearerAuth: []
+    }],
+    parameters:[
+        {
+          "name": "id",
+          "in": "query",
+          "type": "integer",
+          "required": true
+        }
+    ],
+    responses:{
+        200:{
+            description:"OK",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:[
+                            {
+                                "msg": "reaction has been deleted"
+                            },
+                            {
+                                "reaction": [
+                                    "Reaction not found"
+                                ]    
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        400:{
+            description:"bad request",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:[
+                            {
+                                "id": [
+                                    "The id must be a number."
+                                ]
+                            },
+                        ]
+                    }
+                }
+            }
+        },
+        401:{
+            description:"Unauthorized",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "Authentication invalid"
+                        }
+                    }
+                }
+            }
+        },
+        403:{
+            description:"Forbidden",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "You can only modify your reactions",
+                        }
+                    }
+                }
+            }
+        },
+    }
+}
 
 
 
@@ -260,7 +342,7 @@ const editReaction={
 const reaction={
     createReaction,
     editReaction,
-    // deleteReaction,
+    deleteReaction,
     // getReactionById,
     // getAllReactionsById
 }
