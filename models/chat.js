@@ -15,6 +15,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Chat.init({
+    id:{
+      type:DataTypes.INTEGER,
+      allowNull:false,
+      primaryKey:true,
+      autoIncrement:true
+    },
     message: DataTypes.STRING,
     createdAt: {
       allowNull: false,

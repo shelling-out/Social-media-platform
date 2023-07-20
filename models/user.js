@@ -15,10 +15,16 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Reaction);
       User.hasMany(models.Relationship);
       User.hasMany(models.Chat);
-      User.hasMany(models.GroupUser);
+      User.belongsToMany(models.Group , {through: models.GroupUser });
     }
   }
   User.init({
+    id:{
+      type:DataTypes.INTEGER,
+      allowNull:false,
+      primaryKey:true,
+      autoIncrement:true
+    },
     username: {
       type: DataTypes.STRING,
       allowNull:false,
