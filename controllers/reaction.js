@@ -32,13 +32,29 @@ const deleteReaction=async(req,res)=>
     res.status(StatusCodes.OK).json({msg:"reaction has been deleted"});
 };
 
+const getReactionById=async(req,res)=>
+{
+    const reaction=await Reaction.findOne({
+        include:{
+            model: User,
+            attributes: ['username', 'picturePath']
+        },
+        where:{
+            id:req.params.id
+        },
+        attributes:{
+            exclude:['UserId','PostId']
+        }
+    });
+    res.status(StatusCodes.OK).json(reaction);
+};
 
 
 const reactionController={
     createReaction,
     editReaction,
     deleteReaction,
-    // getReactionById,
+    getReactionById,
     // getAllReactions
 };
 
