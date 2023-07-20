@@ -20,7 +20,11 @@ router.patch('/edit/:id',
     reactionController.editReaction  
 );
 
-
+router.delete('/delete/:id',
+    reactionValidation.checkIdReactionExestence,
+    reactionOwnerShip,
+    reactionController.deleteReaction
+);
 
 
 
