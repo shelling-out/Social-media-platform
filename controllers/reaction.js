@@ -24,14 +24,20 @@ const editReaction=async(req,res)=>
     res.status(StatusCodes.OK).json(data.dataValues);
 };
 
-
+const deleteReaction=async(req,res)=>
+{
+    let reactionId=req.params.id;
+    // delete reaction
+    const result=await Reaction.destroy({ where: { id: reactionId }});
+    res.status(StatusCodes.OK).json({msg:"reaction has been deleted"});
+};
 
 
 
 const reactionController={
     createReaction,
     editReaction,
-    // deleteReaction,
+    deleteReaction,
     // getReactionById,
     // getAllReactions
 };
