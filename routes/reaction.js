@@ -29,6 +29,6 @@ router.delete('/delete/:id',
 // add authorization to get your reactions or your friends reactions
 
 router.get('/:id',reactionValidation.checkIdReactionExestence,reactionController.getReactionById);
-
+router.get('/all/:id',userValidation.checkIdUserExestence,reactionController.getAllReactions);
 
 module.exports=router;

@@ -49,13 +49,29 @@ const getReactionById=async(req,res)=>
     res.status(StatusCodes.OK).json(reaction);
 };
 
+const getAllReactions=async(req,res)=>
+{
+    const reaction=await Reaction.findAll({
+        include:{
+            model: User,
+            attributes: ['username', 'picturePath']
+        },
+        where:{
+            userId:req.params.id
+        },
+        attributes:{
+            exclude:['UserId','PostId']
+        }
+    });
+    res.status(StatusCodes.OK).json(reaction);
+};
 
 const reactionController={
     createReaction,
     editReaction,
     deleteReaction,
     getReactionById,
-    // getAllReactions
+    getAllReactions
 };
 
 module.exports=reactionController;
