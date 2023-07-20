@@ -80,7 +80,8 @@ const createReaction={
                             },
                             {
                                 "state": [
-                                  "The selected state is invalid."
+                                  "The selected state is invalid.",
+                                  "The state field is required."
                                 ]
                             }
                         ]

@@ -13,6 +13,12 @@ router.post('/add/:id',
     reactionController.createReaction
 );
 
+router.patch('/edit/:id',
+    reactionValidation.checkIdReactionExestence,
+    reactionOwnerShip,
+    reactionValidation.reactionData,
+    reactionController.editReaction  
+);
 
 
 
