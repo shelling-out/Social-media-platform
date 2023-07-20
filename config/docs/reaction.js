@@ -428,13 +428,117 @@ const getReactionById={
 
 
 
+const getAllReactionsById={
+    tags:["Reactions"],
+    description:`get all reactions of user By user id</br >
+    you must be authorized </br>
+    <h3> Note : send token in bearer </h3>
+    `,
+    security: [{
+        bearerAuth: []
+    }],
+    parameters:[
+        {
+          "name": "id",
+          "in": "query",
+          "type": "integer",
+          "required": true
+        }
+    ],
+    responses:{
+        200:{
+            description:"OK",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "ListOfReactions":[
+                                {
+                                  "id": 5,
+                                  "state": "dislike",
+                                  "createdAt": "2023-07-18T11:18:30.000Z",
+                                  "updatedAt": "2023-07-20T11:13:30.000Z",
+                                  "userId": 1,
+                                  "postId": 10,
+                                  "User": {
+                                    "username": "potatoCodeforces",
+                                    "picturePath": null
+                                  }
+                                },
+                                {
+                                  "id": 8,
+                                  "state": "like",
+                                  "createdAt": "2023-07-20T11:36:43.000Z",
+                                  "updatedAt": "2023-07-20T11:36:43.000Z",
+                                  "userId": 1,
+                                  "postId": 9,
+                                  "User": {
+                                    "username": "potatoCodeforces",
+                                    "picturePath": null
+                                  }
+                                }
+                            ],
+                            "user": [
+                                "User not found"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        401:{
+            description:"Unauthorized",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "Authentication invalid"
+                        }
+                    }
+                }
+            }
+        },
+        403:{
+            description:"Forbidden",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "You can only see your reactions or your friends reactions or your groups reactions"
+                        }
+                    }
+                }
+            }
+        },
+        400:{
+            description:"bad request",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:[
+                            {
+                                "id": [
+                                    "The id must be a number."
+                                ]
+                            }, 
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}
 
 const reaction={
     createReaction,
     editReaction,
     deleteReaction,
     getReactionById,
-    // getAllReactionsById
+    getAllReactionsById
 }
 
 

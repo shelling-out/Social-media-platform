@@ -75,6 +75,9 @@ const swaggerDocument=
         },
         "/api/reaction/{id}":{
             get:reaction.getReactionById
+        },
+        "/api/reaction/all/{id}":{
+            get:reaction.getAllReactionsById
         }
     }
 }
