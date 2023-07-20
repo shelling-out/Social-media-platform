@@ -72,6 +72,9 @@ const swaggerDocument=
         },
         "/api/reaction/delete/{id}":{
             delete:reaction.deleteReaction
+        },
+        "/api/reaction/{id}":{
+            get:reaction.getReactionById
         }
     }
 }
