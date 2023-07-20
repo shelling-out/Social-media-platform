@@ -66,6 +66,18 @@ const swaggerDocument=
         },
         "/api/reaction/add/{id}":{
             post:reaction.createReaction
+        },
+        "/api/reaction/edit/{id}":{
+            patch:reaction.editReaction
+        },
+        "/api/reaction/delete/{id}":{
+            delete:reaction.deleteReaction
+        },
+        "/api/reaction/{id}":{
+            get:reaction.getReactionById
+        },
+        "/api/reaction/all/{id}":{
+            get:reaction.getAllReactionsById
         }
     }
 }
