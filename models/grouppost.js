@@ -16,6 +16,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   GroupPost.init({
+    id:{
+      type:DataTypes.INTEGER,
+      allowNull:false,
+      primaryKey:true,
+      autoIncrement:true
+    },
     state: DataTypes.STRING,
     createdAt: {
       allowNull: false,

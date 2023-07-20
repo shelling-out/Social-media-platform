@@ -16,6 +16,26 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   GroupUser.init({
+    id:{
+      type:DataTypes.INTEGER,
+      allowNull:false,
+      primaryKey:true,
+      autoIncrement:true
+    },
+    groupId:{
+      type:DataTypes.INTEGER ,
+      references:{
+        table:'groups' ,
+        key:'id'
+      }
+    },
+    userId:{
+      type:DataTypes.INTEGER ,
+      references:{
+        table:'users' ,
+        key:'id'
+      }
+    },
     state: {
       type: DataTypes.STRING,
       validate:{
