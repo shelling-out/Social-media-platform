@@ -15,7 +15,14 @@ const createReaction=async(req,res)=>
 };
 
 
-
+const editReaction=async(req,res)=>
+{
+    let patchUpdate={};
+    patchUpdate.state=req.body.state;
+    await Reaction.update(patchUpdate, {where: {id:req.params.id}});
+    const data=await Reaction.findOne({ where: { id: req.params.id },attributes:{exclude:['UserId','PostId']}});
+    res.status(StatusCodes.OK).json(data.dataValues);
+};
 
 
 
@@ -23,7 +30,7 @@ const createReaction=async(req,res)=>
 
 const reactionController={
     createReaction,
-    // editReaction,
+    editReaction,
     // deleteReaction,
     // getReactionById,
     // getAllReactions

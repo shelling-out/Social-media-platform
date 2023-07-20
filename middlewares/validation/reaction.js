@@ -40,7 +40,7 @@ const reactionData=async(req,res,next)=>
     let data=req.body;
     const expectedValues=['like','dislike'];
     const validationRule={
-        state:`string|in:${expectedValues.join(',')}`,
+        state:`required|string|in:${expectedValues.join(',')}`,
     };
     let validation=new Validator(data,validationRule);
     if(validation.passes()){
