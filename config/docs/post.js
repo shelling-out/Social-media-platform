@@ -300,41 +300,82 @@ const getPostById={
                         type:"Object",
                         example:{
                             "onePost":{
-                                "id": 9,
+                                "id": 2,
                                 "text": "text for post",
-                                "picture": "image-1689503185885.PNG",
-                                "createdAt": "2023-07-16T10:26:25.000Z",
-                                "updatedAt": "2023-07-16T10:26:25.000Z",
-                                "userId": 1,
+                                "picture": "image-1689912000911.PNG",
+                                "createdAt": "2023-07-21T04:00:00.000Z",
+                                "updatedAt": "2023-07-21T04:00:00.000Z",
+                                "userId": 2,
+                                "commentsCount": 3,
+                                "likesCount": 1,
+                                "dislikesCount": 1,
                                 "User": {
-                                  "username": "potatoCodeforces",
+                                  "username": "firstUser",
                                   "picturePath": null
                                 },
                                 "Comments": [
                                   {
-                                    "id": 7,
-                                    "text": null,
-                                    "createdAt": "2023-07-16T10:52:24.000Z",
-                                    "updatedAt": "2023-07-16T10:52:24.000Z",
-                                    "userId": 4,
-                                    "postId": 9,
+                                    "id": 2,
+                                    "text": "updated text for a comment",
+                                    "createdAt": "2023-07-21T04:00:12.000Z",
+                                    "updatedAt": "2023-07-21T04:00:25.000Z",
+                                    "userId": 2,
+                                    "postId": 2,
                                     "User": {
-                                      "username": "potatoCodeforces",
+                                      "username": "firstUser",
                                       "picturePath": null
                                     }
                                   },
                                   {
-                                    "id": 16,
+                                    "id": 3,
                                     "text": "comment text",
-                                    "createdAt": "2023-07-18T08:24:37.000Z",
-                                    "updatedAt": "2023-07-18T08:24:37.000Z",
-                                    "userId": 5,
-                                    "postId": 9,
+                                    "createdAt": "2023-07-21T04:16:32.000Z",
+                                    "updatedAt": "2023-07-21T04:16:32.000Z",
+                                    "userId": 2,
+                                    "postId": 2,
                                     "User": {
-                                      "username": "secondUser",
+                                      "username": "firstUser",
                                       "picturePath": null
                                     }
                                   },
+                                  {
+                                    "id": 5,
+                                    "text": "comment text",
+                                    "createdAt": "2023-07-21T04:23:34.000Z",
+                                    "updatedAt": "2023-07-21T04:23:34.000Z",
+                                    "userId": 3,
+                                    "postId": 2,
+                                    "User": {
+                                      "username": "firstUser",
+                                      "picturePath": null
+                                    }
+                                  }
+                                ],
+                                "Reactions": [
+                                  {
+                                    "id": 2,
+                                    "state": "like",
+                                    "createdAt": "2023-07-21T04:00:36.000Z",
+                                    "updatedAt": "2023-07-21T04:00:36.000Z",
+                                    "userId": 2,
+                                    "postId": 2,
+                                    "User": {
+                                      "username": "firstUser",
+                                      "picturePath": null
+                                    }
+                                  },
+                                  {
+                                    "id": 5,
+                                    "state": "dislike",
+                                    "createdAt": "2023-07-21T04:23:45.000Z",
+                                    "updatedAt": "2023-07-21T04:26:24.000Z",
+                                    "userId": 3,
+                                    "postId": 2,
+                                    "User": {
+                                      "username": "firstUser",
+                                      "picturePath": null
+                                    }
+                                  }
                                 ]
                             },
                             "post":[
@@ -420,64 +461,146 @@ const getAllPostsById={
                         example:{
                             "list of posts":[
                                 {
-                                  "id": 9,
+                                  "id": 2,
                                   "text": "text for post",
-                                  "picture": "image-1689503185885.PNG",
-                                  "createdAt": "2023-07-16T10:26:25.000Z",
-                                  "updatedAt": "2023-07-16T10:26:25.000Z",
-                                  "userId": 1,
+                                  "picture": "image-1689912000911.PNG",
+                                  "createdAt": "2023-07-21T04:00:00.000Z",
+                                  "updatedAt": "2023-07-21T04:00:00.000Z",
+                                  "userId": 2,
+                                  "commentsCount": 3,
+                                  "likesCount": 1,
+                                  "dislikesCount": 1,
                                   "User": {
-                                    "username": "potatoCodeforces",
+                                    "username": "firstUser",
                                     "picturePath": null
                                   },
                                   "Comments": [
                                     {
-                                      "id": 7,
-                                      "text": null,
-                                      "createdAt": "2023-07-16T10:52:24.000Z",
-                                      "updatedAt": "2023-07-16T10:52:24.000Z",
-                                      "userId": 4,
-                                      "postId": 9,
+                                      "id": 5,
+                                      "text": "comment text",
+                                      "createdAt": "2023-07-21T04:23:34.000Z",
+                                      "updatedAt": "2023-07-21T04:23:34.000Z",
+                                      "userId": 3,
+                                      "postId": 2,
                                       "User": {
-                                        "username": "potatoCodeforces",
+                                        "username": "firstUser",
                                         "picturePath": null
                                       }
                                     },
                                     {
-                                      "id": 16,
+                                      "id": 3,
                                       "text": "comment text",
-                                      "createdAt": "2023-07-18T08:24:37.000Z",
-                                      "updatedAt": "2023-07-18T08:24:37.000Z",
-                                      "userId": 5,
-                                      "postId": 9,
+                                      "createdAt": "2023-07-21T04:16:32.000Z",
+                                      "updatedAt": "2023-07-21T04:16:32.000Z",
+                                      "userId": 2,
+                                      "postId": 2,
                                       "User": {
-                                        "username": "secondUser",
+                                        "username": "firstUser",
                                         "picturePath": null
                                       }
                                     },
+                                    {
+                                      "id": 2,
+                                      "text": "updated text for a comment",
+                                      "createdAt": "2023-07-21T04:00:12.000Z",
+                                      "updatedAt": "2023-07-21T04:00:25.000Z",
+                                      "userId": 2,
+                                      "postId": 2,
+                                      "User": {
+                                        "username": "firstUser",
+                                        "picturePath": null
+                                      }
+                                    }
+                                  ],
+                                  "Reactions": [
+                                    {
+                                      "id": 5,
+                                      "state": "dislike",
+                                      "createdAt": "2023-07-21T04:23:45.000Z",
+                                      "updatedAt": "2023-07-21T04:26:24.000Z",
+                                      "userId": 3,
+                                      "postId": 2,
+                                      "User": {
+                                        "username": "firstUser",
+                                        "picturePath": null
+                                      }
+                                    },
+                                    {
+                                      "id": 2,
+                                      "state": "like",
+                                      "createdAt": "2023-07-21T04:00:36.000Z",
+                                      "updatedAt": "2023-07-21T04:00:36.000Z",
+                                      "userId": 2,
+                                      "postId": 2,
+                                      "User": {
+                                        "username": "firstUser",
+                                        "picturePath": null
+                                      }
+                                    }
                                   ]
                                 },
                                 {
-                                  "id": 10,
+                                  "id": 3,
                                   "text": "text for post",
-                                  "picture": "image-1689668506519.PNG",
-                                  "createdAt": "2023-07-18T08:21:46.000Z",
-                                  "updatedAt": "2023-07-18T08:21:46.000Z",
-                                  "userId": 1,
+                                  "picture": "image-1689912827440.PNG",
+                                  "createdAt": "2023-07-21T04:13:47.000Z",
+                                  "updatedAt": "2023-07-21T04:13:47.000Z",
+                                  "userId": 2,
+                                  "commentsCount": 2,
+                                  "likesCount": 2,
+                                  "dislikesCount": 0,
                                   "User": {
-                                    "username": "potatoCodeforces",
+                                    "username": "firstUser",
                                     "picturePath": null
                                   },
                                   "Comments": [
                                     {
-                                      "id": 15,
+                                      "id": 6,
                                       "text": "comment text",
-                                      "createdAt": "2023-07-18T08:21:56.000Z",
-                                      "updatedAt": "2023-07-18T08:21:56.000Z",
-                                      "userId": 1,
-                                      "postId": 10,
+                                      "createdAt": "2023-07-21T04:23:37.000Z",
+                                      "updatedAt": "2023-07-21T04:23:37.000Z",
+                                      "userId": 3,
+                                      "postId": 3,
                                       "User": {
-                                        "username": "potatoCodeforces",
+                                        "username": "firstUser",
+                                        "picturePath": null
+                                      }
+                                    },
+                                    {
+                                      "id": 4,
+                                      "text": "comment text",
+                                      "createdAt": "2023-07-21T04:16:36.000Z",
+                                      "updatedAt": "2023-07-21T04:16:36.000Z",
+                                      "userId": 2,
+                                      "postId": 3,
+                                      "User": {
+                                        "username": "firstUser",
+                                        "picturePath": null
+                                      }
+                                    }
+                                  ],
+                                  "Reactions": [
+                                    {
+                                      "id": 4,
+                                      "state": "like",
+                                      "createdAt": "2023-07-21T04:23:43.000Z",
+                                      "updatedAt": "2023-07-21T04:23:43.000Z",
+                                      "userId": 3,
+                                      "postId": 3,
+                                      "User": {
+                                        "username": "firstUser",
+                                        "picturePath": null
+                                      }
+                                    },
+                                    {
+                                      "id": 3,
+                                      "state": "like",
+                                      "createdAt": "2023-07-21T04:13:55.000Z",
+                                      "updatedAt": "2023-07-21T04:13:55.000Z",
+                                      "userId": 2,
+                                      "postId": 3,
+                                      "User": {
+                                        "username": "firstUser",
                                         "picturePath": null
                                       }
                                     }
