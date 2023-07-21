@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Group.belongsToMany(models.User , {through:models.GroupUser});
+      Group.hasMany(models.GroupUser); 
       Group.hasMany(models.GroupPost);
     }
   }

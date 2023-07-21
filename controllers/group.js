@@ -16,8 +16,7 @@ const deleteGroup = async (req , res)=>{
     return res.json({msg:"Group deleted successfully"}); 
 }
 const editGroup = async (req , res )=>{
-    
-    let user = req.user ; 
+    let user = req.user ;
     let group = {} ;
     if(req.body.groupName){
         group.groupName = req.body.groupName ;
@@ -34,23 +33,22 @@ const MyGroups = async (req , res )=>{
     return res.json({groups:user.groups});
 }
 const joinRequest = async (req , res )=>{
-    console.log('hi');
     let groupUser = await GroupUser.create({userId: req.user.id , groupId: req.params.groupId , state:'pending'}) ;
-    console.log('bye');
     return res.json({msg:'join request has been sent successfully'});
 }
 const showJoinRequests  = async (req , res )=>{
-    let users = await GroupUser.findAll({ where:{groupId: req.params.groupId , state:'pending' }, attributes:['userId' , 'state' , 'createdAt' , 'User.username' ], include:User}); 
+    let users = await GroupUser.findAll({ where:{groupId: req.params.groupId , state:'pending' },  include:{model:User , attributes:['username']  } , attributes:['userId' , 'state' , 'createdAt' ]}); 
     return res.json({users});
 }
-// it will make him normal user
-const RespondToJoinRequest = async (req , res )=>{
-
+const modifyRole = async (req , res )=>{
+    await GroupUser.update({state:'normal'} ,{where:{groupId: req.params.groupId , userId:req.params.userId }});
+    return res.json({msg:'updated successfully' , newRole: req.body.state }) ;
 }
-// 
-const editAuthority = async (req , res)=>{
-
+const groupMemebers = async (req , res )=>{
+    let users = await GroupUser.findAll({where:{groupId: req.params.groupId , state:['Admin' , 'Owner', 'normal' ]}}) ; 
+    return res.json({users:users}) ;
 }
+
 
 
 
@@ -60,8 +58,9 @@ let groupController = {
     deleteGroup,
     MyGroups,
     joinRequest,
-    RespondToJoinRequest,
-    showJoinRequests
+    modifyRole,
+    showJoinRequests,
+    groupMemebers
 
 };
 module.exports = groupController ;
