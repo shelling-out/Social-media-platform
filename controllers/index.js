@@ -4,6 +4,7 @@ const userController=require(path.join(__dirname,'user.js'));
 const postController=require(path.join(__dirname,'post.js'));
 const commentController=require(path.join(__dirname,'comment.js'));
 const reactionController=require(path.join(__dirname,'reaction.js'));
+const groupController=require(path.join(__dirname , 'group.js')) ;
 const releationshipController=require(path.join(__dirname,'releationship.js'));
 
 module.exports=
@@ -13,5 +14,7 @@ module.exports=
     postController,
     commentController,
     reactionController,
+    groupControllerو
     releationshipController
+
 };
