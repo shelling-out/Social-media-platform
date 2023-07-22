@@ -1,11 +1,18 @@
 const path=require('path');
 const { StatusCodes } = require('http-status-codes')
-const {User,Releationship}=require(path.join(__dirname,'..','models'));
+const {User,Relationship}=require(path.join(__dirname,'..','models'));
 
 
 const createRequest=async(req,res)=>
 {
-    res.sendStatus(200);
+    let firstUserId=req.user.id;
+    let secondUserId=req.params.id;
+    const relathionship= await Relationship.create({
+        firstUserId:firstUserId,
+        secondUserId:secondUserId,
+        state:"pending",
+    });
+    res.status(StatusCodes.CREATED).json({msg:"request sent successfully",relationship:relathionship.dataValues});
 };
 
 const releationshipController={

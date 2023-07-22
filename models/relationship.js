@@ -10,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Relationship.belongsTo(models.User, { foreignKey: 'firstUserId' });
-      Relationship.belongsTo(models.User, { foreignKey: 'secondUserId' });
+      models.User.belongsToMany(models.User, { as: 'firstUser', through: Relationship, foreignKey: 'firstUserId' });
+      models.User.belongsToMany(models.User, { as: 'secondUser', through:Relationship, foreignKey: 'secondUserId' });
     }
   }
   Relationship.init({
@@ -20,6 +20,20 @@ module.exports = (sequelize, DataTypes) => {
       allowNull:false,
       primaryKey:true,
       autoIncrement:true
+    },
+    firstUserId:{
+      type:DataTypes.INTEGER ,
+      references:{
+        table:'users' ,
+        key:'id'
+      }
+    },
+    secondUserId:{
+      type:DataTypes.INTEGER ,
+      references:{
+        table:'users' ,
+        key:'id'
+      }
     },
     state: {
       type: DataTypes.STRING,

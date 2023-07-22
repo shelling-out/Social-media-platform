@@ -7,6 +7,8 @@ const reactionController=require(path.join(__dirname,'reaction.js'));
 const groupController=require(path.join(__dirname , 'group.js')) ;
 const releationshipController=require(path.join(__dirname,'releationship.js'));
 
+
+
 module.exports=
 {
     authController,
@@ -14,7 +16,6 @@ module.exports=
     postController,
     commentController,
     reactionController,
-    groupControllerو
+    groupController,
     releationshipController
-
 };

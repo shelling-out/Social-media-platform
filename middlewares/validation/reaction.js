@@ -66,9 +66,9 @@ const reactOnceOnly=async(req,res,next)=>
     return res.status(statusCode).json(validation);
 }
 
-const userValidation={
+const reactionValidation={
     checkIdReactionExestence,
     reactionData,
     reactOnceOnly
 }
-module.exports = userValidation;
+module.exports = reactionValidation;
