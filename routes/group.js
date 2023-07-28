@@ -8,13 +8,14 @@ const groupAdmin = require(path.join(__dirname , '..' , 'middlewares' , 'authori
 
 router.get('/'                                          , groupController.MyGroups );
 router.post('/'                                         , groupController.createGroup ) ;
-router.patch('/:groupId'                    ,groupAdmin , groupController.editGroup ) ; 
-router.delete('/:groupId'                   ,groupAdmin , groupController.deleteGroup ) ;
 router.get('/my'                                        , groupController.MyGroups ) ;
-
 router.post('/join/:groupId'                            , groupController.joinRequest ) ;
+router.get('/members/:groupId'                          , groupController.groupMemebers );
+
+// need admin privliages 
+router.delete('/:groupId'                   ,groupAdmin , groupController.deleteGroup ) ;
+router.patch('/:groupId'                    ,groupAdmin , groupController.editGroup ) ; 
 router.get('/join/:groupId'                 ,groupAdmin , groupController.showJoinRequests );
 router.post('/join/:groupId/:userId'        ,groupAdmin , groupController.modifyRole ); 
-router.get('/members/:groupId'                          , groupController.groupMemebers );
 
 module.exports = router;
