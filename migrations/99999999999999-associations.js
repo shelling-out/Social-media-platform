@@ -9,7 +9,7 @@ module.exports = {
       type:'foreign key',
       name:'post_user_association',
       references:{
-        table:'Users',
+        table:'users',
         field:'id'
       },
       onUpdate: 'CASCADE',
@@ -21,7 +21,7 @@ module.exports = {
       type:'foreign key',
       name:'comment_user_association',
       references:{
-        table:'Users',
+        table:'users',
         field:'id'
       },
       onUpdate: 'CASCADE',
@@ -32,7 +32,7 @@ module.exports = {
       type:'foreign key',
       name:'comment_post_association',
       references:{
-        table:'Posts',
+        table:'posts',
         field:'id'
       },
       onUpdate: 'CASCADE',
@@ -44,7 +44,7 @@ module.exports = {
       type:'foreign key',
       name:'reaction_user_association',
       references:{
-        table:'Users',
+        table:'users',
         field:'id'
       },
       onUpdate: 'CASCADE',
@@ -55,7 +55,7 @@ module.exports = {
       type:'foreign key',
       name:'reaction_post_association',
       references:{
-        table:'Posts',
+        table:'posts',
         field:'id'
       },
       onUpdate: 'CASCADE',
@@ -67,7 +67,7 @@ module.exports = {
       type:'foreign key',
       name:'relationships_firstUser_association',
       references:{
-        table:'Users',
+        table:'users',
         field:'id'
       },
       onUpdate: 'CASCADE',
@@ -78,7 +78,7 @@ module.exports = {
       type:'foreign key',
       name:'relationships_secondUser_association',
       references:{
-        table:'Users',
+        table:'users',
         field:'id'
       },
       onUpdate: 'CASCADE',
@@ -90,7 +90,7 @@ module.exports = {
       type:'foreign key',
       name:'chats_senderUserId_association',
       references:{
-        table:'Users',
+        table:'users',
         field:'id'
       },
       onUpdate: 'CASCADE',
@@ -101,7 +101,7 @@ module.exports = {
       type:'foreign key',
       name:'chats_reciverUserId_association',
       references:{
-        table:'Users',
+        table:'users',
         field:'id'
       },
       onUpdate: 'CASCADE',
@@ -113,7 +113,7 @@ module.exports = {
       type:'foreign key',
       name:'groupusers_user_association',
       references:{
-        table:'Users',
+        table:'users',
         field:'id'
       },
       onUpdate: 'CASCADE',
@@ -124,7 +124,7 @@ module.exports = {
       type:'foreign key',
       name:'groupusers_group_association',
       references:{
-        table:'Groups',
+        table:'groups',
         field:'id'
       },
       onUpdate: 'CASCADE',
@@ -147,7 +147,7 @@ module.exports = {
       type:'foreign key',
       name:'groupposts_group_association',
       references:{
-        table:'Groups',
+        table:'groups',
         field:'id'
       },
       onUpdate: 'CASCADE',
@@ -158,13 +158,23 @@ module.exports = {
       type:'foreign key',
       name:'groupposts_post_association',
       references:{
-        table:'Posts',
+        table:'posts',
         field:'id'
       },
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
-
+    // queryInterface.addConstraint('groupposts',{
+    //   fields:['userId'],
+    //   type:'foreign key',
+    //   name:'groupposts_user_association',
+    //   references:{
+    //     table:'Posts',
+    //     field:'id'
+    //   },
+    //   onUpdate: 'CASCADE',
+    //   onDelete: 'CASCADE'
+    // });
   },
 
   async down (queryInterface, Sequelize) {
@@ -189,5 +199,6 @@ module.exports = {
     await queryInterface.removeConstraint('groupposts', 'groupposts_groupUser_association');
     await queryInterface.removeConstraint('groupposts', 'groupposts_group_association');
     await queryInterface.removeConstraint('groupposts', 'groupposts_post_association');
+    // await queryInterface.removeConstraint('groupposts', 'groupposts_user_association');
   }
 };
