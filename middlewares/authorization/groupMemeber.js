@@ -1,7 +1,7 @@
 const path=require('path');
 const {GroupUser}=require(path.join(__dirname,'..','..','models'));
 
-const groupAdmin =async(req,res,next)=>
+const groupMemeber =async(req,res,next)=>
 {
     let user = req.user; 
     let groupUser = await GroupUser.findOne({where:{userId:user.id , groupId: req.params.groupId }}) ;
@@ -14,5 +14,5 @@ const groupAdmin =async(req,res,next)=>
     return next();
 };
 
-module.exports=groupAdmin ;
+module.exports= groupMemeber  ;
 
