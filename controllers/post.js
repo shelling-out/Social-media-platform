@@ -1,6 +1,7 @@
 const path=require('path');
 const { StatusCodes } = require('http-status-codes')
-const {User,Post,Comment}=require(path.join(__dirname,'..','models'));
+const {User,Post,Comment,Reaction}=require(path.join(__dirname,'..','models'));
+const Sequelize=require('sequelize');
 
 
 const createPost=async(req,res)=>
@@ -70,14 +71,35 @@ const getPostById=async(req,res)=>
                     model: User,
                     attributes:['username','picturePath']
                 }
+            },
+            {
+                model:Reaction,
+                attributes:{
+                    exclude:['UserId','PostId']
+                },
+                include:{
+                    model:User,
+                    attributes:['username','picturePath'],
+                }
             }
         ],
         where:{
             id:req.params.id
         },
         attributes:{
+            include: [
+                [
+                    Sequelize.literal('(SELECT COUNT(*) FROM comments WHERE comments.postId = post.id)'), 'commentsCount'
+                ],
+                [
+                    Sequelize.literal('(SELECT COUNT(*) FROM reactions WHERE reactions.postId = post.id AND state="like")'), 'likesCount'
+                ],
+                [
+                    Sequelize.literal('(SELECT COUNT(*) FROM reactions WHERE reactions.postId = post.id AND state="dislike")'), 'dislikesCount'
+                ]
+            ],
             exclude:['UserId']
-        }
+        },
     });
     res.status(StatusCodes.OK).json(post);
 };
@@ -100,12 +122,33 @@ const getAllPosts=async(req,res)=>
                     model: User,
                     attributes:['username','picturePath']
                 }
+            },
+            {
+                model:Reaction,
+                attributes:{
+                    exclude:['UserId','PostId']
+                },
+                include:{
+                    model:User,
+                    attributes:['username','picturePath'],
+                }
             }
         ],
         where:{
             userId:req.params.id
         },
         attributes:{
+            include: [
+                [
+                    Sequelize.literal('(SELECT COUNT(*) FROM comments WHERE comments.postId = post.id)'), 'commentsCount'
+                ],
+                [
+                    Sequelize.literal('(SELECT COUNT(*) FROM reactions WHERE reactions.postId = post.id AND state="like")'), 'likesCount'
+                ],
+                [
+                    Sequelize.literal('(SELECT COUNT(*) FROM reactions WHERE reactions.postId = post.id AND state="dislike")'), 'dislikesCount'
+                ]
+            ],
             exclude:['UserId']
         }
     });
