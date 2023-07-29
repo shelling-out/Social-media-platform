@@ -15,6 +15,12 @@ module.exports = {
       text: {
         type: Sequelize.STRING
       },
+      state: {
+        type: Sequelize.STRING,
+        validate:{
+          isIn:[ ['public' , 'private']]
+        }
+      },
       picture: {
         type: Sequelize.STRING
       },

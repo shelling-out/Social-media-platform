@@ -47,6 +47,7 @@ const createPost={
                             "id": 8,
                             "userId": 3,
                             "text": "text for post",
+                            "state": "public",
                             "picture": "image-1688371093888.PNG"
                         }
                     }
@@ -137,6 +138,7 @@ const editPost={
                             "text": "updated text for post",
                             "picture": "image-1688375694473.PNG",
                             "createdAt": "2023-07-03T09:09:38.000Z",
+                            "state": "public",
                             "updatedAt": "2023-07-03T09:32:57.000Z",
                             "userId": 1,
 
@@ -304,6 +306,7 @@ const getPostById={
                                 "text": "text for post",
                                 "picture": "image-1689912000911.PNG",
                                 "createdAt": "2023-07-21T04:00:00.000Z",
+                                "state": "public",
                                 "updatedAt": "2023-07-21T04:00:00.000Z",
                                 "userId": 2,
                                 "commentsCount": 3,
@@ -465,6 +468,7 @@ const getAllPostsById={
                                   "text": "text for post",
                                   "picture": "image-1689912000911.PNG",
                                   "createdAt": "2023-07-21T04:00:00.000Z",
+                                  "state": "public",
                                   "updatedAt": "2023-07-21T04:00:00.000Z",
                                   "userId": 2,
                                   "commentsCount": 3,
@@ -544,6 +548,7 @@ const getAllPostsById={
                                   "text": "text for post",
                                   "picture": "image-1689912827440.PNG",
                                   "createdAt": "2023-07-21T04:13:47.000Z",
+                                  "state": "public",
                                   "updatedAt": "2023-07-21T04:13:47.000Z",
                                   "userId": 2,
                                   "commentsCount": 2,

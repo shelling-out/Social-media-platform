@@ -29,6 +29,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue:DataTypes.NOW 
     },
+    state: {
+      type: DataTypes.STRING,
+      validate:{
+        isIn:[ ['public' , 'private']]
+      }
+    },
     updatedAt: {
       allowNull: false,
       type: DataTypes.DATE,
