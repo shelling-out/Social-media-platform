@@ -9,6 +9,7 @@ const createPost=async(req,res)=>
     let data={};
     data.text=null;
     data.picture=null;
+    let defaultState='public';
     if(req.body.data){
         const {text}= JSON.parse(req.body.data);
         data.text=text;
@@ -17,11 +18,23 @@ const createPost=async(req,res)=>
         data.picture=req.file.filename;
     }
     data.userId=Number(req.user.id);
+
+    // send in req.body.data as data form field the attribute state as private
+    // I will make a validation for it 
+    // if(data.state==="private"){
+    //     defaultState=data.state;
+    // }
     const post= await Post.create({
         userId:data.userId,
         text:data.text,
+        state:defaultState,
         picture:data.picture
     });
+
+    // here you need to create record for grouppost table
+    // if(data.state==="private"){
+    //     and you are good with all other operations no need to do any new route 
+    // }
     res.status(StatusCodes.CREATED).json(post.dataValues);
 };
 
@@ -55,7 +68,7 @@ const deletePost=async(req,res)=>
 
 const getPostById=async(req,res)=>
 {
-    // get reactions with the post
+    let defaultState='public';
     const post=await Post.findOne({
         include:[
             {
@@ -84,7 +97,8 @@ const getPostById=async(req,res)=>
             }
         ],
         where:{
-            id:req.params.id
+            id:req.params.id,
+            state:defaultState
         },
         attributes:{
             include: [
@@ -106,7 +120,7 @@ const getPostById=async(req,res)=>
 
 const getAllPosts=async(req,res)=>
 {
-    // get reactions with the post
+    let defaultState='public';    
     const posts=await Post.findAll({
         include:[
             {
@@ -135,7 +149,8 @@ const getAllPosts=async(req,res)=>
             }
         ],
         where:{
-            userId:req.params.id
+            userId:req.params.id,
+            state:defaultState
         },
         attributes:{
             include: [
