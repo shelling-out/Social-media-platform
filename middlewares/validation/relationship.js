@@ -61,11 +61,11 @@ const pendingRequestOrInRelation=async(req,res,next)=>
             [Op.or]: [
                 {
                     firstUserId:firstUserId,
-                    secondUserId:secondUserId
+                    secondUserId:secondUserId,
                 },
                 {
                     firstUserId:secondUserId,
-                    secondUserId:firstUserId
+                    secondUserId:firstUserId,
                 }
             ] 
         }
@@ -118,10 +118,53 @@ const isItSelfLoop=async(req,res,next)=>
     return res.status(statusCode).json(validation);
 };
 
+const isPendingRequest=async(req,res,next)=>
+{
+    let relationship=await Relationship.findByPk(req.params.id);
+    relationship=relationship.dataValues;
+    if(relationship.state==="pending")
+        return next();
+    let validation={};
+    let statusCode=StatusCodes.BAD_REQUEST;
+    validation.relationship=[];
+    validation.relationship.push("The request is not pending or recevied , you are friends or blocked ");
+    return res.status(statusCode).json(validation);    
+};
+
+const AreFriends=async(req,res,next)=>
+{
+    let relationship=await Relationship.findByPk(req.params.id);
+    relationship=relationship.dataValues;
+    if(relationship.state==="friends")
+        return next();
+    let validation={};
+    let statusCode=StatusCodes.BAD_REQUEST;
+    validation.relationship=[];
+    validation.relationship.push("You must be friends to do the action");
+    return res.status(statusCode).json(validation);    
+};
+
+const AreBlocked=async(req,res,next)=>
+{
+    let relationship=await Relationship.findByPk(req.params.id);
+    relationship=relationship.dataValues;
+    if(relationship.state==="blocked")
+        return next();
+    let validation={};
+    let statusCode=StatusCodes.BAD_REQUEST;
+    validation.relationship=[];
+    validation.relationship.push("there is no blocked relationship here");
+    return res.status(statusCode).json(validation);    
+};
+
+
 const relationshipValidation={
     checkIdRelationshipExestence,
     relationshipData,
     pendingRequestOrInRelation,
-    isItSelfLoop
+    isItSelfLoop,
+    isPendingRequest,
+    AreFriends,
+    AreBlocked,
 }
 module.exports = relationshipValidation;

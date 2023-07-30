@@ -18,7 +18,7 @@ module.exports = {
       state: {
         type: Sequelize.STRING,
         validate:{
-          isIn:[['friends' , 'blocked','pending','recived','removed']]
+          isIn:[['friends' , 'blocked','pending','received','removed']]
         }
       },
       createdAt: {
