@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Chat);
       User.hasMany(models.GroupUser) ;
       User.belongsToMany(models.Group , {through: models.GroupUser });
+      // User.hasMany(User,{ through: models.Relationship });
     }
   }
   User.init({

@@ -48,6 +48,6 @@ router.use('/api/post',authenticated,postRouter);
 router.use('/api/group', authenticated, groupRouter);
 router.use('/api/comment',authenticated,commentRouter);
 router.use('/api/reaction',authenticated,reactionRouter);
-router.use('/api/releationship',authenticated,releationshipRouter);
+router.use('/api/relationship',authenticated,releationshipRouter);
 
 module.exports=router;

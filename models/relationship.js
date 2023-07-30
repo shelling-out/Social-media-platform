@@ -10,8 +10,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      models.User.belongsToMany(models.User, { as: 'firstUser', through: Relationship, foreignKey: 'firstUserId' });
-      models.User.belongsToMany(models.User, { as: 'secondUser', through:Relationship, foreignKey: 'secondUserId' });
+      models.User.belongsToMany(models.User, { as: 'firstUser', through: Relationship, foreignKey: 'firstUserId' ,otherKey: 'secondUserId'});
+      models.User.belongsToMany(models.User, { as: 'secondUser', through:Relationship, foreignKey: 'secondUserId' ,otherKey: 'firstUserId'});
+      Relationship.belongsTo(models.User, { as: 'firstUser', onDelete: 'CASCADE'});
+      Relationship.belongsTo(models.User, { as: 'secondUser', onDelete: 'CASCADE' });
     }
   }
   Relationship.init({
@@ -38,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
     state: {
       type: DataTypes.STRING,
       validate:{
-        isIn:[ ['friends' , 'blocked','pending','recived','removed']]
+        isIn:[ ['friends' , 'blocked','pending','received','removed']]
       }
     },
     createdAt: {
