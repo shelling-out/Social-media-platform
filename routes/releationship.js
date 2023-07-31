@@ -5,7 +5,7 @@ const {releationshipController}=require(path.join(__dirname,'..','controllers'))
 const {userValidation,relationshipValidation}=require(path.join(__dirname,'..','middlewares','validation'));
 const relationshipAuth=require(path.join(__dirname,'..','middlewares','authorization','relationship.js'));
 
-router.get('/sendFriendRequest/:id',
+router.post('/sendFriendRequest/:id',
     userValidation.checkIdUserExestence,
     relationshipValidation.isItSelfLoop,
     relationshipValidation.pendingRequestOrInRelation,
@@ -23,13 +23,17 @@ router.delete('/request/:id',
     releationshipController.deletePendingRequest,
 );
 
-router.get('/response/accept/:id',
+
+router.patch('/response/accept/:id',
     relationshipValidation.checkIdRelationshipExestence,
     relationshipAuth.isPartInTheRelation,
     relationshipValidation.isPendingRequest,
     relationshipAuth.isReceiver,
     releationshipController.acceptRequest
 );
+
+
+
 
 router.delete('/response/reject/:id',
     relationshipValidation.checkIdRelationshipExestence,
