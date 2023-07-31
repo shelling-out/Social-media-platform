@@ -82,7 +82,7 @@ const swaggerDocument=
             get:reaction.getAllReactionsById
         },
         "/api/relationship/sendFriendRequest/{id}":{
-            get:relationship.createFriendRequest
+            post:relationship.createFriendRequest
         },
         "/api/relationship/mySentRequests":{
             get:relationship.getSentRequests
@@ -94,7 +94,7 @@ const swaggerDocument=
             delete:relationship.deleteSentRequest
         },
         "/api/relationship/response/accept/{id}":{
-            get:relationship.acceptReceivedRequest
+            patch:relationship.acceptReceivedRequest
         },
     }
 }
