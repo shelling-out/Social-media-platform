@@ -108,6 +108,7 @@ const createFriendRequest={
 
 
 
+
 const getSentRequests={
     tags:["Relationships"],
     description:`get sent requests for the current logged in user </br >
@@ -159,6 +160,56 @@ const getSentRequests={
 }
 
 
+const getReceivedRequests={
+    tags:["Relationships"],
+    description:`get received requests for the current logged in user </br >
+    you must be authorized </br>
+    <h3> Note 1: send token in bearer </h3>`,
+    security: [{
+        bearerAuth: []
+    }],
+    responses:{
+        200:{
+            description:"OK",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:[
+                            {
+                              "requestSender": {
+                                "id": 2,
+                                "username": "updatedUsername",
+                                "picturePath": "image-1690691170494.PNG"
+                              },
+                              "id": 13,
+                              "firstUserId": 2,
+                              "secondUserId": 5,
+                              "state": "received",
+                              "createdAt": "2023-07-30T17:03:57.000Z",
+                              "updatedAt": "2023-07-31T06:19:49.000Z"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        401:{
+            description:"Unauthorized",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "Authentication invalid"
+                        }
+                    }
+                }
+            }
+        },       
+    }
+}
+
 
 
 
@@ -167,7 +218,8 @@ const getSentRequests={
 const relationship=
 {
     createFriendRequest,
-    getSentRequests
+    getSentRequests,
+    getReceivedRequests
 }
 
 
