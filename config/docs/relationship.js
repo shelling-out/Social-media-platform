@@ -212,14 +212,98 @@ const getReceivedRequests={
 
 
 
-
+const deleteSentRequest={
+    tags:["Relationships"],
+    description:`delete sent request by the id of the reqeust</br >
+    you must be authorized </br>
+    <h3> Note 1: send token in bearer </h3>`,
+    security: [{
+        bearerAuth: []
+    }],
+    parameters:[
+        {
+          "name": "id",
+          "in": "query",
+          "type": "integer",
+          "required": true
+        }
+    ],
+    responses:{
+        200:{
+            description:"OK",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "relationship": [
+                              "Relationship not found"
+                            ],
+                            "msg": "request has been deleted"
+                        }
+                    }
+                }
+            } 
+        },
+        401:{
+            description:"Unauthorized",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "Authentication invalid"
+                        }
+                    }
+                }
+            }
+        },
+        403:{
+            description:"Forbidden",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:[
+                            {
+                                "msg": "You are not a part of the relation",
+                            },
+                            {
+                                "msg": "You are not the sender of the request"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        400:{
+            description:"Bad Request",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "id": [
+                              "The id must be a number."
+                            ],
+                            "relationship": [
+                                "The request is not pending or recevied , you are friends or blocked "
+                            ]
+                        }
+                    }
+                }
+            }
+        },       
+    }
+}
 
 
 const relationship=
 {
     createFriendRequest,
     getSentRequests,
-    getReceivedRequests
+    getReceivedRequests,
+    deleteSentRequest
 }
 
 
