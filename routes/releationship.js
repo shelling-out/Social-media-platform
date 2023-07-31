@@ -33,8 +33,6 @@ router.patch('/response/accept/:id',
 );
 
 
-
-
 router.delete('/response/reject/:id',
     relationshipValidation.checkIdRelationshipExestence,
     relationshipAuth.isPartInTheRelation,
@@ -42,7 +40,7 @@ router.delete('/response/reject/:id',
     relationshipAuth.isReceiver,
     releationshipController.deletePendingRequest
 );
-
+//**** */
 router.delete('/removeFriend/:id',
     userValidation.checkIdUserExestence,
     relationshipValidation.isItSelfLoop,

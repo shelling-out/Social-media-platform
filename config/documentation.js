@@ -96,6 +96,10 @@ const swaggerDocument=
         "/api/relationship/response/accept/{id}":{
             patch:relationship.acceptReceivedRequest
         },
+        "/api/relationship/response/reject/{id}":{
+            delete:relationship.rejectReceivedRequest
+        },
+
     }
 }
 
