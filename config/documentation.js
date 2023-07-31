@@ -102,6 +102,10 @@ const swaggerDocument=
         "/api/relationship/removeFriend/{id}":{
             delete:relationship.removeFriend
         },
+        "/api/relationship/myFriends":{
+            get:relationship.getMyFriends
+        }
+        
 
     }
 }
