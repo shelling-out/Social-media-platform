@@ -40,6 +40,7 @@ router.delete('/response/reject/:id',
     relationshipAuth.isReceiver,
     releationshipController.deletePendingRequest
 );
+
 router.delete('/removeFriend/:id',
     userValidation.checkIdUserExestence,
     relationshipValidation.isItSelfLoop,
@@ -51,7 +52,7 @@ router.get('/myFriends',
     releationshipController.getMyFriends
 );
 
-router.post('/blockAFriend/:id',
+router.patch('/blockAFriend/:id',
     userValidation.checkIdUserExestence,
     relationshipValidation.isItSelfLoop,
     relationshipAuth.isMyFriend,
