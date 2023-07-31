@@ -23,7 +23,7 @@ router.delete('/request/:id',
     releationshipController.deletePendingRequest,
 );
 
-router.post('/response/accept/:id',
+router.get('/response/accept/:id',
     relationshipValidation.checkIdRelationshipExestence,
     relationshipAuth.isPartInTheRelation,
     relationshipValidation.isPendingRequest,

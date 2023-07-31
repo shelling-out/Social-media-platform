@@ -93,6 +93,9 @@ const swaggerDocument=
         "/api/relationship/request/{id}":{
             delete:relationship.deleteSentRequest
         },
+        "/api/relationship/response/accept/{id}":{
+            get:relationship.acceptReceivedRequest
+        },
     }
 }
 
