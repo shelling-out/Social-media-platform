@@ -563,7 +563,68 @@ const removeFriend={
 }
 
 
-
+const getMyFriends={
+    tags:["Relationships"],
+    description:`get friends for the current logged in user </br >
+    you must be authorized </br>
+    <h3> Note 1: send token in bearer </h3>`,
+    security: [{
+        bearerAuth: []
+    }],
+    responses:{
+        200:{
+            description:"OK",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:[
+                            {
+                              "friend": {
+                                "id": 6,
+                                "username": "User3",
+                                "picturePath": null
+                              },
+                              "id": 15,
+                              "firstUserId": 6,
+                              "secondUserId": 5,
+                              "state": "friends",
+                              "createdAt": "2023-07-31T12:05:28.000Z",
+                              "updatedAt": "2023-07-31T12:10:50.000Z"
+                            },
+                            {
+                              "friend": {
+                                "id": 2,
+                                "username": "updatedUsername",
+                                "picturePath": "image-1690691170494.PNG"
+                              },
+                              "id": 16,
+                              "firstUserId": 2,
+                              "secondUserId": 5,
+                              "state": "friends",
+                              "createdAt": "2023-07-31T15:39:21.000Z",
+                              "updatedAt": "2023-07-31T15:53:00.000Z"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        401:{
+            description:"Unauthorized",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "Authentication invalid"
+                        }
+                    }
+                }
+            }
+        },       
+    }
+}
 
 const relationship=
 {
@@ -573,7 +634,8 @@ const relationship=
     deleteSentRequest,
     acceptReceivedRequest,
     rejectReceivedRequest,
-    removeFriend
+    removeFriend,
+    getMyFriends
 }
 
 

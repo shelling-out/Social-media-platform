@@ -40,7 +40,6 @@ router.delete('/response/reject/:id',
     relationshipAuth.isReceiver,
     releationshipController.deletePendingRequest
 );
-//**** */
 router.delete('/removeFriend/:id',
     userValidation.checkIdUserExestence,
     relationshipValidation.isItSelfLoop,
