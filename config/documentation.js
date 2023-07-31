@@ -4,6 +4,8 @@ const user=require(path.join(__dirname,'docs','user'));
 const post=require(path.join(__dirname,'docs','post'));
 const comment=require(path.join(__dirname,'docs','comment'));
 const reaction=require(path.join(__dirname,'docs','reaction'));
+const relationship=require(path.join(__dirname,'docs','relationship'));
+
 
 const swaggerDocument=
 {
@@ -78,6 +80,9 @@ const swaggerDocument=
         },
         "/api/reaction/all/{id}":{
             get:reaction.getAllReactionsById
+        },
+        "/api/relationship/sendFriendRequest/{id}":{
+            get:relationship.createFriendRequest
         }
     }
 }

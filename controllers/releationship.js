@@ -7,7 +7,7 @@ const { Op ,Sequelize} = require('sequelize');
 const createRequest=async(req,res)=>
 {
     let firstUserId=req.user.id;
-    let secondUserId=req.params.id;
+    let secondUserId=Number(req.params.id);
     const relationship= await Relationship.create({
         firstUserId:firstUserId,
         secondUserId:secondUserId,
