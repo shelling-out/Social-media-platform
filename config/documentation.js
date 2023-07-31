@@ -104,7 +104,10 @@ const swaggerDocument=
         },
         "/api/relationship/myFriends":{
             get:relationship.getMyFriends
-        }
+        },
+        "/api/relationship/blockAFriend/{id}":{
+            patch:relationship.blockAFriend
+        },
         
 
     }
