@@ -161,6 +161,116 @@ const getMyFriends=async(req,res)=>
     let friends=[...query1,...query2];
     res.status(StatusCodes.OK).json(friends);
 }
+
+const blockUser=async(req,res)=>
+{
+    let firstUserId=req.user.id;
+    let secondUserId=req.params.id;
+    let patchUpdate={};
+    patchUpdate.state="blocked";
+    patchUpdate.firstUserId=firstUserId;
+    patchUpdate.secondUserId=secondUserId;
+    await Relationship.update(patchUpdate,{
+        where:{
+            [Op.or]: [
+                {
+                    firstUserId:firstUserId,
+                    secondUserId:secondUserId,
+                    state:"friends"
+                },
+                {
+                    firstUserId:secondUserId,
+                    secondUserId:firstUserId,
+                    state:"friends"
+                }
+            ] 
+        }
+    });
+    const relationship=await Relationship.findOne({
+        where:{
+            [Op.or]: [
+                {
+                    firstUserId:firstUserId,
+                    secondUserId:secondUserId,
+                    state:"blocked"
+                },
+                {
+                    firstUserId:secondUserId,
+                    secondUserId:firstUserId,
+                    state:"blocked"
+                }
+            ] 
+        }
+    });
+    res.status(StatusCodes.OK).json({msg:`friend blocked successfully .. !!`,relationship:relationship.dataValues});
+};
+
+
+const unBlockAUser=async(req,res)=>
+{
+    let releationshipid=req.blockedRelationship.id;
+    let patchUpdate={};
+    patchUpdate.state="friends";
+    await Relationship.update(patchUpdate, {where: {id:releationshipid}});
+    const relationship=await Relationship.findByPk(releationshipid);
+    res.status(StatusCodes.OK).json({msg:`unblocked the user successfully .. you are friends now !!`,relationship:relationship.dataValues});
+};
+
+
+const getBlockedList=async(req,res)=>
+{
+    let id=req.user.id;
+    let users=await Relationship.findAll({
+        include:[
+            {
+                model: User,
+                as:'secondUser',
+                attributes: ['id','username', 'picturePath']   
+            },
+        ],
+        where:{
+            firstUserId:id,
+            state:"blocked",
+        },
+    });
+    users = JSON.stringify(users.map((item) => {
+        const { secondUser, ...rest } = item.toJSON();
+        return {
+          blockedUser: secondUser,
+          ...rest
+        };
+    }));
+    users = JSON.parse(users);
+    res.status(StatusCodes.OK).json(users);
+}
+
+const getListOfPersonsWhoBlockedMe=async(req,res)=>
+{
+    let id=req.user.id;
+    let users=await Relationship.findAll({
+        include:[
+            {
+                model: User,
+                as:'firstUser',
+                attributes: ['id','username', 'picturePath']   
+            },
+        ],
+        where:{
+            secondUserId:id,
+            state:"blocked",
+        },
+    });
+    users = JSON.stringify(users.map((item) => {
+        const { firstUser, ...rest } = item.toJSON();
+        return {
+          userBlockedMe: firstUser,
+          ...rest
+        };
+    }));
+    users = JSON.parse(users);
+    res.status(StatusCodes.OK).json(users);
+}
+
 const releationshipController={
     createRequest,
     getSentRequests,
@@ -168,6 +278,10 @@ const releationshipController={
     deletePendingRequest,
     acceptRequest,
     deleteFriend,
-    getMyFriends
+    getMyFriends,
+    blockUser,
+    unBlockAUser,
+    getBlockedList,
+    getListOfPersonsWhoBlockedMe
 };
 module.exports=releationshipController;

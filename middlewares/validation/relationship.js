@@ -146,9 +146,26 @@ const AreFriends=async(req,res,next)=>
 
 const AreBlocked=async(req,res,next)=>
 {
-    let relationship=await Relationship.findByPk(req.params.id);
-    relationship=relationship.dataValues;
-    if(relationship.state==="blocked")
+    let firstUserId=req.user.id;
+    let secondUserId=req.params.id;
+    const found=await Relationship.findOne({
+        where:{
+            [Op.or]: [
+                {
+                    firstUserId:firstUserId,
+                    secondUserId:secondUserId,
+                    state:"blocked"
+                },
+                {
+                    firstUserId:secondUserId,
+                    secondUserId:firstUserId,
+                    state:"blocked"
+                }
+            ] 
+        }
+    });
+    req.blockedRelationship=found.dataValues;
+    if(found)
         return next();
     let validation={};
     let statusCode=StatusCodes.BAD_REQUEST;

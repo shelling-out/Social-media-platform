@@ -49,4 +49,24 @@ router.delete('/removeFriend/:id',
 router.get('/myFriends',
     releationshipController.getMyFriends
 );
+
+router.post('/blockAFriend/:id',
+    userValidation.checkIdUserExestence,
+    relationshipValidation.isItSelfLoop,
+    relationshipAuth.isMyFriend,
+    releationshipController.blockUser
+);
+
+router.post('/unblockAUser/:id',
+    userValidation.checkIdUserExestence,
+    relationshipValidation.isItSelfLoop,
+    relationshipValidation.AreBlocked,
+    relationshipAuth.isBlocker,
+    releationshipController.unBlockAUser 
+);
+
+
+router.get('/myBlockedList',releationshipController.getBlockedList);
+router.get('/whoBlockedMeList',releationshipController.getListOfPersonsWhoBlockedMe);
+
 module.exports = router;
