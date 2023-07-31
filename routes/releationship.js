@@ -5,7 +5,7 @@ const {releationshipController}=require(path.join(__dirname,'..','controllers'))
 const {userValidation,relationshipValidation}=require(path.join(__dirname,'..','middlewares','validation'));
 const relationshipAuth=require(path.join(__dirname,'..','middlewares','authorization','relationship.js'));
 
-router.post('/sendFriendRequest/:id',
+router.get('/sendFriendRequest/:id',
     userValidation.checkIdUserExestence,
     relationshipValidation.isItSelfLoop,
     relationshipValidation.pendingRequestOrInRelation,
