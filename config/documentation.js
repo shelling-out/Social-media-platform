@@ -83,6 +83,9 @@ const swaggerDocument=
         },
         "/api/relationship/sendFriendRequest/{id}":{
             get:relationship.createFriendRequest
+        },
+        "/api/relationship/mySentRequests":{
+            get:relationship.getSentRequests
         }
     }
 }
