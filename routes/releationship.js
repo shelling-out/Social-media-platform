@@ -59,7 +59,7 @@ router.patch('/blockAFriend/:id',
     releationshipController.blockUser
 );
 
-router.post('/unblockAUser/:id',
+router.patch('/unblockAUser/:id',
     userValidation.checkIdUserExestence,
     relationshipValidation.isItSelfLoop,
     relationshipValidation.AreBlocked,
