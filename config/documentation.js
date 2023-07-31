@@ -111,6 +111,10 @@ const swaggerDocument=
         "/api/relationship/unblockAUser/{id}":{
             patch:relationship.unBlockAUser
         },
+        "/api/relationship/myBlockedList":{
+            get:relationship.getBlockedList
+        },
+
         
 
     }

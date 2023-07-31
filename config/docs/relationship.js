@@ -813,6 +813,59 @@ const unBlockAUser={
     }
 }
 
+const getBlockedList={
+    tags:["Relationships"],
+    description:`get the user blocked list </br >
+    you must be authorized </br>
+    <h3> Note 1: send token in bearer </h3>`,
+    security: [{
+        bearerAuth: []
+    }],
+    responses:{
+        200:{
+            description:"OK",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:[
+                            [
+                                {
+                                  "blockedUser": {
+                                    "id": 6,
+                                    "username": "User3",
+                                    "picturePath": null
+                                  },
+                                  "id": 15,
+                                  "firstUserId": 5,
+                                  "secondUserId": 6,
+                                  "state": "blocked",
+                                  "createdAt": "2023-07-31T12:05:28.000Z",
+                                  "updatedAt": "2023-07-31T17:13:45.000Z"
+                                }
+                            ]
+                        ]
+                    }
+                }
+            }
+        },
+        401:{
+            description:"Unauthorized",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "Authentication invalid"
+                        }
+                    }
+                }
+            }
+        },       
+    }
+}
+
+
 const relationship=
 {
     createFriendRequest,
@@ -824,7 +877,8 @@ const relationship=
     removeFriend,
     getMyFriends,
     blockAFriend,
-    unBlockAUser
+    unBlockAUser,
+    getBlockedList
 }
 
 
