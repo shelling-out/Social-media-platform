@@ -58,12 +58,20 @@ const isMyFriend=async(req,res,next)=>
     throw new unauthorized('This is user is not your friend !!');
 };
 
+const isBlocker=async(req,res,next)=>
+{
+    if(Number(req.user.id)===Number(req.blockedRelationship.firstUserId))
+        return next();
+    throw new unauthorized(`You can't unblock someone who blocked you !!`);
+}
+
 
 const relationshipAuth={
     isPartInTheRelation,
     isSender,
     isReceiver,
-    isMyFriend
+    isMyFriend,
+    isBlocker
 }
 
 module.exports=relationshipAuth;
