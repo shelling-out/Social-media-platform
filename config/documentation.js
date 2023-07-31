@@ -114,9 +114,9 @@ const swaggerDocument=
         "/api/relationship/myBlockedList":{
             get:relationship.getBlockedList
         },
-
-        
-
+        "/api/relationship/whoBlockedMeList":{
+            get:relationship.getListOfPersonsWhoBlockedMe
+        },
     }
 }
 
