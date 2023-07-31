@@ -108,6 +108,9 @@ const swaggerDocument=
         "/api/relationship/blockAFriend/{id}":{
             patch:relationship.blockAFriend
         },
+        "/api/relationship/unblockAUser/{id}":{
+            patch:relationship.unBlockAUser
+        },
         
 
     }

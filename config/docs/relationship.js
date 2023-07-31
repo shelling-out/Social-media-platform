@@ -719,6 +719,100 @@ const blockAFriend={
     }
 }
 
+
+const unBlockAUser={
+    tags:["Relationships"],
+    description:`unblock user you blocked by the id </br >
+    you must be authorized </br>
+    <h3> Note 1: send token in bearer </h3>`,
+    security: [{
+        bearerAuth: []
+    }],
+    parameters:[
+        {
+          "name": "id",
+          "in": "query",
+          "type": "integer",
+          "required": true
+        }
+    ],
+    responses:{
+        200:{
+            description:"OK",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:[
+                            {
+                                "user": [
+                                  "User not found"
+                                ],
+                            },
+                            {
+                                "msg": "unblocked the user successfully .. you are friends now !!",
+                                "relationship": {
+                                  "id": 15,
+                                  "firstUserId": 5,
+                                  "secondUserId": 6,
+                                  "state": "friends",
+                                  "createdAt": "2023-07-31T12:05:28.000Z",
+                                  "updatedAt": "2023-07-31T17:10:14.000Z"
+                                }
+                            }
+                        ]
+                    }
+                }
+            } 
+        },
+        401:{
+            description:"Unauthorized",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "Authentication invalid"
+                        }
+                    }
+                }
+            }
+        },
+        403:{
+            description:"Forbidden",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "You can't unblock someone who blocked you !!"
+                        }
+                    }
+                }
+            }
+        },
+        400:{
+            description:"Bad Request",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "id": [
+                              "The id must be a number."
+                            ],
+                            "relationship": [
+                                "No self loops in the friends system ,The given ID is the same as yours",
+                                "there is no blocked relationship here"
+                            ]
+                        }
+                    }
+                }
+            }
+        },       
+    }
+}
+
 const relationship=
 {
     createFriendRequest,
@@ -729,7 +823,8 @@ const relationship=
     rejectReceivedRequest,
     removeFriend,
     getMyFriends,
-    blockAFriend
+    blockAFriend,
+    unBlockAUser
 }
 
 

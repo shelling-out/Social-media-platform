@@ -164,9 +164,11 @@ const AreBlocked=async(req,res,next)=>
             ] 
         }
     });
-    req.blockedRelationship=found.dataValues;
     if(found)
+    {
+        req.blockedRelationship=found.dataValues;
         return next();
+    }
     let validation={};
     let statusCode=StatusCodes.BAD_REQUEST;
     validation.relationship=[];
