@@ -86,7 +86,10 @@ const swaggerDocument=
         },
         "/api/relationship/mySentRequests":{
             get:relationship.getSentRequests
-        }
+        },
+        "/api/relationship/myReceivedRequests":{
+            get:relationship.getReceivedRequests
+        },
     }
 }
 
