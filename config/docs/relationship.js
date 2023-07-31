@@ -479,6 +479,92 @@ const rejectReceivedRequest={
         },       
     }
 }
+
+
+
+const removeFriend={
+    tags:["Relationships"],
+    description:`remove friend by the id </br >
+    you must be authorized </br>
+    <h3> Note 1: send token in bearer </h3>`,
+    security: [{
+        bearerAuth: []
+    }],
+    parameters:[
+        {
+          "name": "id",
+          "in": "query",
+          "type": "integer",
+          "required": true
+        }
+    ],
+    responses:{
+        200:{
+            description:"OK",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "user": [
+                              "User not found"
+                            ],
+                            "msg": "friend has been removed"
+                        }
+                    }
+                }
+            } 
+        },
+        401:{
+            description:"Unauthorized",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "Authentication invalid"
+                        }
+                    }
+                }
+            }
+        },
+        403:{
+            description:"Forbidden",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "msg": "This is user is not your friend !!"
+                        }
+                    }
+                }
+            }
+        },
+        400:{
+            description:"Bad Request",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            "id": [
+                              "The id must be a number."
+                            ],
+                            "relationship": [
+                                "No self loops in the friends system ,The given ID is the same as yours",
+                            ]
+                        }
+                    }
+                }
+            }
+        },       
+    }
+}
+
+
+
+
 const relationship=
 {
     createFriendRequest,
@@ -486,7 +572,8 @@ const relationship=
     getReceivedRequests,
     deleteSentRequest,
     acceptReceivedRequest,
-    rejectReceivedRequest
+    rejectReceivedRequest,
+    removeFriend
 }
 
 
