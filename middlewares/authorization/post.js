@@ -20,14 +20,69 @@ const postOwnerShip=async(req,res,next)=>
 
 
 
+const postOwnerIsMeOrMyFriend=async(req,res,next)=>
+{
+    let postId=Number(req.params.id);
+    let post=await Post.findByPk(postId);
+    post=post.dataValues;
+    if(post.userId===req.user.id)
+        return next();
+    let firstUserId=req.user.id;
+    let secondUserId=post.userId;
+    const found=await Relationship.findOne({
+        where:{
+            [Op.or]: [
+                {
+                    firstUserId:firstUserId,
+                    secondUserId:secondUserId,
+                    state:"friends"
+                },
+                {
+                    firstUserId:secondUserId,
+                    secondUserId:firstUserId,
+                    state:"friends"
+                }
+            ] 
+        }
+    });
+    if(found)
+        return next();
+    throw new unauthorized("You can only see/interact your posts or your friends posts or your groups posts");
+};
 
 
+const userIsMeOrMyFriend=async(req,res,next)=>
+{
+    let firstUserId=req.user.id;
+    let secondUserId=req.params.id;
+    if(Number(firstUserId)===Number(secondUserId))
+        return next();
+    const found=await Relationship.findOne({
+        where:{
+            [Op.or]: [
+                {
+                    firstUserId:firstUserId,
+                    secondUserId:secondUserId,
+                    state:"friends"
+                },
+                {
+                    firstUserId:secondUserId,
+                    secondUserId:firstUserId,
+                    state:"friends"
+                }
+            ] 
+        }
+    });
+    if(found)
+        return next();
+    throw new unauthorized("You can only see/interact your posts or your friends posts or your groups posts");
+};
 
 
-
-
-const PostAuth={
-    postOwnerShip
+const postAuth={
+    postOwnerShip,
+    postOwnerIsMeOrMyFriend,
+    userIsMeOrMyFriend
 }
 
-module.exports=PostAuth;
+module.exports=postAuth;

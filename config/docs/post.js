@@ -409,7 +409,7 @@ const getPostById={
                     schema:{
                         type:"Object",
                         example:{
-                            "msg": "You can only see your posts or your friends posts or your groups posts"
+                            "msg":"You can only see/interact your posts or your friends posts or your groups posts"
                         }
                     }
                 }
@@ -640,7 +640,7 @@ const getAllPostsById={
                     schema:{
                         type:"Object",
                         example:{
-                            "msg": "You can only see your posts or your friends posts or your groups posts"
+                            "msg": "You can only see/interact your posts or your friends posts or your groups posts"
                         }
                     }
                 }
