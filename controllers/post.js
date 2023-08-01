@@ -73,7 +73,7 @@ const getPostById=async(req,res)=>
         include:[
             {
                 model: User,
-                attributes: ['username', 'picturePath']    
+                attributes: ['id','username', 'picturePath']    
             },
             {
                 model: Comment,
@@ -82,7 +82,7 @@ const getPostById=async(req,res)=>
                 },
                 include:{
                     model: User,
-                    attributes:['username','picturePath']
+                    attributes:['id','username','picturePath']
                 }
             },
             {
@@ -92,7 +92,7 @@ const getPostById=async(req,res)=>
                 },
                 include:{
                     model:User,
-                    attributes:['username','picturePath'],
+                    attributes:['id','username','picturePath'],
                 }
             }
         ],
@@ -125,7 +125,7 @@ const getAllPosts=async(req,res)=>
         include:[
             {
                 model: User,
-                attributes: ['username', 'picturePath']    
+                attributes: ['id','username', 'picturePath']    
             },
             {
                 model: Comment,
@@ -134,7 +134,7 @@ const getAllPosts=async(req,res)=>
                 },
                 include:{
                     model: User,
-                    attributes:['username','picturePath']
+                    attributes:['id','username','picturePath']
                 }
             },
             {
@@ -144,7 +144,7 @@ const getAllPosts=async(req,res)=>
                 },
                 include:{
                     model:User,
-                    attributes:['username','picturePath'],
+                    attributes:['id','username','picturePath'],
                 }
             }
         ],

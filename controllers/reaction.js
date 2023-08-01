@@ -37,7 +37,7 @@ const getReactionById=async(req,res)=>
     const reaction=await Reaction.findOne({
         include:{
             model: User,
-            attributes: ['username', 'picturePath']
+            attributes: ['id','username', 'picturePath']
         },
         where:{
             id:req.params.id
@@ -54,7 +54,7 @@ const getAllReactions=async(req,res)=>
     const reaction=await Reaction.findAll({
         include:{
             model: User,
-            attributes: ['username', 'picturePath']
+            attributes: ['id','username', 'picturePath']
         },
         where:{
             userId:req.params.id
