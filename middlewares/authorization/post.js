@@ -75,7 +75,7 @@ const userIsMeOrMyFriend=async(req,res,next)=>
     });
     if(found)
         return next();
-    throw new unauthorized("You can only see/interact your posts or your friends posts or your groups posts");
+    throw new unauthorized("You can only see/(interact with )your posts or your friends posts or your groups posts");
 };
 
 

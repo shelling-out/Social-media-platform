@@ -99,7 +99,7 @@ const createComment={
                     schema:{
                         type:"Object",
                         example:{
-                            "msg": "You can only comment on your posts or your friends posts"
+                            "msg": "You can only see/(interact with )your posts or your friends posts or your groups posts"
                         }
                     }
                 }
@@ -178,9 +178,14 @@ const editComment={
                 "application/json":{
                     schema:{
                         type:"Object",
-                        example:{
-                            "msg": "You can only modify your comments"
-                        }
+                        example:[
+                            {
+                                "msg": "You can only modify your comments",
+                            },
+                            {
+                                "msg": "You can't update your comment on post of user who is not your friend"
+                            }
+                        ]
                     }
                 }
             }
