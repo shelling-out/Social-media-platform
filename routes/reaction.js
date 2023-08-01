@@ -3,32 +3,41 @@ const express=require('express');
 const router=express.Router();
 const {reactionController}=require(path.join(__dirname,'..','controllers'));
 const {userValidation,postValidation,reactionValidation}=require(path.join(__dirname,'..','middlewares','validation'));
-const reactionOwnerShip=require(path.join(__dirname,'..','middlewares','authorization','reactionOwner'));
+const {postAuth,reactionAuth}=require(path.join(__dirname,'..','middlewares','authorization'));
 
 
 router.post('/add/:id',
     postValidation.checkIdPostExestence,
     reactionValidation.reactOnceOnly,
     reactionValidation.reactionData,
+    postAuth.postOwnerIsMeOrMyFriend,
     reactionController.createReaction
 );
 
 router.patch('/edit/:id',
     reactionValidation.checkIdReactionExestence,
-    reactionOwnerShip,
+    reactionAuth.reactionOwnerShip,
     reactionValidation.reactionData,
+    reactionAuth.onUpdateReactionAreFriends,
     reactionController.editReaction  
 );
 
 router.delete('/delete/:id',
     reactionValidation.checkIdReactionExestence,
-    reactionOwnerShip,
+    reactionAuth.reactionOwnerShip,
     reactionController.deleteReaction
 );
 
-// add authorization to get your reactions or your friends reactions
 
-router.get('/:id',reactionValidation.checkIdReactionExestence,reactionController.getReactionById);
-router.get('/all/:id',userValidation.checkIdUserExestence,reactionController.getAllReactions);
+router.get('/:id',
+    reactionValidation.checkIdReactionExestence,
+    reactionAuth.reactionOwnerIsMeOrMyFriend,
+    reactionController.getReactionById
+);
+router.get('/all/:id',
+    userValidation.checkIdUserExestence,
+    reactionAuth.userIsMeOrMyFriend,
+    reactionController.getAllReactions
+);
 
 module.exports=router;

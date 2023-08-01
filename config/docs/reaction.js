@@ -109,7 +109,7 @@ const createReaction={
                     schema:{
                         type:"Object",
                         example:{
-                            "msg": "You can only react on your posts or your friends posts"
+                            "msg":"You can only see/interact your posts or your friends posts or your groups posts"
                         }
                     }
                 }
@@ -237,9 +237,14 @@ const editReaction={
                 "application/json":{
                     schema:{
                         type:"Object",
-                        example:{
-                            "msg": "You can only modify your reactions",
-                        }
+                        example:[
+                            {
+                                "msg": "You can only modify your reactions",
+                            },
+                            {
+                                "msg":"You can't update your reaction on post of user who is not your friend"
+                            }                         
+                        ]
                     }
                 }
             }
