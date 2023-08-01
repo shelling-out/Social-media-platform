@@ -1,6 +1,6 @@
 const path=require('path');
 const { StatusCodes } = require('http-status-codes');
-const {User,Relationship}=require(path.join(__dirname,'..','models'));
+const {User,Relationship,Post,Comment,Reaction}=require(path.join(__dirname,'..','models'));
 const { Op ,Sequelize} = require('sequelize');
 
 
@@ -109,6 +109,40 @@ const deleteFriend=async(req,res)=>
                 }
             ] 
         }
+    });
+    const firstUserPosts = await Post.findAll({
+        where: {
+          userId: firstUserId,
+        },
+    });
+    await Comment.destroy({
+        where: {
+          userId: secondUserId,
+          postId: firstUserPosts.map((post) => post.id),
+        },
+    }); 
+    await Reaction.destroy({
+        where: {
+          userId: secondUserId,
+          postId: firstUserPosts.map((post) => post.id),
+        },
+    }); 
+    const secondUserPosts = await Post.findAll({
+        where: {
+          userId: secondUserId,
+        },
+    });
+    await Comment.destroy({
+        where: {
+          userId: firstUserId,
+          postId: secondUserPosts.map((post) => post.id),
+        },
+    });
+    await Reaction.destroy({
+        where: {
+          userId: firstUserId,
+          postId: secondUserPosts.map((post) => post.id),
+        },
     });
     res.status(StatusCodes.OK).json({msg:"friend has been removed"});
 };
