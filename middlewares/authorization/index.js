@@ -1,7 +1,7 @@
 const path=require('path');
-const PostAuth=require(path.join(__dirname,'post'));
+const postAuth=require(path.join(__dirname,'post'));
 
 
 module.exports={
-    PostAuth
+    postAuth
 }
