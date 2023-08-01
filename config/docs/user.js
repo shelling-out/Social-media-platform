@@ -34,7 +34,8 @@ const getOneUserProfile={
                                 "birthday": null,
                                 "country": null,
                                 "createdAt": "2023-06-15T07:17:39.000Z",
-                                "updatedAt": "2023-06-15T07:17:39.000Z"
+                                "updatedAt": "2023-06-15T07:17:39.000Z",
+                                "state":["friends","not friends","pending"," "]
                             },{
                                 "user": [
                                     "User not found"
@@ -70,6 +71,21 @@ const getOneUserProfile={
                                 "id": [
                                     "The id must be a number."
                                 ]
+                            },
+                        ]
+                    }
+                }
+            }
+        },
+        403:{
+            description:"Forbidden",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:[
+                            {
+                                "msg": "this user is blocked"
                             },
                         ]
                     }

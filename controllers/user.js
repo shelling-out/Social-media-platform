@@ -6,7 +6,16 @@ const {User}=require(path.join(__dirname,'..','models'));
 
 const getUser=async(req,res)=>
 {
-    const user=await User.findOne({where:{id:req.params.id},attributes:{exclude:['password','socket_io_id','refreshToken']}});
+    const user=await User.findOne({
+        where:{
+            id:req.params.id
+        },
+        attributes:{
+            exclude:['password','socket_io_id','refreshToken']
+        }
+    });
+    if(req.state)
+        user.dataValues.state=req.state;
     res.status(StatusCodes.OK).json(user);
 };
 
