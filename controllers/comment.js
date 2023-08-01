@@ -37,7 +37,7 @@ const getCommentById=async(req,res)=>
     const comment=await Comment.findOne({
         include:{
             model: User,
-            attributes: ['username', 'picturePath']
+            attributes: ['id','username', 'picturePath']
         },
         where:{
             id:req.params.id
@@ -54,7 +54,7 @@ const getAllComments=async(req,res)=>
     const comments=await Comment.findAll({
         include:{
             model: User,
-            attributes: ['username', 'picturePath']
+            attributes: ['id','username', 'picturePath']
         },
         where:{
             userId:req.params.id
