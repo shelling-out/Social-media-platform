@@ -5,7 +5,7 @@ const post=require(path.join(__dirname,'docs','post'));
 const comment=require(path.join(__dirname,'docs','comment'));
 const reaction=require(path.join(__dirname,'docs','reaction'));
 const relationship=require(path.join(__dirname,'docs','relationship'));
-
+const home=require(path.join(__dirname,'docs','home'));
 
 const swaggerDocument=
 {
@@ -30,6 +30,12 @@ const swaggerDocument=
         },
         "/api/auth/logout":{
             get:reg_login_logout.logout
+        },
+        "/api/home/search{?text=queryString}":{
+            get:home.search
+        },
+        "/api/home/news":{
+            get:home.news
         },
         "/api/user/profile/{id}":{
             get:user.getOneUserProfile,

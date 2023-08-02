@@ -10,8 +10,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Chat.belongsTo(models.User, { foreignKey: 'senderUserId' });
-      Chat.belongsTo(models.User, { foreignKey: 'reciverUserId' });
+      models.User.belongsToMany(models.User, { as: 'senderUser', through: Chat, foreignKey: 'senderUserId' ,otherKey: 'reciverUserId'});
+      models.User.belongsToMany(models.User, { as: 'reciverUser', through:Chat, foreignKey: 'reciverUserId' ,otherKey: 'senderUserId'});
+      Chat.belongsTo(models.User, { as: 'senderUser', onDelete: 'CASCADE'});
+      Chat.belongsTo(models.User, { as: 'reciverUser', onDelete: 'CASCADE' });
     }
   }
   Chat.init({
