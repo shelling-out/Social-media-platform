@@ -120,7 +120,7 @@ const getPostById=async(req,res)=>
 
 const getAllPosts=async(req,res)=>
 {
-    let defaultState='public';    
+    let defaultState='public';
     const posts=await Post.findAll({
         include:[
             {

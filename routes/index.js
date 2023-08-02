@@ -32,6 +32,7 @@ const groupRouter=require(path.join(__dirname, 'group.js'));
 const commentRouter=require(path.join(__dirname,'comment.js'));
 const reactionRouter=require(path.join(__dirname,'reaction.js'));
 const releationshipRouter=require(path.join(__dirname,'releationship.js'));
+const searchRouter=require(path.join(__dirname , 'search.js')) ;
 
 
 const authenticated=require(path.join(__dirname,'..','middlewares','authentication.js'));
@@ -49,5 +50,6 @@ router.use('/api/group', authenticated, groupRouter);
 router.use('/api/comment',authenticated,commentRouter);
 router.use('/api/reaction',authenticated,reactionRouter);
 router.use('/api/relationship',authenticated,releationshipRouter);
+router.use('/api/search',authenticated,searchRouter);
 
 module.exports=router;
