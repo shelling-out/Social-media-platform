@@ -26,6 +26,8 @@ const rateLimiter = require('express-rate-limit');
 const mainRouter=require(path.join(__dirname,'routes'));
 
 
+const httpServer = require('http').createServer(app);
+
 // using middlewares and actual routes
 app.set('trust proxy', 1);
 app.use(
@@ -36,8 +38,7 @@ app.use(
     })
 );
 app.use(express.json()); 
-app.use(express.static('public'));
-
+app.use(express.static(path.join(__dirname,'public')));
 app.use(helmet());
 app.use(cors(corsOptions));
 app.use(xss());
@@ -63,3 +64,4 @@ db.sequelize.sync().then(()=>{
     console.log(error);
 });
 
+module.exports=httpServer;
