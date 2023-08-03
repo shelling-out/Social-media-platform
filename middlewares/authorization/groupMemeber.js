@@ -4,7 +4,7 @@ const {GroupUser}=require(path.join(__dirname,'..','..','models'));
 const groupMemeber =async(req,res,next)=>
 {
     let user = req.user; 
-    let groupUser = await GroupUser.findOne({where:{userId:user.id , groupId: req.params.groupId }}) ;
+    let groupUser = await GroupUser.findOne({where:{userId:user.id , groupId: (req.params.groupId||req.body.groupId) }}) ;
     if(!groupUser){
         return res.status(404).json({msg:"Group Not found "});
     }

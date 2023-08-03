@@ -27,7 +27,11 @@ const editGroup = async (req , res )=>{
     let Updatedgroup = await Group.update(group , {where:{id: req.params.groupId}}) ;
     return res.json({msg:"group updated successfully" , group:Updatedgroup}) ;
 }
-
+const getGroup = async(req, res )=>{
+    let group = await Group.findOne({where:{id: req.params.groupId}}) ;
+    let state =  await GroupUser.findOne({where:{groupId: req.params.groupId , userId: req.user.id}}) ;
+    return res.json({msg:'success', group , role: (state.state || 'outOfGroup')}) ; 
+}
 const MyGroups = async (req , res )=>{
     
     let user =await User.findOne({where:{id:req.user.id} , include:Group } );
@@ -58,39 +62,12 @@ const modifyRole = async (req , res )=>{
     await GroupUser.update({state:req.body.state } ,{where:{groupId: req.params.groupId , userId:req.params.userId }});
     return res.json({msg:'updated successfully' , newRole: req.body.state }) ;
 }
+
 const groupMemebers = async (req , res )=>{
     let users = await GroupUser.findAll({where:{groupId: req.params.groupId , state:['Admin' , 'Owner', 'normal' ]}}) ; 
     return res.json({users:users}) ;
 }
 
-const createPost = async (req ,res ) =>{
-    let data = {} ;
-    
-    if(req.body.text)  data.text = req.body.text ;
-    if(req.file) data.filename = req.file.filename ;
-    const groupUser = await GroupUser.findOne({where:{userId:req.user.id , groupId: req.params.groupId}}) ;
-    const post = await Post.create({userId : req.user.id , text: data.text , picture: data.filename  } ) ;
-    const groupPost = await GroupPost.create({groupUserId : groupUser.id , postId: post.id , groupId: req.params.groupId } ) ;
-    return res.json({msg:'Post created successfully'}) ;    
-}
-const getPosts = async (req ,res ) =>{
-    const posts = await Group.findOne({where:{id:req.params.groupId} , 
-    include:{
-        model: GroupPost , attributes:['id'] , include:{
-            model:Post , include:{
-                model: User , attributes:['userName'] 
-            }
-        }
-    }});
-    return res.json({posts:posts.GroupPosts}) ;
-}
-const editPost = async (req ,res )=>{
-    let data = {} ;
-    if(req.body.text ) data.text = req.body.text ;
-    if(req.file) data.filename = req.file.filename ; 
-    const post = await Post.update({text: data.text , picture: data.filenaem } , {where: {id: req.params.postId } } ) ;
-    return res.json({msg:'post updated successfully'}) ;
-}
 /*
     admin:
         CRUD on group (done)
@@ -120,9 +97,7 @@ let groupController = {
     modifyRole,
     showJoinRequests,
     groupMemebers ,
-    createPost,
-    getPosts,
-    editPost 
+    getGroup
 
 };
 module.exports = groupController ;

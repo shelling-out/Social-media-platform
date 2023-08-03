@@ -14,10 +14,7 @@ router.post('/'                                         , groupController.create
 router.get('/my'                                        , groupController.MyGroups ) ;
 router.post('/join/:groupId'                            , groupController.joinRequest ) ;
 router.get('/members/:groupId'                          , groupController.groupMemebers );
-
-// need to be group member
-router.post('/post/:groupId'               , [groupMemeber , uploadImage ], groupController.createPost  );
-router.get('/post/:groupId'                , groupMemeber, groupController.getPosts ) ;
+router.get('/:groupId'                                  , groupController.getGroup ) ;
 
 // need admin privliages 
 router.delete('/:groupId'                   ,groupAdmin , groupController.deleteGroup ) ;
