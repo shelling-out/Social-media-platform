@@ -34,6 +34,8 @@ const reactionRouter=require(path.join(__dirname,'reaction.js'));
 const releationshipRouter=require(path.join(__dirname,'releationship.js'));
 const searchRouter=require(path.join(__dirname , 'search.js')) ;
 const homeRouter=require(path.join(__dirname,'home.js'));
+const chatRouter=require(path.join(__dirname,'chat.js'));
+
 
 const authenticated=require(path.join(__dirname,'..','middlewares','authentication.js'));
 
@@ -52,6 +54,6 @@ router.use('/api/reaction',authenticated,reactionRouter);
 router.use('/api/relationship',authenticated,releationshipRouter);
 router.use('/api/search',authenticated,searchRouter);
 router.use('/api/home',authenticated,homeRouter);
-
+router.use('/api/chat',authenticated,chatRouter);
 
 module.exports=router;

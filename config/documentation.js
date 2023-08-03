@@ -6,6 +6,8 @@ const comment=require(path.join(__dirname,'docs','comment'));
 const reaction=require(path.join(__dirname,'docs','reaction'));
 const relationship=require(path.join(__dirname,'docs','relationship'));
 const home=require(path.join(__dirname,'docs','home'));
+const chat=require(path.join(__dirname,'docs','chat'));
+
 
 const swaggerDocument=
 {
@@ -123,6 +125,9 @@ const swaggerDocument=
         "/api/relationship/whoBlockedMeList":{
             get:relationship.getListOfPersonsWhoBlockedMe
         },
+        "/api/chat/messages/{id}":{
+            get:chat.getMessages
+        }
     }
 }
 

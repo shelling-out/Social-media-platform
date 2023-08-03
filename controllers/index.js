@@ -8,6 +8,8 @@ const groupController=require(path.join(__dirname , 'group.js')) ;
 const releationshipController=require(path.join(__dirname,'releationship.js'));
 const serachController=require(path.join(__dirname , 'search.js') ) ; 
 const homeController=require(path.join(__dirname,'home.js'));
+const chatController=require(path.join(__dirname,'chat.js'));
+
 
 module.exports=
 {
@@ -19,5 +21,6 @@ module.exports=
     groupController,
     releationshipController,
     serachController,
-    homeController 
+    homeController ,
+    chatController
 };
