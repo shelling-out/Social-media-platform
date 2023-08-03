@@ -1,7 +1,7 @@
 const path=require('path');
 const { StatusCodes } = require('http-status-codes')
 const {User,Group,Post,Comment,Reaction,Relationship}=require(path.join(__dirname,'..','models'));
-const {Op,Sequelize, UniqueConstraintError } = require('sequelize');
+const {Op,Sequelize } = require('sequelize');
 
 
 const search=async(req,res)=>
@@ -9,6 +9,7 @@ const search=async(req,res)=>
     let SearchResults=0;
     if(!req.query.text)
         return res.status(StatusCodes.OK).json({"msg":`${SearchResults} Search Results Found !!`});
+    
     const users=await User.findAll({
         where:{
             username:{
@@ -33,6 +34,28 @@ const search=async(req,res)=>
             } 
         ]}
     });
+    const uniqueUsersId = new Set();
+    uniqueUsersId.add(req.user.id);
+    const friends=await Relationship.findAll({
+        where:{
+            [Op.or]: [
+                {
+                    firstUserId:req.user.id,
+                    state:"friends"
+                },
+                {
+                    secondUserId:req.user.id,
+                    state:"friends"
+                }
+            ] 
+        },
+        attributes:['firstUserId','secondUserId'],
+    });
+    friends.forEach((friend) => {
+        uniqueUsersId.add(friend.firstUserId);
+        uniqueUsersId.add(friend.secondUserId);
+    });
+    let idArr=[...uniqueUsersId];
     const posts=await Post.findAll({
         include:[
             {
@@ -62,8 +85,9 @@ const search=async(req,res)=>
         ],
         where:{
             text: { 
-                [Op.like]: `%${req.query.text}%` 
+                [Op.like]: `%${req.query.text}%`,
             },
+            userId:idArr.map((id)=>id), 
             state:"public"
         },
         attributes:{

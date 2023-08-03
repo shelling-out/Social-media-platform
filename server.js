@@ -25,8 +25,9 @@ const rateLimiter = require('express-rate-limit');
 // import mainRouter
 const mainRouter=require(path.join(__dirname,'routes'));
 
-
-const httpServer = require('http').createServer(app);
+// socket io stuff
+const server = require('http').createServer(app);
+const initializeSocket=require(path.join(__dirname,'socket'));
 
 // using middlewares and actual routes
 app.set('trust proxy', 1);
@@ -38,7 +39,7 @@ app.use(
     })
 );
 app.use(express.json()); 
-app.use(express.static(path.join(__dirname,'public')));
+app.use(path.join(__dirname,'public'),express.static(path.join(__dirname,'public')));
 app.use(helmet());
 app.use(cors(corsOptions));
 app.use(xss());
@@ -58,10 +59,10 @@ const PORT=process.env.SERVER_PORT||3500;
 
 db.sequelize.sync().then(()=>{
     console.log('Connnected to the dataBase');
-    app.listen(PORT,()=>console.log(`Server is running on port ${PORT} ... `));
+    server.listen(PORT,()=>console.log(`Server is running on port ${PORT} ... `));
+    initializeSocket(server);
 
 }).catch((error)=>{
     console.log(error);
 });
 
-module.exports=httpServer;
