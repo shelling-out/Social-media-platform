@@ -4,8 +4,6 @@ const bcrypt = require('bcryptjs');
 const { StatusCodes } = require('http-status-codes');
 const {User}=require(path.join(__dirname,'..','models'));
 
-// const httpServer=require(path.join('..','server.js'));
-// const io=require(path.join(__dirname,'..','socket'));
 
 const register=async (req,res)=>
 {
@@ -36,8 +34,6 @@ const login=async (req,res)=>
     );
     refreshToken=accessToken;
     const result=await User.update({refreshToken:refreshToken},{where:{id:user.id}});
-    // let userInfo={id:user.id ,username: user.username }
-    // socketIO.emit('login', userInfo);
     res.status(StatusCodes.OK).json({ user: {id:user.id ,username: user.username } , token:accessToken });
 }
 
