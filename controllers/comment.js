@@ -57,7 +57,8 @@ const getAllComments=async(req,res)=>
             attributes: ['id','username', 'picturePath']
         },
         where:{
-            userId:req.params.id
+            userId:req.user.id,
+            postId:req.params.id
         },
         attributes:{
             exclude:['UserId','PostId']
