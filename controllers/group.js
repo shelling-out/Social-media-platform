@@ -74,7 +74,51 @@ const createPost = async (req ,res ) =>{
 }
 // updated this to give likes and comments count etc....
 const getPost = async (req ,res )=>{
-    let post = await Post.findOne({where:{id: req.params.postId}});
+    const post=await Post.findOne({
+        include:[
+            {
+                model: User,
+                attributes: ['id','username', 'picturePath']    
+            },
+            {
+                model: Comment,
+                attributes:{
+                    exclude:['UserId','PostId']
+                },
+                include:{
+                    model: User,
+                    attributes:['id','username','picturePath']
+                }
+            },
+            {
+                model:Reaction,
+                attributes:{
+                    exclude:['UserId','PostId']
+                },
+                include:{
+                    model:User,
+                    attributes:['id','username','picturePath'],
+                }
+            }
+        ],
+        where:{
+            id:req.params.id
+        },
+        attributes:{
+            include: [
+                [
+                    Sequelize.literal('(SELECT COUNT(*) FROM comments WHERE comments.postId = post.id)'), 'commentsCount'
+                ],
+                [
+                    Sequelize.literal('(SELECT COUNT(*) FROM reactions WHERE reactions.postId = post.id AND state="like")'), 'likesCount'
+                ],
+                [
+                    Sequelize.literal('(SELECT COUNT(*) FROM reactions WHERE reactions.postId = post.id AND state="dislike")'), 'dislikesCount'
+                ]
+            ],
+            exclude:['UserId']
+        },
+    });
     return res.json({msg:'success' , post }) ;
 }
 
@@ -106,14 +150,6 @@ const deletePost = async (req , res) =>
     return res.json({msg:'success' });
 }
 
-
-/*        
-        CRUD on post in group 
-        CRUD on comment in post in group
-        CRUD on reaction on post in group
-*/
-
-
 let groupController = {
     createGroup ,
     editGroup,
@@ -134,11 +170,8 @@ let groupController = {
 module.exports = groupController ;
 
 /* 
-    1. validation
-    2. existance of posts & group 
     3. posts -> get (number of likes etc... ) standerize them
     4. route for images.
-    5. validation for comments & reaction & posts (if they are in group -> not allowed)
-    
+    5. validation for comments & reaction & posts (if they are in group -> not allowed) 
     
 */

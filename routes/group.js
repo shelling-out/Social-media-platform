@@ -70,7 +70,7 @@ router.get(
 router.delete(
   "/:groupId/post/:postId",
   groupValidation.checkForGroupExistance,
-  groupValidation.checkforPostExistance,
+  groupValidation.checkForPostExistance,
   groupAuth.groupMember,
   groupAuth.postOwnerOrAdmin,
   groupController.deletePost
@@ -78,7 +78,7 @@ router.delete(
 router.patch(
   "/:groupId/post/:postId",
   groupValidation.checkForGroupExistance,
-  groupValidation.checkforPostExistance,
+  groupValidation.checkForPostExistance,
   groupAuth.groupMember,
   groupAuth.postOwner,
   groupController.editPost
@@ -86,7 +86,7 @@ router.patch(
 router.get(
   "/:groupId/post/:postId",
   groupValidation.checkForGroupExistance,
-  groupValidation.checkforPostExistance,
+  groupValidation.checkForPostExistance,
   groupAuth.groupMember,
   groupController.getPost
 );
@@ -103,7 +103,7 @@ router.post(
 router.patch(
   "/:groupId/comment/:id",
   groupValidation.checkForGroupExistance,
-  groupValidation.checkforCommentExistance,
+  groupValidation.checkForCommentExistance,
   groupAuth.groupMember,
   groupAuth.commentOwner,
   commentController.editComment
@@ -111,7 +111,7 @@ router.patch(
 router.delete(
   "/:groupId/comment/:id",
   groupValidation.checkForGroupExistance,
-  groupValidation.checkforCommentExistance,
+  groupValidation.checkForCommentExistance,
   groupAuth.groupMember,
   groupAuth.commentOwnerOrAdmin,
   commentController.deleteComment
@@ -119,7 +119,7 @@ router.delete(
 router.get(
   "/:groupId/comment/:id",
   groupValidation.checkForGroupExistance,
-  groupValidation.checkforCommentExistance,
+  groupValidation.checkForCommentExistance,
   groupAuth.groupMember,
   commentController.getCommentById
 );
@@ -127,7 +127,7 @@ router.get(
 router.get(
   "/:groupId/comment/all/:id",
   groupValidation.checkForGroupExistance,
-  groupValidation.checkforPostExistance,
+  groupValidation.checkForPostExistance,
   groupAuth.groupMember,
   commentController.getAllComments
 );
@@ -137,14 +137,14 @@ router.get(
 router.post(
   "/:groupId/reaction/:id",
   groupValidation.checkForGroupExistance,
-  groupValidation.checkforPostExistance,
+  groupValidation.checkForPostExistance,
   groupAuth.groupMember,
   reactionController.createReaction
 );
 router.patch(
   "/:groupId/reaction/:id",
   groupValidation.checkForGroupExistance,
-  groupValidation.checkforReactionExistance,
+  groupValidation.checkForReactionExistance,
   groupAuth.groupMember,
   groupAuth.reactionOwner,
   reactionController.editReaction
@@ -152,7 +152,7 @@ router.patch(
 router.delete(
   "/:groupId/reaction/:id",
   groupValidation.checkForGroupExistance,
-  groupValidation.checkforReactionExistance,
+  groupValidation.checkForReactionExistance,
   groupAuth.groupMember,
   groupAuth.reactionOwnerOrAdmin,
   reactionController.deleteReaction
@@ -160,7 +160,7 @@ router.delete(
 router.get(
   "/:groupId/reaction/:id",
   groupValidation.checkForGroupExistance,
-  groupValidation.checkforReactionExistance,
+  groupValidation.checkForReactionExistance,
   groupAuth.groupMember,
   reactionController.getReactionById
 );
@@ -168,7 +168,7 @@ router.get(
 router.get(
   "/:groupId/reaction/all/:id",
   groupValidation.checkForGroupExistance,
-  groupValidation.checkforPostExistance,
+  groupValidation.checkForPostExistance,
   groupAuth.groupMember,
   reactionController.getAllReactions
 );
