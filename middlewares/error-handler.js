@@ -12,7 +12,7 @@ const errorHandlerMiddleware = (err, req, res, next) =>
   {
     // set default
     statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
-    msg: err.message || 'Something went wrong try again later',
+    msg: err || 'Something went wrong try again later',
   }
   if (err.name === 'ValidationError')
   {

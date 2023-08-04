@@ -43,7 +43,7 @@ const postOwnerOrAdmin = async (req,res,next)=>{
     let groupUser = await GroupUser.findOne({where:{userId:req.user.id , groupId: req.params.groupId}}); 
     
     if(groupUser.state == 'Admin' || groupUser.state == 'Owner'){
-        next() ;
+        return next() ;
     }
     let groupPost = await GroupPost.findOne({where:{groupId: req.params.groupId , postId: req.params.postId, groupUserId:groupUser.id}});
     if(!groupPost){
@@ -66,7 +66,7 @@ const commentOwner = async (req,res,next)=>{
 const commentOwnerOrAdmin = async (req,res,next)=>{
     let groupUser = await GroupUser.findOne({where:{userId :  req.user.id , groupId: req.params.groupId}}) ;
     if(groupUser.state == 'Admin' || groupUser.state == 'Owner'){
-        next() ;
+        return next() ;
     }
     let comment = await Comment.findOne({where:{id:req.params.id, userId:req.user.id}}) ;
     if(!comment){
@@ -84,7 +84,7 @@ const reactionOwner = async (req , res , next) =>{
 const reactionOwnerOrAdmin = async (req, res,next)=>{
     let groupUser = await GroupUser.findOne({where:{userId :  req.user.id , groupId: req.params.groupId}}) ;
     if(groupUser.state == 'Admin' || groupUser.state == 'Owner'){
-        next() ;
+        return next() ;
     }
     let reaction = await Reaction.findOne({where:{id:req.params.id , userId: req.user.id}}) ; 
     if(!reaction){

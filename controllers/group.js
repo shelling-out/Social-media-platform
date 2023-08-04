@@ -1,8 +1,6 @@
 const path = require('path') ;
 const {Group , GroupUser , User , Post , GroupPost  }= require(path.join(__dirname , '..' , 'models'  )) ;
 
-
-
 const createGroup = async (req , res) =>{
     let user = req.user ; 
     let group = await Group.create({groupName:req.body.groupName , groupDescription: req.body.groupDescription});
@@ -33,9 +31,7 @@ const getGroup = async(req, res )=>{
     return res.json({msg:'success', group , role: (state.state || 'outOfGroup')}) ; 
 }
 const MyGroups = async (req , res )=>{
-    
     let user =await User.findOne({where:{id:req.user.id} , include:Group } );
-    
     return res.json({groups:user.Groups});
 }
 
@@ -69,7 +65,6 @@ const groupMemebers = async (req , res )=>{
 // Post
 const createPost = async (req ,res ) =>{
     let data = {} ;
-    
     if(req.body.text)  data.text = req.body.text ;
     if(req.file) data.filename = req.file.filename ;
     const groupUser = await GroupUser.findOne({where:{userId:req.user.id , groupId: req.params.groupId}}) ;
@@ -134,7 +129,16 @@ let groupController = {
     editPost ,
     deletePost,
     getPost 
-    
-
 };
+
 module.exports = groupController ;
+
+/* 
+    1. validation
+    2. existance of posts & group 
+    3. posts -> get (number of likes etc... ) standerize them
+    4. route for images.
+    5. validation for comments & reaction & posts (if they are in group -> not allowed)
+    
+    
+*/
