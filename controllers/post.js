@@ -178,3 +178,5 @@ const postController={
     getAllPosts
 };
 module.exports=postController;
+
+

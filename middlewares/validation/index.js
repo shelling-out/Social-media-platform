@@ -5,7 +5,7 @@ const postValidation=require(path.join(__dirname,'post'));
 const commentValidation=require(path.join(__dirname,'comment'));
 const reactionValidation=require(path.join(__dirname,'reaction'));
 const relationshipValidation=require(path.join(__dirname,'relationship'));
-
+const groupValidation=require(path.join(__dirname ,'group.js')) ;
 module.exports=
 {
     authValidation,
@@ -13,5 +13,6 @@ module.exports=
     postValidation,
     commentValidation,
     reactionValidation,
-    relationshipValidation
-}
+    relationshipValidation,
+    groupValidation
+};

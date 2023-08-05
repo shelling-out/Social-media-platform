@@ -40,9 +40,9 @@ const searchForPosts = async (req ,res )=>{
 }
 const searchForComments = async (req ,res )=>{
     // maybe vuln to sql injection
+    
     let comments = await sequelize.query(`
-        SELECT userId , text , username , postId , comments.createdAt , comments.updatedAt from comments , relationships , users WHERE
-        (
+        SELECT userId , text , username , postId , comments.createdAt , comments.updatedAt from comments , relationships , users  WHERE (
             comments.userId = relationships.firstUserId 
             OR 
             comments.userId = relationships.secondUserId
@@ -63,13 +63,3 @@ const serachController = {
     searchForComments
 };
 module.exports= serachController;
-
- 
-
-
-
-// search for users , groups , posts , comments ,
-// (groups) : (title , desciption)  -> public
-// (users) : (name) -> public 
-// (posts) : (body) -> private (check for friendship)
-// (comments): (body) -> private (check for friendship)

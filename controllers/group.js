@@ -1,8 +1,6 @@
 const path = require('path') ;
 const {Group , GroupUser , User , Post , GroupPost  }= require(path.join(__dirname , '..' , 'models'  )) ;
 
-
-
 const createGroup = async (req , res) =>{
     let user = req.user ; 
     let group = await Group.create({groupName:req.body.groupName , groupDescription: req.body.groupDescription});
@@ -27,11 +25,13 @@ const editGroup = async (req , res )=>{
     let Updatedgroup = await Group.update(group , {where:{id: req.params.groupId}}) ;
     return res.json({msg:"group updated successfully" , group:Updatedgroup}) ;
 }
-
+const getGroup = async(req, res )=>{
+    let group = await Group.findOne({where:{id: req.params.groupId}}) ;
+    let state =  await GroupUser.findOne({where:{groupId: req.params.groupId , userId: req.user.id}}) ;
+    return res.json({msg:'success', group , role: (state.state || 'outOfGroup')}) ; 
+}
 const MyGroups = async (req , res )=>{
-    
     let user =await User.findOne({where:{id:req.user.id} , include:Group } );
-    
     return res.json({groups:user.Groups});
 }
 
@@ -62,21 +62,72 @@ const groupMemebers = async (req , res )=>{
     let users = await GroupUser.findAll({where:{groupId: req.params.groupId , state:['Admin' , 'Owner', 'normal' ]}}) ; 
     return res.json({users:users}) ;
 }
-
+// Post
 const createPost = async (req ,res ) =>{
     let data = {} ;
-    
     if(req.body.text)  data.text = req.body.text ;
     if(req.file) data.filename = req.file.filename ;
     const groupUser = await GroupUser.findOne({where:{userId:req.user.id , groupId: req.params.groupId}}) ;
     const post = await Post.create({userId : req.user.id , text: data.text , picture: data.filename  } ) ;
     const groupPost = await GroupPost.create({groupUserId : groupUser.id , postId: post.id , groupId: req.params.groupId } ) ;
-    return res.json({msg:'Post created successfully'}) ;    
+    return res.json({msg:'Post created successfully' , post }) ;    
 }
+// updated this to give likes and comments count etc....
+const getPost = async (req ,res )=>{
+    const post=await Post.findOne({
+        include:[
+            {
+                model: User,
+                attributes: ['id','username', 'picturePath']    
+            },
+            {
+                model: Comment,
+                attributes:{
+                    exclude:['UserId','PostId']
+                },
+                include:{
+                    model: User,
+                    attributes:['id','username','picturePath']
+                }
+            },
+            {
+                model:Reaction,
+                attributes:{
+                    exclude:['UserId','PostId']
+                },
+                include:{
+                    model:User,
+                    attributes:['id','username','picturePath'],
+                }
+            }
+        ],
+        where:{
+            id:req.params.id
+        },
+        attributes:{
+            include: [
+                [
+                    Sequelize.literal('(SELECT COUNT(*) FROM comments WHERE comments.postId = post.id)'), 'commentsCount'
+                ],
+                [
+                    Sequelize.literal('(SELECT COUNT(*) FROM reactions WHERE reactions.postId = post.id AND state="like")'), 'likesCount'
+                ],
+                [
+                    Sequelize.literal('(SELECT COUNT(*) FROM reactions WHERE reactions.postId = post.id AND state="dislike")'), 'dislikesCount'
+                ]
+            ],
+            exclude:['UserId']
+        },
+    });
+    return res.json({msg:'success' , post }) ;
+}
+
+// updated this to give likes and comments count etc....
 const getPosts = async (req ,res ) =>{
     const posts = await Group.findOne({where:{id:req.params.groupId} , 
     include:{
-        model: GroupPost , attributes:['id'] , include:{
+        model: GroupPost , attributes:['postId'] , 
+        include:{
             model:Post , include:{
                 model: User , attributes:['userName'] 
             }
@@ -84,32 +135,20 @@ const getPosts = async (req ,res ) =>{
     }});
     return res.json({posts:posts.GroupPosts}) ;
 }
+
 const editPost = async (req ,res )=>{
     let data = {} ;
     if(req.body.text ) data.text = req.body.text ;
     if(req.file) data.filename = req.file.filename ; 
-    const post = await Post.update({text: data.text , picture: data.filenaem } , {where: {id: req.params.postId } } ) ;
-    return res.json({msg:'post updated successfully'}) ;
+    await Post.update({text: data.text , picture: data.filename } , {where: {id: req.params.postId } } ) ;
+    return res.json({msg:'post updated successfully' }) ;
 }
-/*
-    admin:
-        CRUD on group (done)
-        show join req  (done)
-        accept join req (done )
-        ban people (done )
-        
-        delete posts
-        both:
-        show group memebers (done)
-        leave group (done)
-        
-        CRUD on post in group 
-        CRUD on comment in post in group
-        CRUD on reaction on post in group
-
-        search or suggesting groups for user which they are not in , (when sending them send with each group status to indicate the status of that user to that group)
-*/
-
+const deletePost = async (req , res) => 
+{
+    await Post.destroy({where:{id: req.params.postId}}) ;
+    await GroupPost.destroy({where:{postId: req.params.postId}});
+    return res.json({msg:'success' });
+}
 
 let groupController = {
     createGroup ,
@@ -120,9 +159,19 @@ let groupController = {
     modifyRole,
     showJoinRequests,
     groupMemebers ,
+    getGroup,
     createPost,
     getPosts,
-    editPost 
-
+    editPost ,
+    deletePost,
+    getPost 
 };
+
 module.exports = groupController ;
+
+/* 
+    3. posts -> get (number of likes etc... ) standerize them
+    4. route for images.
+    5. validation for comments & reaction & posts (if they are in group -> not allowed) 
+    
+*/
