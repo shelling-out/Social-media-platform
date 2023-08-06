@@ -3,6 +3,7 @@ const express = require("express");
 
 const router = express.Router();
 
+
 // const {}=require(path.join(__dirname,'..','middlewares','validation'));
 const {
   groupController,
@@ -129,7 +130,7 @@ router.get(
   groupValidation.checkForGroupExistance,
   groupValidation.checkForPostExistance,
   groupAuth.groupMember,
-  commentController.getAllComments
+  commentController.getAllCommentsForUserByPostId
 );
 
 // reaction
@@ -170,7 +171,7 @@ router.get(
   groupValidation.checkForGroupExistance,
   groupValidation.checkForPostExistance,
   groupAuth.groupMember,
-  reactionController.getAllReactions
+  reactionController.getAllReactionsForUserByPostId
 );
 
 // need admin privliages

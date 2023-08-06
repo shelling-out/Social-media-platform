@@ -57,6 +57,23 @@ const getAllReactions=async(req,res)=>
             attributes: ['id','username', 'picturePath']
         },
         where:{
+            userId:req.params.id
+        },
+        attributes:{
+            exclude:['UserId','PostId']
+        }
+    });
+    res.status(StatusCodes.OK).json(reaction);
+};
+
+const getAllReactionsForUserByPostId=async(req,res)=>
+{
+    const reaction=await Reaction.findAll({
+        include:{
+            model: User,
+            attributes: ['id','username', 'picturePath']
+        },
+        where:{
             userId:req.user.id,
             postId:req.params.id
         },
@@ -72,7 +89,8 @@ const reactionController={
     editReaction,
     deleteReaction,
     getReactionById,
-    getAllReactions
+    getAllReactions,
+    getAllReactionsForUserByPostId
 };
 
 module.exports=reactionController;
