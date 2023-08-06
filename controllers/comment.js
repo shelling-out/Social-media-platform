@@ -57,6 +57,24 @@ const getAllComments=async(req,res)=>
             attributes: ['id','username', 'picturePath']
         },
         where:{
+            userId:req.params.id
+        },
+        attributes:{
+            exclude:['UserId','PostId']
+        }
+    });
+    res.status(StatusCodes.OK).json(comments);
+};
+
+
+const getAllCommentsForUserByPostId=async(req,res)=>
+{
+    const comments=await Comment.findAll({
+        include:{
+            model: User,
+            attributes: ['id','username', 'picturePath']
+        },
+        where:{
             userId:req.user.id,
             postId:req.params.id
         },
@@ -72,7 +90,8 @@ const commentController={
     editComment,
     deleteComment,
     getCommentById,
-    getAllComments
+    getAllComments,
+    getAllCommentsForUserByPostId
 };
 
 module.exports=commentController;
