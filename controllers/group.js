@@ -1,5 +1,5 @@
 const path = require('path') ;
-const {Group , GroupUser , User , Post , GroupPost  }= require(path.join(__dirname , '..' , 'models'  )) ;
+const {Group , GroupUser , User , Post , GroupPost , Reaction, Comment ,Sequelize }= require(path.join(__dirname , '..' , 'models'  )) ;
 
 const createGroup = async (req , res) =>{
     let user = req.user ; 
@@ -62,18 +62,19 @@ const groupMemebers = async (req , res )=>{
     let users = await GroupUser.findAll({where:{groupId: req.params.groupId , state:['Admin' , 'Owner', 'normal' ]}}) ; 
     return res.json({users:users}) ;
 }
-// Post
+
 const createPost = async (req ,res ) =>{
     let data = {} ;
     if(req.body.text)  data.text = req.body.text ;
     if(req.file) data.filename = req.file.filename ;
     const groupUser = await GroupUser.findOne({where:{userId:req.user.id , groupId: req.params.groupId}}) ;
-    const post = await Post.create({userId : req.user.id , text: data.text , picture: data.filename  } ) ;
+    const post = await Post.create({userId : req.user.id , text: data.text , picture: data.filename , state:'private' } ) ;
     const groupPost = await GroupPost.create({groupUserId : groupUser.id , postId: post.id , groupId: req.params.groupId } ) ;
     return res.json({msg:'Post created successfully' , post }) ;    
 }
-// updated this to give likes and comments count etc....
+
 const getPost = async (req ,res )=>{
+    
     const post=await Post.findOne({
         include:[
             {
@@ -102,7 +103,7 @@ const getPost = async (req ,res )=>{
             }
         ],
         where:{
-            id:req.params.id
+            id:req.params.postId
         },
         attributes:{
             include: [
@@ -117,22 +118,61 @@ const getPost = async (req ,res )=>{
                 ]
             ],
             exclude:['UserId']
-        },
+        }
     });
+    
     return res.json({msg:'success' , post }) ;
 }
 
-// updated this to give likes and comments count etc....
+
 const getPosts = async (req ,res ) =>{
     const posts = await Group.findOne({where:{id:req.params.groupId} , 
-    include:{
-        model: GroupPost , attributes:['postId'] , 
-        include:{
-            model:Post , include:{
-                model: User , attributes:['userName'] 
+            include:{
+                model: GroupPost , attributes:['postId'] , 
+                include:{
+                    model:Post ,include:[
+                        {
+                            model: User,
+                            attributes: ['id','username', 'picturePath']    
+                        },
+                        {
+                            model: Comment,
+                            attributes:{
+                                exclude:['UserId','PostId']
+                            },
+                            include:{
+                                model: User,
+                                attributes:['id','username','picturePath']
+                            }
+                        },
+                        {
+                            model:Reaction,
+                            attributes:{
+                                exclude:['UserId','PostId']
+                            },
+                            include:{
+                                model:User,
+                                attributes:['id','username','picturePath'],
+                            }
+                        }
+                    ]
+                }
+            },
+            attributes:{
+                include: [
+                    [
+                        Sequelize.literal('(SELECT COUNT(*) FROM comments WHERE comments.postId = post.id)'), 'commentsCount'
+                    ],
+                    [
+                        Sequelize.literal('(SELECT COUNT(*) FROM reactions WHERE reactions.postId = post.id AND state="like")'), 'likesCount'
+                    ],
+                    [
+                        Sequelize.literal('(SELECT COUNT(*) FROM reactions WHERE reactions.postId = post.id AND state="dislike")'), 'dislikesCount'
+                    ]
+                ],
+                exclude:['UserId']
             }
-        }
-    }});
+    });
     return res.json({posts:posts.GroupPosts}) ;
 }
 
@@ -170,7 +210,6 @@ let groupController = {
 module.exports = groupController ;
 
 /* 
-    3. posts -> get (number of likes etc... ) standerize them
     4. route for images.
     5. validation for comments & reaction & posts (if they are in group -> not allowed) 
     

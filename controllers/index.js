@@ -9,7 +9,7 @@ const releationshipController=require(path.join(__dirname,'releationship.js'));
 const serachController=require(path.join(__dirname , 'search.js') ) ; 
 const homeController=require(path.join(__dirname,'home.js'));
 const chatController=require(path.join(__dirname,'chat.js'));
-
+const imageController=require(path.join(__dirname,'image.js'));
 
 module.exports=
 {
@@ -22,5 +22,6 @@ module.exports=
     releationshipController,
     serachController,
     homeController ,
-    chatController
+    chatController,
+    imageController
 };
