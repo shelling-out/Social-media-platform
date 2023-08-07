@@ -35,7 +35,7 @@ const releationshipRouter=require(path.join(__dirname,'releationship.js'));
 const searchRouter=require(path.join(__dirname , 'search.js')) ;
 const homeRouter=require(path.join(__dirname,'home.js'));
 const chatRouter=require(path.join(__dirname,'chat.js'));
-
+const imageRouter=require(path.join(__dirname , 'image.js')) ;
 
 const authenticated=require(path.join(__dirname,'..','middlewares','authentication.js'));
 
@@ -55,5 +55,5 @@ router.use('/api/relationship',authenticated,releationshipRouter);
 router.use('/api/search',authenticated,searchRouter);
 router.use('/api/home',authenticated,homeRouter);
 router.use('/api/chat',authenticated,chatRouter);
-
+router.use('/api/images',authenticated,imageRouter);
 module.exports=router;

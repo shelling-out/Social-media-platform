@@ -197,7 +197,7 @@ router.get(
 router.post(
   "/:groupId/modifyRole/:userId/",
   groupValidation.checkForGroupExistance,
-  groupValidation.checkUserExistance,
+  groupValidation.checkUserExistanceInGroup,
   groupAuth.groupAdmin,
   groupValidation.checkModifyRole,
   groupController.modifyRole

@@ -2,7 +2,7 @@ const path=require('path');
 const Validator=require('validatorjs');
 const { StatusCodes } = require('http-status-codes');
 const { BadRequestError, UnauthenticatedError } = require(path.join(__dirname,'..','..','errors'));
-const {Group, User, Post , Comment , Reaction } = require(path.join(__dirname , '..', '..' ,'models')); 
+const {Group, User, Post , Comment , Reaction , GroupUser ,GroupPost } = require(path.join(__dirname , '..', '..' ,'models')); 
 
 // Validator.registerAsync('groupExists',  (groupId, attribute, req, passes)=> {
 //     console.log(groupId , attribute , req , passes) ;
@@ -24,13 +24,13 @@ Validator.registerAsync('groupExists', async (value, attribute, req, passes) => 
     return ;
 });
 
-Validator.registerAsync('postExist' , async (value , attribute , req ,passes )=>{
+Validator.registerAsync('postExists' , async (value , attribute , req ,passes )=>{
     const post = await Post.findOne({where:{id:value}}) ; 
     if(post){
         passes() ; 
     }
     else{
-        passes(false,'comment ont found') ;
+        passes(false,'post ont found') ;
     }
 return ;
 });
@@ -54,7 +54,24 @@ Validator.registerAsync('reactionExists' , async (value , attribute , req ,passe
     }
 return ;
 });
-
+Validator.registerAsync('userExists' , async (value , attribute , req , passes )=>{
+    const user = await User.findOne({where:{id:value}}) ; 
+    if(user){
+        passes();
+    }
+    else{
+        passes(false,'user not found') ; 
+    }
+});
+Validator.registerAsync('groupPostExists' , async (value , attribute , req , passes )=>{
+    const groupPost = await GroupPost.findOne({where:{id:value}}) ; 
+    if(groupPost){
+        passes();
+    }
+    else{
+        passes(false,'post not found') ; 
+    }
+});
 const checkGroupData = async (req, res , next)=>{
     let validationRule = {
         groupName:'required|string',
@@ -77,34 +94,50 @@ const checkPostData = async (req,res,next)=>{
     }
     return res.status(400).json({msg:'failed' , errors:validator.errors.errors}) ; 
 }
-
-const checkForGroupExistance = async (req,res,next)=>{
+const checkForGroupPostExistance = async (req,res,next)=>{
     let data = {
-        groupId:req.params.groupId
+        postId:req.params.id 
     };
-    let validationRule = {
-        groupId:'required|numeric|groupExists'
-    }; 
-    
+    let validationRule={
+        postId:'required|numeric|groupPostExists'
+    };
     let validator = new Validator(data , validationRule) ;
     await validator.checkAsync(()=>{
          next() ;
     } , ()=>{
-        return res.json({msg:'failed' , errors:validator.errors.errors}) ;
+        return res.status(404).json({msg:'failed' , errors:validator.errors.errors}) ;
+    });
+};
+
+const checkForGroupExistance = async (req,res,next)=>{
+    
+    let data = {
+        groupId:(req.params.groupId||req.params.id)
+    };
+    let validationRule = {
+        groupId:'required|numeric|groupExists'
+    }; 
+    let validator = new Validator(data , validationRule) ;
+    await validator.checkAsync(()=>{
+         next() ;
+    } , ()=>{
+        return res.status(404).json({msg:'failed' , errors:validator.errors.errors}) ;
     });
 }
 const checkForPostExistance = async (req,res,next)=>{
+    
     let data = {
-        postId:req.params.id || req.params.postId
+        postId:(req.params.id || req.params.postId)
     };
     let validationRule = {
         postId: 'required|numeric|postExists'
     };
     let validator = new Validator(data , validationRule) ;
+    
     await validator.checkAsync(()=>{
          next() ;
     } , ()=>{
-        return res.json({msg:'failed' , errors:validator.errors.errors}) ;
+        return res.status(404).json({msg:'failed' , errors:validator.errors.errors}) ;
     });    
 };
 
@@ -119,7 +152,7 @@ const checkForCommentExistance = async (req,res,next)=>{
     await validator.checkAsync(()=>{
          next() ;
     } , ()=>{
-        return res.json({msg:'failed' , errors:validator.errors.errors}) ;
+        return res.status(404).json({msg:'failed' , errors:validator.errors.errors}) ;
     });    
 };
 
@@ -134,11 +167,24 @@ const checkForReactionExistance = async (req,res,next)=>{
     await validator.checkAsync(()=>{
          next() ;
     } , ()=>{
-        return res.json({msg:'failed' , errors:validator.errors.errors}) ;
+        return res.status(404).json({msg:'failed' , errors:validator.errors.errors}) ;
     });    
 };
-
-const checkUserExistance = async (req ,res ,next)=>{
+const checkForUserExistance = async (req, res,next)=>{
+     let data = {
+        userId: req.params.id 
+     };
+     let validationRule = {
+        userId: 'required|numeric|userExists'
+     };
+     let  validator = new Validator(data , validationRule) ;
+     await validator.checkAsync( ()=>{
+        next() ;
+     } , ()=>{
+        return res.status(404).json({msg:'failed' , errors:validator.errors.errors}) ;
+     })
+};
+const checkUserExistanceInGroup = async (req ,res ,next)=>{
     let groupUser = await GroupUser.findOne({where:{groupId:req.params.groupId , userId: req.params.userId}}) ;
     if(!groupUser){
         return res.status(404).json({msg:'user not found'} ) ;
@@ -159,11 +205,13 @@ const checkModifyRole = async (req, res, next)=>{
 let groupValidation ={
     checkGroupData ,
     checkForGroupExistance,
-    checkUserExistance,
+    checkUserExistanceInGroup,
     checkModifyRole,
     checkPostData,
     checkForCommentExistance,
     checkForPostExistance,
-    checkForReactionExistance
+    checkForReactionExistance,
+    checkForUserExistance,
+    checkForGroupPostExistance
 };
 module.exports = groupValidation ; 
