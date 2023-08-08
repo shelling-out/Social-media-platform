@@ -1,6 +1,6 @@
 const path=require('path');
 const {StatusCodes}=require('http-status-codes');
-const { User,Reaction}=require(path.join(__dirname,'..','models'));
+const { User,Reaction,Post}=require(path.join(__dirname,'..','models'));
 
 
 
@@ -34,11 +34,24 @@ const deleteReaction=async(req,res)=>
 
 const getReactionById=async(req,res)=>
 {
+    let defaultState='public';
+    if(req.params.groupId){
+        defaultState='private';
+    } 
     const reaction=await Reaction.findOne({
-        include:{
-            model: User,
-            attributes: ['id','username', 'picturePath']
-        },
+        include:[
+            {
+                model: User,
+                attributes: ['id','username', 'picturePath']
+            },
+            {
+                model: Post,
+                attributes: [],
+                where: {
+                    state: defaultState
+                }
+            }
+        ],
         where:{
             id:req.params.id
         },
@@ -52,16 +65,28 @@ const getReactionById=async(req,res)=>
 const getAllReactions=async(req,res)=>
 {
     const reaction=await Reaction.findAll({
-        include:{
-            model: User,
-            attributes: ['id','username', 'picturePath']
-        },
+        include:[
+            {
+                model: User,
+                attributes: ['id','username', 'picturePath']
+            },
+            {
+                model: Post,
+                attributes: [],
+                where: {
+                    state: 'public'
+                }
+            }
+        ],
         where:{
             userId:req.params.id
         },
         attributes:{
             exclude:['UserId','PostId']
-        }
+        },
+        order: [
+            ['updatedAt', 'DESC'],
+        ],
     });
     res.status(StatusCodes.OK).json(reaction);
 };
@@ -69,10 +94,19 @@ const getAllReactions=async(req,res)=>
 const getAllReactionsForUserByPostId=async(req,res)=>
 {
     const reaction=await Reaction.findAll({
-        include:{
-            model: User,
-            attributes: ['id','username', 'picturePath']
-        },
+        include:[
+            {
+                model: User,
+                attributes: ['id','username', 'picturePath']
+            },
+            {
+                model: Post,
+                attributes: [],
+                where: {
+                    state: 'private'
+                }
+            }
+        ],
         where:{
             userId:req.user.id,
             postId:req.params.id

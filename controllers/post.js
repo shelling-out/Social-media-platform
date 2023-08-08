@@ -18,23 +18,12 @@ const createPost=async(req,res)=>
         data.picture=req.file.filename;
     }
     data.userId=Number(req.user.id);
-
-    // send in req.body.data as data form field the attribute state as private
-    // I will make a validation for it 
-    // if(data.state==="private"){
-    //     defaultState=data.state;
-    // }
     const post= await Post.create({
         userId:data.userId,
         text:data.text,
         state:defaultState,
         picture:data.picture
     });
-
-    // here you need to create record for grouppost table
-    // if(data.state==="private"){
-    //     and you are good with all other operations no need to do any new route 
-    // }
     res.status(StatusCodes.CREATED).json(post.dataValues);
 };
 
@@ -165,7 +154,10 @@ const getAllPosts=async(req,res)=>
                 ]
             ],
             exclude:['UserId']
-        }
+        },
+        order: [
+            ['updatedAt', 'DESC'],
+        ],
     });
     res.status(StatusCodes.OK).json(posts);
 };

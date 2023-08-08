@@ -8,6 +8,7 @@ const {postAuth,reactionAuth}=require(path.join(__dirname,'..','middlewares','au
 
 router.post('/add/:id',
     postValidation.checkIdPostExestence,
+    postAuth.postIsPublic,
     reactionValidation.reactOnceOnly,
     reactionValidation.reactionData,
     postAuth.postOwnerIsMeOrMyFriend,
