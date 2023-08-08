@@ -78,11 +78,20 @@ const userIsMeOrMyFriend=async(req,res,next)=>
     throw new unauthorized("You can only see/(interact with )your posts or your friends posts or your groups posts");
 };
 
+const postIsPublic=async(req,res,next)=>
+{
+    let postId=Number(req.params.id);
+    let post=await Post.findByPk(postId);
+    if(post.dataValues.state==="public")
+        return next();
+    throw new unauthorized("You can only see/(interact with )your posts or your friends posts or your groups posts");
+};
 
 const postAuth={
     postOwnerShip,
     postOwnerIsMeOrMyFriend,
-    userIsMeOrMyFriend
+    userIsMeOrMyFriend,
+    postIsPublic
 }
 
 module.exports=postAuth;

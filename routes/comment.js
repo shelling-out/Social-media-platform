@@ -9,6 +9,7 @@ const {postAuth,commentAuth}=require(path.join(__dirname,'..','middlewares','aut
 
 router.post('/add/:id',
     postValidation.checkIdPostExestence,
+    postAuth.postIsPublic,
     postAuth.postOwnerIsMeOrMyFriend,
     commentController.createComment
 );
