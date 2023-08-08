@@ -74,6 +74,11 @@ const createComment={
                                     "The id must be a number."
                                 ]
                             }, 
+                            {
+                                "text": [
+                                    "The text field is required."
+                                ]
+                            }
                         ]
                     }
                 }
@@ -202,6 +207,11 @@ const editComment={
                                     "The id must be a number."
                                 ]
                             }, 
+                            {
+                                "text": [
+                                    "The text field is required."
+                                ]
+                            }
                         ]
                     }
                 }

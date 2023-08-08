@@ -11,12 +11,14 @@ router.post('/add/:id',
     postValidation.checkIdPostExestence,
     postAuth.postIsPublic,
     postAuth.postOwnerIsMeOrMyFriend,
+    commentValidation.commentData,
     commentController.createComment
 );
 router.patch('/edit/:id',
     commentValidation.checkIdCommentExestence,
     commentAuth.commentOwnerShip,
     commentAuth.onUpdateCommentAreFriends,
+    commentValidation.commentData,
     commentController.editComment
 );
 router.delete('/delete/:id',
