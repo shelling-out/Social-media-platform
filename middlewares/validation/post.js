@@ -34,7 +34,27 @@ const checkIdPostExestence=async (req,res,next)=>
     return res.status(statusCode).json(validation.errors.errors);
 }
 
+const postData=async(req,res,next)=>
+{
+    let data={};
+    data.text=null;
+    if(req.body.data){
+        const {text}= JSON.parse(req.body.data);
+        data.text=text;
+    }
+    const validationRule={
+        text:`required|string`,
+    };
+    let validation=new Validator(data,validationRule);
+    if(validation.passes()){
+        return next();
+    }
+    return res.status(StatusCodes.BAD_REQUEST).json(validation.errors.errors);
+}
+
+
 const postValidation={
     checkIdPostExestence,
+    postData
 }
 module.exports = postValidation;
