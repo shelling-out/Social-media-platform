@@ -20,7 +20,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const xss = require('xss-clean');
 const rateLimiter = require('express-rate-limit');
-
+const authenticated=require(path.join(__dirname,'middlewares','authentication.js'));
 
 // import mainRouter
 const mainRouter=require(path.join(__dirname,'routes'));
@@ -39,7 +39,7 @@ app.use(
     })
 );
 app.use(express.json()); 
-app.use(path.join(__dirname,'public'),express.static(path.join(__dirname,'public')));
+app.use('/public/images',authenticated,express.static(path.join(__dirname,'public','images')));
 app.use(helmet());
 app.use(cors(corsOptions));
 app.use(xss());
