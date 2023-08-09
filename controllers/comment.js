@@ -1,6 +1,6 @@
 const path=require('path');
 const { StatusCodes } = require('http-status-codes')
-const {User,Comment}=require(path.join(__dirname,'..','models'));
+const {User,Comment,Post}=require(path.join(__dirname,'..','models'));
 
 
 const createComment=async(req,res)=>
@@ -34,11 +34,24 @@ const deleteComment=async(req,res)=>
 
 const getCommentById=async(req,res)=>
 {
+    let defaultState='public';
+    if(req.params.groupId){
+        defaultState='private';
+    }
     const comment=await Comment.findOne({
-        include:{
-            model: User,
-            attributes: ['id','username', 'picturePath']
-        },
+        include:[
+            {
+                model: User,
+                attributes: ['id','username', 'picturePath']
+            },
+            {
+                model: Post,
+                attributes: [],
+                where: {
+                    state: defaultState
+                }
+            }
+        ],
         where:{
             id:req.params.id
         },
@@ -52,16 +65,28 @@ const getCommentById=async(req,res)=>
 const getAllComments=async(req,res)=>
 {
     const comments=await Comment.findAll({
-        include:{
-            model: User,
-            attributes: ['id','username', 'picturePath']
-        },
+        include:[
+            {
+                model: User,
+                attributes: ['id','username', 'picturePath']
+            },
+            {
+                model: Post,
+                attributes: [],
+                where: {
+                    state: 'public'
+                }
+            }
+        ],
         where:{
             userId:req.params.id
         },
         attributes:{
-            exclude:['UserId','PostId']
-        }
+            exclude:['UserId','PostId'],
+        },
+        order: [
+            ['updatedAt', 'DESC'],
+        ],
     });
     res.status(StatusCodes.OK).json(comments);
 };
@@ -70,10 +95,19 @@ const getAllComments=async(req,res)=>
 const getAllCommentsForUserByPostId=async(req,res)=>
 {
     const comments=await Comment.findAll({
-        include:{
-            model: User,
-            attributes: ['id','username', 'picturePath']
-        },
+        include:[
+            {
+                model: User,
+                attributes: ['id','username', 'picturePath']
+            },
+            {
+                model: Post,
+                attributes: [],
+                where: {
+                    state: 'private'
+                }
+            }
+        ],
         where:{
             userId:req.user.id,
             postId:req.params.id

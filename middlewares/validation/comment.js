@@ -34,7 +34,21 @@ const checkIdCommentExestence=async (req,res,next)=>
     return res.status(statusCode).json(validation.errors.errors);
 }
 
+const commentData=async(req,res,next)=>
+{
+    let data=req.body;
+    const validationRule={
+        text:`required|string`,
+    };
+    let validation=new Validator(data,validationRule);
+    if(validation.passes()){
+        return next();
+    }
+    return res.status(StatusCodes.BAD_REQUEST).json(validation.errors.errors);
+}
+
 const commentValidation={
     checkIdCommentExestence,
+    commentData
 }
 module.exports = commentValidation;

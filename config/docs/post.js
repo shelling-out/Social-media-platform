@@ -80,7 +80,23 @@ const createPost={
                 }
             }
         },
-        
+        400:{
+            description:"bad request",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:[
+                            {
+                                "text": [
+                                    "The text field is required."
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        },
     }
 }
 
@@ -188,6 +204,11 @@ const editPost={
                                     "The id must be a number."
                                 ]
                             }, 
+                            {
+                                "text": [
+                                    "The text field is required."
+                                ]
+                            }
                         ]
                     }
                 }

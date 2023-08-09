@@ -7,12 +7,17 @@ const {postAuth}=require(path.join(__dirname,'..','middlewares','authorization')
 const uploadImage=require(path.join(__dirname,'..','middlewares','uploadImage'));
 
 
-router.post('/create',uploadImage,postController.createPost);
+router.post('/create',
+    uploadImage,
+    postValidation.postData,
+    postController.createPost
+);
 
 router.patch('/edit/:id',
     postValidation.checkIdPostExestence,
     postAuth.postOwnerShip,
     uploadImage,
+    postValidation.postData,
     postController.editPost
 );
 router.delete('/delete/:id',
