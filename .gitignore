@@ -5,3 +5,5 @@ logs
 /public/images
 api_endpoints.pdf
 ERD.png
+package-lock.json
+package.json

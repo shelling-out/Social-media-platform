@@ -44,7 +44,8 @@ const authenticated=require(path.join(__dirname,'..','middlewares','authenticati
 router.get('/', (req, res) =>{
     res.send('<h1>Social Media Application API</h1><a href="/api-docs">Documentation</a>');
 });
-router.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument,options));
+
+router.use('/api-docs', swaggerUI.serve, swaggerUI.setup( swaggerDocument,options));
 router.use('/api/auth',authRouter);
 router.use('/api/user',authenticated,userRouter);
 router.use('/api/post',authenticated,postRouter);

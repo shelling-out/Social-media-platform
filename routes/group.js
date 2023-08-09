@@ -29,14 +29,14 @@ const postMiddleware = require(path.join(
   "authorization",
   "post.js"
 ));
-const { groupValidation } = require(path.join(
+const { groupValidation  , reactionValidation } = require(path.join(
   __dirname,
   "..",
   "middlewares",
   "validation"
 ));
 
-router.post("/", groupValidation.checkGroupData, groupController.createGroup);
+router.post("/", groupValidation.checkGroupData , uploadImage , groupController.createGroup);
 router.get("/my", groupController.MyGroups);
 router.post(
   "/:groupId/join",
@@ -58,7 +58,7 @@ router.get(
 // need to be group member
 router.post(
   "/:groupId/post",
-  [groupValidation.checkForGroupExistance, groupAuth.groupMember, uploadImage],
+  [groupValidation.checkForGroupExistance, groupValidation.checkPostData , groupAuth.groupMember, uploadImage],
   groupController.createPost
 );
 
@@ -98,6 +98,7 @@ router.post(
   "/:groupId/comment/:id",
   groupValidation.checkForGroupExistance,
   groupValidation.checkForPostExistance,
+  groupValidation.checkPostData,
   groupAuth.groupMember,
   commentController.createComment
 );
@@ -105,6 +106,7 @@ router.patch(
   "/:groupId/comment/:id",
   groupValidation.checkForGroupExistance,
   groupValidation.checkForCommentExistance,
+  groupValidation.checkPostData,
   groupAuth.groupMember,
   groupAuth.commentOwner,
   commentController.editComment
@@ -140,6 +142,8 @@ router.post(
   groupValidation.checkForGroupExistance,
   groupValidation.checkForPostExistance,
   groupAuth.groupMember,
+  reactionValidation.reactOnceOnly ,
+  reactionValidation.reactionData,
   reactionController.createReaction
 );
 router.patch(
@@ -148,6 +152,7 @@ router.patch(
   groupValidation.checkForReactionExistance,
   groupAuth.groupMember,
   groupAuth.reactionOwner,
+  reactionValidation.reactionData,
   reactionController.editReaction
 );
 router.delete(
