@@ -25,7 +25,7 @@ Validator.registerAsync('groupExists', async (value, attribute, req, passes) => 
 });
 
 Validator.registerAsync('postExists' , async (value , attribute , req ,passes )=>{
-    const post = await Post.findOne({where:{id:value}}) ; 
+    const post = await GroupPost.findOne({where:{postId:value} });
     if(post){
         passes() ; 
     }
@@ -196,7 +196,7 @@ const checkModifyRole = async (req, res, next)=>{
     let validationRule = {
         state:`required|in:${states.join(',')}`
     };
-    let validator = new Validator(req.body.state , validationRule) ;
+    let validator = new Validator(req.body , validationRule) ;
     if(validator.passes()){
         return next() ; 
     }

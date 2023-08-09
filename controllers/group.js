@@ -3,7 +3,8 @@ const {Group , GroupUser , User , Post , GroupPost , Reaction, Comment ,Sequeliz
 
 const createGroup = async (req , res) =>{
     let user = req.user ; 
-    let group = await Group.create({groupName:req.body.groupName , groupDescription: req.body.groupDescription});
+    if(req.file) data.filename = req.file.filename ;
+    let group = await Group.create({groupName:req.body.groupName , groupDescription: req.body.groupDescription , groupPicture:data.filename });
     let groupUser = await GroupUser.create({userId: user.id , groupId: group.id , state:'Owner'}) ; 
     return res.json({msg:'Group created successfully' , group: group}) ;
 }
@@ -46,7 +47,7 @@ const joinRequest = async (req , res )=>{
         return res.json({msg:'You are not allowed to make this action'}) ;
     }
     else{
-        await GroupUser.destroy({where:{usereId: req.user.id , groupId: req.params.groupId }} );
+        await GroupUser.destroy({where:{userId: req.user.id , groupId: req.params.groupId }} );
         return res.json({msg:'canceled successfully'}) ;
     }
 }
@@ -161,13 +162,13 @@ const getPosts = async (req ,res ) =>{
             attributes:{
                 include: [
                     [
-                        Sequelize.literal('(SELECT COUNT(*) FROM comments WHERE comments.postId = post.id)'), 'commentsCount'
+                        Sequelize.literal('(SELECT COUNT(*) FROM comments WHERE comments.postId = groupposts.groupId)'), 'commentsCount'
                     ],
                     [
-                        Sequelize.literal('(SELECT COUNT(*) FROM reactions WHERE reactions.postId = post.id AND state="like")'), 'likesCount'
+                        Sequelize.literal('(SELECT COUNT(*) FROM reactions WHERE reactions.postId = groupposts.groupId AND state="like")'), 'likesCount'
                     ],
                     [
-                        Sequelize.literal('(SELECT COUNT(*) FROM reactions WHERE reactions.postId = post.id AND state="dislike")'), 'dislikesCount'
+                        Sequelize.literal('(SELECT COUNT(*) FROM reactions WHERE reactions.postId = groupposts.groupId AND state="dislike")'), 'dislikesCount'
                     ]
                 ],
                 exclude:['UserId']
@@ -210,7 +211,7 @@ let groupController = {
 module.exports = groupController ;
 
 /* 
-    4. route for images.
-    5. validation for comments & reaction & posts (if they are in group -> not allowed) 
+    
+    check (comment , post , reaction) existance in group 
     
 */
