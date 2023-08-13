@@ -9,15 +9,22 @@ const {User}=require(path.join(__dirname,'..','..','models'));
   
 const register=async (req,res,next)=>
 { 
+    const expectedValues=["male","female"];
     const validationRule={
         username: "required",
         email: "required|email",
         password: "required|min:8|max:20",
+        firstName:'string',
+        lastName:'string',
+        country:'string',
+        gender:`string|in:${expectedValues.join(',')}`,
+        birthday:'date',
     };
-    let validation=new Validator(req.body,validationRule);
+    const data = JSON.parse(req.body.data) ;
+    let validation=new Validator(data,validationRule);
     const found = await User.findOne({
         where: {
-            email: req.body.email,
+            email: data.email,
         },
     });
     if(validation.passes()&&!found){

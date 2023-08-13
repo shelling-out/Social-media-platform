@@ -7,9 +7,13 @@ const {User}=require(path.join(__dirname,'..','models'));
 
 const register=async (req,res)=>
 {
+    const data = JSON.parse(req.body.data) ;
+    if(req.file){
+        data.picturePath = req.file.filename ;
+    }
     const salt = await bcrypt.genSalt(10);
-    req.body.password = await bcrypt.hash(req.body.password, salt);
-    const user= await User.create({username:req.body.username,email:req.body.email,password:req.body.password});
+    data.password = await bcrypt.hash(data.password, salt);
+    const user= await User.create(data);
     res.status(StatusCodes.CREATED).json({msg:"created successfully"});
 }
 
@@ -34,7 +38,8 @@ const login=async (req,res)=>
     );
     refreshToken=accessToken;
     const result=await User.update({refreshToken:refreshToken},{where:{id:user.id}});
-    res.status(StatusCodes.OK).json({ user: {id:user.id ,username: user.username } , token:accessToken });
+    
+    res.status(StatusCodes.OK).json({ user: {id:user.id ,username: user.username, token:accessToken} });
 }
 
 const logout=async(req,res)=>
