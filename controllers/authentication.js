@@ -34,7 +34,8 @@ const login=async (req,res)=>
     );
     refreshToken=accessToken;
     const result=await User.update({refreshToken:refreshToken},{where:{id:user.id}});
-    res.status(StatusCodes.OK).json({ user: {id:user.id ,username: user.username } , token:accessToken });
+    
+    res.status(StatusCodes.OK).json({ user: {id:user.id ,username: user.username, token} });
 }
 
 const logout=async(req,res)=>

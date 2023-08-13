@@ -101,9 +101,9 @@ const login={
                         example:{
                             "user": {
                                 "id": 10,
-                                "username": "potato"
-                            },
-                            "token": "the token string"
+                                "username": "potato",
+                                "token": "the token string"
+                            }
                         }
                     }
                 }
