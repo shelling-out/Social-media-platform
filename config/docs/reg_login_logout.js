@@ -9,21 +9,44 @@ const register={
     </ul>
     <h3> Note : users are distinct by email </h3>
     `,
-    requestBody:{  
-        required:true,
-        content:{
-            "application/json":{
-                schema:{
-                    type:"Object",
-                    example:{
-                        username:"potato",
-                        email:"potato@email.com",
-                        password:"potatoPassword"
+    parameters:[
+        {
+          "name": "id",
+          "in": "query",
+          "type": "integer",
+          "required": true
+        },
+        {
+            in: 'formData',
+            name: 'data',
+            type: 'application/json',
+            description: 'JSON data to update make sure to give it the field name (data)',
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                            
+                            "username": "potatoUserName",
+                            "password": "potatoNewPassword",
+                            "firstName": "potatoFirstName",
+                            "lastName": "potatoLastName",
+                            "gender": "male",
+                            "birthday": "2022-01-01",
+                            "country": "potatoContury"       
+                        }
                     }
                 }
             }
         },
-    },
+        {
+            in: 'formData',
+            name: 'image',
+            type: 'file',
+            description: 'Image to update make sure to give it the field name (image)',
+            example: '{"image": "the picture you will upload"}',
+        },
+    ],
     responses:{
         201:{
             description:"created",
@@ -45,9 +68,25 @@ const register={
                     schema:{
                         type:"Object",
                         example:{
-                            "msg1": "Error:  name can't be empty Please enter your username",
-                            "msg2": "SequelizeUniqueConstraintError: Email address already in use!",
-                            "msg3":"Error: password must have 8 chars at least and 20 chars at most"
+                            "username": [
+                                "The username field is required."
+                              ],
+                              "email": [
+                                "The email field is required.",
+                                "Email is already in use !", 
+                                "The email format is invalid."  
+                              ],
+                              "password": [
+                                "The password field is required.",
+                                "The password must be at least 8 characters.",
+                                "The password may not be greater than 20 characters."
+                            ],
+                            "gender": [
+                                "The selected gender is invalid."
+                            ],
+                            "birthday": [
+                                "The birthday is not a valid date format."
+                            ],
                         }
                     }
                 }
@@ -91,9 +130,28 @@ const login={
                         example:{
                             "user": {
                                 "id": 10,
-                                "username": "potato"
-                            },
-                            "token": "the token string"
+                                "username": "potato",
+                                "token": "the token string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        400:{
+            description:"bad request",
+            content:{
+                "application/json":{
+                    schema:{
+                        type:"Object",
+                        example:{
+                              "email": [
+                                "The email field is required.",
+                                "The email format is invalid."
+                              ],
+                              "password": [
+                                "The password field is required.",
+                            ]
                         }
                     }
                 }
@@ -106,7 +164,12 @@ const login={
                     schema:{
                         type:"Object",
                         example:{
-                            "msg": "Invalid Credentials"
+                            "email": [
+                                "Invalid Credentials no such email"
+                            ],
+                            "password": [
+                                "Invalid Credentials Wrong Password"
+                            ]
                         }
                     }
                 }
@@ -125,19 +188,22 @@ const logout={
         bearerAuth: []
     }],
     responses:{
-        200:{
-            description:"OK",
+        204:{
+            description:"No content",
+        },
+        401:{
+            description:"Unauthorized",
             content:{
                 "application/json":{
                     schema:{
                         type:"Object",
                         example:{
-                            "msg": "logout sucessfully !"
+                            "msg": "Authentication invalid"
                         }
                     }
                 }
             }
-        },
+        }
     }
 }
 

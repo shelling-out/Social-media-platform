@@ -6,7 +6,7 @@ const CustomAPIError=require(path.join(__dirname,'..','errors'));
 
 const errorHandlerMiddleware = (err, req, res, next) =>
 {
-  console.log(err.stack);
+  // console.log(err.stack);
   logEvents(`${err.name}: ${err.message}`,'errLog.txt');
   let customError=
   {

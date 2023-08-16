@@ -10,10 +10,22 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      User.hasMany(models.Post);
+      User.hasMany(models.Comment);
+      User.hasMany(models.Reaction);
+      User.hasMany(models.GroupUser) ;
+      User.belongsToMany(models.Group , {through: models.GroupUser });
+      // User.hasMany(models.Chat);
+      // User.hasMany(User,{ through: models.Relationship });
     }
   }
   User.init({
+    id:{
+      type:DataTypes.INTEGER,
+      allowNull:false,
+      primaryKey:true,
+      autoIncrement:true
+    },
     username: {
       type: DataTypes.STRING,
       allowNull:false,
@@ -67,6 +79,9 @@ module.exports = (sequelize, DataTypes) => {
     socket_io_id: {
       type: DataTypes.STRING
     },
+    refreshToken: {
+      type: DataTypes.STRING
+    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE,
@@ -83,4 +98,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   return User;
 };
+
+
+
 

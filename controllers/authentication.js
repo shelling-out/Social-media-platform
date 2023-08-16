@@ -1,53 +1,52 @@
 const path=require('path');
-const { StatusCodes } = require('http-status-codes')
-const { BadRequestError, UnauthenticatedError } = require(path.join(__dirname,'..','errors'));
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const { StatusCodes } = require('http-status-codes');
 const {User}=require(path.join(__dirname,'..','models'));
+
 
 const register=async (req,res)=>
 {
-    try {
-        if(req.body.password.length<8||req.body.password.length>20)
-            throw new BadRequestError('password must have 8 chars at least and 20 chars at most');
-        if(req.body.username===""||req.body.username===null)
-            throw new BadRequestError(" name can't be empty Please enter your username");
-        const salt = await bcrypt.genSalt(10);
-        req.body.password = await bcrypt.hash(req.body.password, salt);
-        const user= await User.create({username:req.body.username,email:req.body.email,password:req.body.password});
-        res.status(StatusCodes.CREATED).json({msg:"created successfully"});
-    } catch (error) {
-        throw new BadRequestError(error);        
-    }    
+    const data = JSON.parse(req.body.data) ;
+    if(req.file){
+        data.picturePath = req.file.filename ;
+    }
+    const salt = await bcrypt.genSalt(10);
+    data.password = await bcrypt.hash(data.password, salt);
+    const user= await User.create(data);
+    res.status(StatusCodes.CREATED).json({msg:"created successfully"});
 }
 
 
 const login=async (req,res)=>
 {
-    const {email,password} = req.body;
-    if(!email)
-        throw new BadRequestError('Please enter your email');
-    if(!password)
-        throw new BadRequestError('Please enter your password');
+    const {email} = req.body;
     const user=await User.findOne({where:{email:email}});
-    if(!user)
-        throw new UnauthenticatedError('Invalid Credentials');
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    if(!isPasswordCorrect)
-    {
-        throw new UnauthenticatedError('Invalid Credentials');
-    }
-    const token=jwt.sign(
+    const accessToken=jwt.sign(
         { id: user.id, username: user.username },
-        process.env.JWT_SECRET,
+        process.env.ACCESS_TOKEN_SECRET,
         {
-          expiresIn: process.env.JWT_LIFETIME,
+          expiresIn: process.env.ACCESS_TOKEN_JWT_LIFETIME,
         }
     );
-    res.status(StatusCodes.OK).json({ user: {id:user.id ,username: user.username } , token });
+    let refreshToken=jwt.sign(
+        {id:user.id,username:user.username},
+        process.env.REFRESH_TOKEN_SECRET,
+        { 
+            expiresIn:process.env.REFRESH_TOKEN_JWT_LIFETIME,
+        }
+    );
+    refreshToken=accessToken;
+    const result=await User.update({refreshToken:refreshToken},{where:{id:user.id}});
+    
+    res.status(StatusCodes.OK).json({ user: {id:user.id ,username: user.username, token:accessToken} });
 }
 
+const logout=async(req,res)=>
+{
+    const result=await User.update({refreshToken:null},{where:{id:req.user.id}});
+    res.sendStatus(StatusCodes.NO_CONTENT);
+}
 
-
-const authController={register,login};
+const authController={register,login,logout};
 module.exports=authController;
