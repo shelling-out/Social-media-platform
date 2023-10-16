@@ -53,7 +53,7 @@ const joinRequest = async (req , res )=>{
 }
 const showJoinRequests  = async (req , res )=>{
     let users = await GroupUser.findAll({ where:{groupId: req.params.groupId , state:'pending' },  include:{model:User , attributes:['username']  } , attributes:['userId' , 'state' , 'createdAt' ]}); 
-    return res.json({users});
+    return res.json(users.users);
 }
 const modifyRole = async (req , res )=>{
     await GroupUser.update({state:req.body.state } ,{where:{groupId: req.params.groupId , userId:req.params.userId }});
@@ -61,7 +61,7 @@ const modifyRole = async (req , res )=>{
 }
 const groupMemebers = async (req , res )=>{
     let users = await GroupUser.findAll({where:{groupId: req.params.groupId , state:['Admin' , 'Owner', 'normal' ]}}) ; 
-    return res.json({users:users}) ;
+    return res.json(users) ;
 }
 
 const createPost = async (req ,res ) =>{

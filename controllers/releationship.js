@@ -32,14 +32,12 @@ const getSentRequests=async(req,res)=>
             state:"pending",
         },
     });
-    requests = JSON.stringify(requests.map((item) => {
-        const { secondUser, ...rest } = item.toJSON();
-        return {
-          requestRecevier: secondUser,
-          ...rest
-        };
-    }));
-    requests = JSON.parse(requests);
+    requests = JSON.parse(JSON.stringify(requests)) ; 
+    requests = requests.map((relation) => {
+        relation.user = relation.secondUser ;
+        return relation ; 
+    });
+    
     res.status(StatusCodes.OK).json(requests);
 };
 
@@ -62,14 +60,19 @@ const getReceivedRequests=async(req,res)=>
     requests.forEach((request) => {
         request.state = "received";
     });
-    requests = JSON.stringify(requests.map((item) => {
-        const { firstUser, ...rest } = item.toJSON();
-        return {
-          requestSender: firstUser,
-          ...rest
-        };
-    }));
-    requests = JSON.parse(requests);
+    requests = JSON.parse(JSON.stringify(requests)) ; 
+    requests = requests.map((relation) => {
+        relation.user = relation.firstUser ;
+        return relation ; 
+    });
+    // requests = JSON.stringify(requests.map((item) => {
+    //     const { firstUser, ...rest } = item.toJSON();
+    //     return {
+    //       requestSender: firstUser,
+    //       ...rest
+    //     };
+    // }));
+    // requests = JSON.parse(requests);
     res.status(StatusCodes.OK).json(requests);
 };
 
@@ -163,10 +166,11 @@ const getMyFriends=async(req,res)=>
             state:"friends",
         },
     });
+
     query1 = JSON.stringify(query1.map((item) => {
         const { secondUser, ...rest } = item.toJSON();
         return {
-          friend: secondUser,
+          user : secondUser,
           ...rest
         };
     }));
@@ -187,7 +191,7 @@ const getMyFriends=async(req,res)=>
     query2 = JSON.stringify(query2.map((item) => {
         const { firstUser, ...rest } = item.toJSON();
         return {
-          friend: firstUser,
+          user : firstUser,
           ...rest
         };
     }));
@@ -270,7 +274,7 @@ const getBlockedList=async(req,res)=>
     users = JSON.stringify(users.map((item) => {
         const { secondUser, ...rest } = item.toJSON();
         return {
-          blockedUser: secondUser,
+          user : secondUser ,
           ...rest
         };
     }));
@@ -297,7 +301,7 @@ const getListOfPersonsWhoBlockedMe=async(req,res)=>
     users = JSON.stringify(users.map((item) => {
         const { firstUser, ...rest } = item.toJSON();
         return {
-          userBlockedMe: firstUser,
+          user: firstUser,
           ...rest
         };
     }));
@@ -305,7 +309,7 @@ const getListOfPersonsWhoBlockedMe=async(req,res)=>
     res.status(StatusCodes.OK).json(users);
 }
 
-const releationshipController={
+const releationshipController={ 
     createRequest,
     getSentRequests,
     getReceivedRequests,
