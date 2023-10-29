@@ -3,6 +3,7 @@ const {Group , GroupUser , User , Post , GroupPost , Reaction, Comment ,Sequeliz
 
 const createGroup = async (req , res) =>{
     let user = req.user ; 
+    let data = {} ;
     if(req.file) data.filename = req.file.filename ;
     let group = await Group.create({groupName:req.body.groupName , groupDescription: req.body.groupDescription , groupPicture:data.filename });
     let groupUser = await GroupUser.create({userId: user.id , groupId: group.id , state:'Owner'}) ; 
@@ -52,7 +53,7 @@ const joinRequest = async (req , res )=>{
     }
 }
 const showJoinRequests  = async (req , res )=>{
-    let users = await GroupUser.findAll({ where:{groupId: req.params.groupId , state:'pending' },  include:{model:User , attributes:['username']  } , attributes:['userId' , 'state' , 'createdAt' ]}); 
+    let users = await GroupUser.findAll({ where:{groupId: req.params.groupId , state:'pending' },  include:{model:User , attributes:['id','username' , 'picturePath']  } , attributes:['userId' , 'state' , 'createdAt' ]}); 
     return res.json(users.users);
 }
 const modifyRole = async (req , res )=>{
@@ -60,7 +61,7 @@ const modifyRole = async (req , res )=>{
     return res.json({msg:'updated successfully' , newRole: req.body.state }) ;
 }
 const groupMemebers = async (req , res )=>{
-    let users = await GroupUser.findAll({where:{groupId: req.params.groupId , state:['Admin' , 'Owner', 'normal' ]}}) ; 
+    let users = await GroupUser.findAll({where:{groupId: req.params.groupId , state:['Admin' , 'Owner', 'normal' ]}, include:{model:User, attributes:['id', 'username' , 'picturePath']}}) ; 
     return res.json(users) ;
 }
 
@@ -101,6 +102,12 @@ const getPost = async (req ,res )=>{
                     model:User,
                     attributes:['id','username','picturePath'],
                 }
+            },
+            {
+                model:Reaction ,
+                as :'reaction',
+                where:{userId: req.user.id},
+                required:false 
             }
         ],
         where:{
@@ -155,6 +162,12 @@ const getPosts = async (req ,res ) =>{
                                 model:User,
                                 attributes:['id','username','picturePath'],
                             }
+                        },
+                        {
+                            model: Reaction ,
+                            as: 'reaction',
+                            where: {userId:req.user.id},
+                            required:false 
                         }
                     ]
                 }
@@ -180,8 +193,8 @@ const getPosts = async (req ,res ) =>{
 const editPost = async (req ,res )=>{
     let data = {} ;
     if(req.body.text ) data.text = req.body.text ;
-    if(req.file) data.filename = req.file.filename ; 
-    await Post.update({text: data.text , picture: data.filename } , {where: {id: req.params.postId } } ) ;
+    if(req.file) data.filename = req.file.filename ;
+    await Post.update({text: data.text , picture: data.filename } , {where: {id: req.params.postId } } );
     return res.json({msg:'post updated successfully' }) ;
 }
 const deletePost = async (req , res) => 
@@ -201,6 +214,7 @@ let groupController = {
     showJoinRequests,
     groupMemebers ,
     getGroup,
+
     createPost,
     getPosts,
     editPost ,

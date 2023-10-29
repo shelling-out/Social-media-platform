@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         Post.belongsTo(models.User, { foreignKey: 'userId' });
         Post.hasMany(models.Comment);
         Post.hasMany(models.Reaction);
+        Post.hasOne(models.Reaction , {as:'reaction' , foreignKey:'postId' }) ;
         Post.hasOne(models.GroupPost);
     }
   }

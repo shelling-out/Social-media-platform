@@ -57,10 +57,12 @@ const deletePost=async(req,res)=>
 
 const getPostById=async(req,res)=>
 {
+ 
+
     let defaultState='public';
     const post=await Post.findOne({
         include:[
-            {
+            {   
                 model: User,
                 attributes: ['id','username', 'picturePath']    
             },
@@ -83,7 +85,13 @@ const getPostById=async(req,res)=>
                     model:User,
                     attributes:['id','username','picturePath'],
                 }
+            },{
+                model:Reaction , 
+                as:'reaction',
+                where: {userId:req.user.id},
+                required: false
             }
+        
         ],
         where:{
             id:req.params.id,
@@ -100,10 +108,12 @@ const getPostById=async(req,res)=>
                 [
                     Sequelize.literal('(SELECT COUNT(*) FROM reactions WHERE reactions.postId = post.id AND state="dislike")'), 'dislikesCount'
                 ]
+
             ],
             exclude:['UserId']
         },
     });
+
     res.status(StatusCodes.OK).json(post);
 };
 
@@ -135,6 +145,12 @@ const getAllPosts=async(req,res)=>
                     model:User,
                     attributes:['id','username','picturePath'],
                 }
+            },
+            {
+                model:Reaction , 
+                as: 'reaction',
+                where: {userId: req.user.id },
+                required:false 
             }
         ],
         where:{
@@ -159,7 +175,7 @@ const getAllPosts=async(req,res)=>
             ['updatedAt', 'DESC'],
         ],
     });
-    res.status(StatusCodes.OK).json(posts);
+    res.status(StatusCodes.OK).json({posts:posts});
 };
 
 const postController={

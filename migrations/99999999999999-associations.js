@@ -61,6 +61,7 @@ module.exports = {
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
+    
     //releationships
     queryInterface.addConstraint('relationships',{
       fields:['firstUserId'],
@@ -186,6 +187,7 @@ module.exports = {
     //reactions
     await queryInterface.removeConstraint('Reactions', 'reaction_user_association');
     await queryInterface.removeConstraint('Reactions', 'reaction_post_association');
+   
     //relationships
     await queryInterface.removeConstraint('relationships', 'relationships_firstUser_association');
     await queryInterface.removeConstraint('relationships', 'relationships_secondUser_association');

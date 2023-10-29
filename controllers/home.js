@@ -172,6 +172,11 @@ const news=async(req,res)=>
                     model:User,
                     attributes:['id','username','picturePath'],
                 }
+            },{
+                model:Reaction , 
+                as:'reaction',
+                where:{userId: req.user.id} ,
+                required:false 
             }
         ],
         where:{

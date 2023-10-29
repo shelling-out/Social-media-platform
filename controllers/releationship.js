@@ -34,7 +34,7 @@ const getSentRequests=async(req,res)=>
     });
     requests = JSON.parse(JSON.stringify(requests)) ; 
     requests = requests.map((relation) => {
-        relation.user = relation.secondUser ;
+        relation.User = relation.secondUser ;
         return relation ; 
     });
     
@@ -62,7 +62,7 @@ const getReceivedRequests=async(req,res)=>
     });
     requests = JSON.parse(JSON.stringify(requests)) ; 
     requests = requests.map((relation) => {
-        relation.user = relation.firstUser ;
+        relation.User = relation.firstUser ;
         return relation ; 
     });
     // requests = JSON.stringify(requests.map((item) => {
@@ -170,7 +170,7 @@ const getMyFriends=async(req,res)=>
     query1 = JSON.stringify(query1.map((item) => {
         const { secondUser, ...rest } = item.toJSON();
         return {
-          user : secondUser,
+          User: secondUser,
           ...rest
         };
     }));
@@ -191,7 +191,7 @@ const getMyFriends=async(req,res)=>
     query2 = JSON.stringify(query2.map((item) => {
         const { firstUser, ...rest } = item.toJSON();
         return {
-          user : firstUser,
+          User: firstUser,
           ...rest
         };
     }));
@@ -274,7 +274,7 @@ const getBlockedList=async(req,res)=>
     users = JSON.stringify(users.map((item) => {
         const { secondUser, ...rest } = item.toJSON();
         return {
-          user : secondUser ,
+          User: secondUser ,
           ...rest
         };
     }));
@@ -301,7 +301,7 @@ const getListOfPersonsWhoBlockedMe=async(req,res)=>
     users = JSON.stringify(users.map((item) => {
         const { firstUser, ...rest } = item.toJSON();
         return {
-          user: firstUser,
+          User: firstUser,
           ...rest
         };
     }));
